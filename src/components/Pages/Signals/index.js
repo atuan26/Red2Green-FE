@@ -26,8 +26,8 @@ const App = () => {
 				Cell: (props) => props.value.split("/")[0],
 			},
 			{
-				Header: "Index price",
-				accessor: "index_price",
+				Header: "Price",
+				accessor: "price",
 				className: "text-center text-yellow-400 ",
 				Cell: (props) => {
 					console.log(typeof parseFloat(props.value));
@@ -40,11 +40,11 @@ const App = () => {
 				Header: "+1m",
 				accessor: (row) =>
 					Math.round(
-						(100 - (row.index_price * 100) / row.after_1m_price) *
+						(100 - (row.price * 100) / row.after_1m_price) *
 							1e2
 					) / 1e2,
 				Cell: (props) =>
-					props.row.original.index_price
+					props.row.original.price
 						? `${props.row.original.after_1m_price}(${props.value}%)`
 						: "null",
 				sortType: "basic",
@@ -53,11 +53,11 @@ const App = () => {
 				Header: "+5m",
 				accessor: (row) =>
 					Math.round(
-						(100 - (row.index_price * 100) / row.after_5m_price) *
+						(100 - (row.price * 100) / row.after_5m_price) *
 							1e2
 					) / 1e2,
 				Cell: (props) =>
-					props.row.original.index_price
+					props.row.original.price
 						? `${props.row.original.after_5m_price}(${props.value}%)`
 						: "null",
 				sortType: "basic",
@@ -66,11 +66,11 @@ const App = () => {
 				Header: "+15m",
 				accessor: (row) =>
 					Math.round(
-						(100 - (row.index_price * 100) / row.after_15m_price) *
+						(100 - (row.price * 100) / row.after_15m_price) *
 							1e2
 					) / 1e2,
 				Cell: (props) =>
-					props.row.original.index_price
+					props.row.original.price
 						? `${props.row.original.after_15m_price}(${props.value}%)`
 						: "null",
 				sortType: "basic",
@@ -79,11 +79,11 @@ const App = () => {
 				Header: "+1h",
 				accessor: (row) =>
 					Math.round(
-						(100 - (row.index_price * 100) / row.after_1h_price) *
+						(100 - (row.price * 100) / row.after_1h_price) *
 							1e2
 					) / 1e2,
 				Cell: (props) =>
-					props.row.original.index_price
+					props.row.original.price
 						? `${props.row.original.after_1h_price}(${props.value}%)`
 						: "null",
 				sortType: "basic",
@@ -92,11 +92,11 @@ const App = () => {
 				Header: "+4h",
 				accessor: (row) =>
 					Math.round(
-						(100 - (row.index_price * 100) / row.after_4h_price) *
+						(100 - (row.price * 100) / row.after_4h_price) *
 							1e2
 					) / 1e2,
 				Cell: (props) =>
-					props.row.original.index_price
+					props.row.original.price
 						? `${props.row.original.after_4h_price}(${props.value}%)`
 						: "null",
 				sortType: "basic",
@@ -105,11 +105,11 @@ const App = () => {
 				Header: "+6h",
 				accessor: (row) =>
 					Math.round(
-						(100 - (row.index_price * 100) / row.after_6h_price) *
+						(100 - (row.price * 100) / row.after_6h_price) *
 							1e2
 					) / 1e2,
 				Cell: (props) =>
-					props.row.original.index_price
+					props.row.original.price
 						? `${props.row.original.after_6h_price}(${props.value}%)`
 						: "null",
 				sortType: "basic",
@@ -118,11 +118,11 @@ const App = () => {
 				Header: "+1d",
 				accessor: (row) =>
 					Math.round(
-						(100 - (row.index_price * 100) / row.after_1d_price) *
+						(100 - (row.price * 100) / row.after_1d_price) *
 							1e2
 					) / 1e2,
 				Cell: (props) =>
-					props.row.original.index_price
+					props.row.original.price
 						? `${props.row.original.after_1d_price}(${props.value}%)`
 						: "null",
 				sortType: "basic",
@@ -131,11 +131,11 @@ const App = () => {
 				Header: "+1w",
 				accessor: (row) =>
 					Math.round(
-						(100 - (row.index_price * 100) / row.after_1w_price) *
+						(100 - (row.price * 100) / row.after_1w_price) *
 							1e2
 					) / 1e2,
 				Cell: (props) =>
-					props.row.original.index_price
+					props.row.original.price
 						? `${props.row.original.after_1w_price}(${props.value}%)`
 						: "null",
 				sortType: "basic",

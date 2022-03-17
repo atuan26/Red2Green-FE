@@ -187,11 +187,11 @@ function App() {
 			<div className="absolute left-56 w-[calc(100%-14rem)]  min-h-screen flex flex-col  pl-4 md:p-4 md:space-y-4  max-w-[2560px]">
 				<Header />
 				<Routes>
-					<Route path="/" element={<Dashboard />} />
-					<Route path="/calendar" element={<CalendarEvent />} />
-					<Route path="/signals" element={<Signals />} />
+					<Route path="/r2g/" element={<Dashboard />} />
+					<Route path="/r2g/calendar" element={<CalendarEvent />} />
+					<Route path="/r2g/signals" element={<Signals />} />
 					<Route
-						path="/airdrop"
+						path="/r2g/airdrop"
 						element={
 							<Table
 								title="Airdrop"
@@ -201,7 +201,7 @@ function App() {
 						}
 					/>
 					<Route
-						path="/account"
+						path="/r2g/account"
 						element={
 							<Table
 								title="Account"
@@ -211,12 +211,12 @@ function App() {
 						}
 					/>
 					<Route
-						path="/user"
+						path="/r2g/user"
 						element={
 							<Table title="User" hasFilter={true} data={data} />
 						}
 					/>
-					<Route path="/api" element={<Template1 />} />
+					<Route path="/r2g/api" element={<Template1 />} />
 					<Route
 						path="*"
 						element={

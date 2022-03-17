@@ -1,0 +1,3 @@
+.task_item:hover .delete_icon {
+  display: block;
+}

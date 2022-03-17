@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/static/css/main.55d2f69d.css",
-    "main.js": "/static/js/main.831fb165.js",
-    "index.html": "/index.html",
-    "main.55d2f69d.css.map": "/static/css/main.55d2f69d.css.map",
-    "main.831fb165.js.map": "/static/js/main.831fb165.js.map"
+    "main.css": "/r2g/build/static/css/main.55d2f69d.css",
+    "main.js": "/r2g/build/static/js/main.831fb165.js",
+    "index.html": "/r2g/build/index.html",
+    "main.55d2f69d.css.map": "/r2g/build/static/css/main.55d2f69d.css.map",
+    "main.831fb165.js.map": "/r2g/build/static/js/main.831fb165.js.map"
   },
   "entrypoints": [
     "static/css/main.55d2f69d.css",

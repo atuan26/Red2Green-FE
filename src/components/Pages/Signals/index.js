@@ -4,6 +4,20 @@ import FilterForm from "./FilterForm";
 import api from "../../../redux/actions";
 
 const App = () => {
+	const [data, setData] = useState({ count: 0, results: [] });
+
+	useEffect(() => {
+		api.get("/price_data/?signals__post_date__gte=")
+			.then((result) => {
+				// setData(result.data.results);
+				setData(result.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, []);
+
+	const setDatas = (data) => setData(data);
 	const priceHeader = [
 		"+1m",
 		"+5m",
@@ -15,14 +29,12 @@ const App = () => {
 		"+1d",
 		"+1w",
 	];
-	const [data, setData] = useState([]);
-
 	const columns = React.useMemo(
 		() => [
 			{
 				Header: "Symbol",
 				accessor: "symbol",
-				className: "text-center",
+				className: "text-center !sticky !left-0",
 				Cell: (props) => props.value.split("/")[0],
 			},
 			{
@@ -41,7 +53,7 @@ const App = () => {
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_1m_price) *
-							1e2
+						1e2
 					) / 1e2,
 				Cell: (props) =>
 					props.row.original.price
@@ -54,7 +66,7 @@ const App = () => {
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_5m_price) *
-							1e2
+						1e2
 					) / 1e2,
 				Cell: (props) =>
 					props.row.original.price
@@ -67,7 +79,7 @@ const App = () => {
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_15m_price) *
-							1e2
+						1e2
 					) / 1e2,
 				Cell: (props) =>
 					props.row.original.price
@@ -80,7 +92,7 @@ const App = () => {
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_1h_price) *
-							1e2
+						1e2
 					) / 1e2,
 				Cell: (props) =>
 					props.row.original.price
@@ -93,7 +105,7 @@ const App = () => {
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_4h_price) *
-							1e2
+						1e2
 					) / 1e2,
 				Cell: (props) =>
 					props.row.original.price
@@ -106,7 +118,7 @@ const App = () => {
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_6h_price) *
-							1e2
+						1e2
 					) / 1e2,
 				Cell: (props) =>
 					props.row.original.price
@@ -119,7 +131,7 @@ const App = () => {
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_1d_price) *
-							1e2
+						1e2
 					) / 1e2,
 				Cell: (props) =>
 					props.row.original.price
@@ -132,7 +144,7 @@ const App = () => {
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_1w_price) *
-							1e2
+						1e2
 					) / 1e2,
 				Cell: (props) =>
 					props.row.original.price
@@ -162,23 +174,15 @@ const App = () => {
 		],
 		[]
 	);
-
-	useEffect(() => {
-		api.get("/price_data/?signals__post_date__gte=")
-			.then((result) => {
-				setData(result.data.results);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}, []);
-
-	const setDatas = (data) => setData(data);
-
 	return (
 		<>
 			<FilterForm setData={setDatas} />
 			<div className="w-full shadow-lg rounde2xl bg-white mb-4 ">
+				<br />
+				<div>
+					Showing the first 20{" "}
+					results of {data.count} rows
+				</div>
 				<Table
 					columns={columns}
 					data={data}

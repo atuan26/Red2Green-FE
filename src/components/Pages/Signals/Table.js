@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import {
-	useBlockLayout,
 	useFlexLayout,
 	usePagination,
 	useResizeColumns,
@@ -46,25 +45,20 @@ const Table = ({
 	} = useTable(
 		{
 			columns,
-			data: data,
+			data: data.results,
 			defaultColumn,
 			autoResetSortBy: false,
 			// initialState: { pageIndex: 0 },
 		},
 		useSortBy,
 		useResizeColumns,
-		useBlockLayout,
+		useFlexLayout,
 		usePagination
 	);
 
 	return (
 		<div className="w-full rounded-lg p-6">
 			<div className="overflow-auto w-full">
-				<div>
-					Showing the first {page.length > 20 ? 20 : page.length}{" "}
-					results of {page.length} rows
-				</div>
-				<br />
 				<table className="table bg-white shadow" {...getTableProps()}>
 					<thead>
 						{headerGroups.map((headerGroup) => (
@@ -79,11 +73,10 @@ const Table = ({
 										{column.render("Header")}
 										<div
 											{...column.getResizerProps()}
-											className={`resizer ${
-												column.isResizing
-													? "isResizing"
-													: ""
-											}`}
+											className={`resizer ${column.isResizing
+												? "isResizing"
+												: ""
+												}`}
 											onClick={(e) => {
 												e.preventDefault();
 												e.stopPropagation();
@@ -136,61 +129,61 @@ const Table = ({
 						})}
 					</tbody>
 				</table>
-				<div className="pagination">
-					<button
-						onClick={() => gotoPage(0)}
-						disabled={!canPreviousPage}
-					>
-						{"<<"}
-					</button>{" "}
-					<button
-						onClick={() => previousPage()}
-						disabled={!canPreviousPage}
-					>
-						{"<"}
-					</button>{" "}
-					<span>
-						Page{" "}
-						<strong>
-							{pageIndex + 1} of {pageOptions.length}
-						</strong>{" "}
-					</span>
-					<button onClick={() => nextPage()} disabled={!canNextPage}>
-						{">"}
-					</button>{" "}
-					<button
-						onClick={() => gotoPage(pageCount - 1)}
-						disabled={!canNextPage}
-					>
-						{">>"}
-					</button>{" "}
-					<span className="hidden">
-						| Go to page:{" "}
-						<input
-							type="number"
-							defaultValue={pageIndex + 1}
-							onChange={(e) => {
-								const page = e.target.value
-									? Number(e.target.value) - 1
-									: 0;
-								gotoPage(page);
-							}}
-							style={{ width: "100px" }}
-						/>
-					</span>{" "}
-					<select
-						value={pageSize}
+			</div>
+			<div className="pagination">
+				<button
+					onClick={() => gotoPage(0)}
+					disabled={!canPreviousPage}
+				>
+					{"<<"}
+				</button>{" "}
+				<button
+					onClick={() => previousPage()}
+					disabled={!canPreviousPage}
+				>
+					{"<"}
+				</button>{" "}
+				<span>
+					Page{" "}
+					<strong>
+						{pageIndex + 1} of {pageOptions.length}
+					</strong>{" "}
+				</span>
+				<button onClick={() => nextPage()} disabled={!canNextPage}>
+					{">"}
+				</button>{" "}
+				<button
+					onClick={() => gotoPage(pageCount - 1)}
+					disabled={!canNextPage}
+				>
+					{">>"}
+				</button>{" "}
+				<span className="hidden">
+					| Go to page:{" "}
+					<input
+						type="number"
+						defaultValue={pageIndex + 1}
 						onChange={(e) => {
-							setPageSize(Number(e.target.value));
+							const page = e.target.value
+								? Number(e.target.value) - 1
+								: 0;
+							gotoPage(page);
 						}}
-					>
-						{[10, 20, 30, 40, 50].map((pageSize) => (
-							<option key={pageSize} value={pageSize}>
-								Show {pageSize}
-							</option>
-						))}
-					</select>
-				</div>
+						style={{ width: "100px" }}
+					/>
+				</span>{" "}
+				<select
+					value={pageSize}
+					onChange={(e) => {
+						setPageSize(Number(e.target.value));
+					}}
+				>
+					{[10, 20, 30, 40, 50].map((pageSize) => (
+						<option key={pageSize} value={pageSize}>
+							Show {pageSize}
+						</option>
+					))}
+				</select>
 			</div>
 		</div>
 	);

@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import "./index.css";
 import "flowbite";
+import 'react-loading-skeleton/dist/skeleton.css'
 
 import store from "./redux/store";
 import { Provider } from "react-redux";

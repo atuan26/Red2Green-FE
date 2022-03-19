@@ -63,3 +63,13 @@ input:-webkit-autofill:active {
 /* .resizer.isResizing {
 	background: red;
 } */
+ /* th:first-child {
+	position: sticky;
+	left: 0;
+	z-index: 2;
+  } */
+
+table td:first-child, th:first-child{	
+	position: sticky !important;
+	left: 0; 
+}

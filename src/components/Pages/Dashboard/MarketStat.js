@@ -1,8 +1,29 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { FaBitcoin, FaMoneyBill } from "react-icons/fa";
 import { GrTransaction } from "react-icons/gr";
+import Skeleton from "react-loading-skeleton";
+
+const ccxt = window.ccxt;
+
+const client = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
 
 const MarketStat = () => {
+  const [gnf, setGnf] = useState({})
+  const [btc, setBtc] = useState(null)
+  useEffect(() => {
+    axios.get('https://api.alternative.me/fng/').then((res) => {
+      let data = res.data.data[0]
+      setTimeout(() => {
+        setGnf(data);
+      }, 1000);
+    })
+    client.onmessage = (message) => {
+      setTimeout(() => {
+        setBtc(parseFloat(JSON.parse(message.data)['p']).toFixed(2))
+      }, 1000);
+    };
+  }, [])
   return (
     <div className="w-full shadow-lg stats">
       <div className="stat">
@@ -26,7 +47,9 @@ const MarketStat = () => {
           <FaBitcoin className="inline-block w-8 h-8 stroke-current" />
         </div>
         <div className="stat-title">BTC</div>
-        <div className="stat-value">$44,200</div>
+        <div className="relative stat-value">
+          {btc || <Skeleton />}
+        </div>
         <div className="stat-desc text-success">↗︎ 22%</div>
       </div>
       <div className="stat">
@@ -46,13 +69,12 @@ const MarketStat = () => {
           </svg>
         </div>
         <div className="stat-title">Greed and Fear Index</div>
-        <div className="stat-value  text-warning">50</div>
+        <div className="stat-value  text-warning">{gnf.value || <Skeleton />}</div>
         <div className="stat-desc">
-          <span className="text-warning font-bold">NEUTRAL </span>(By
-          alternative.me)
+          <span className="text-warning font-bold">{gnf.value_classification ? <>{gnf.value_classification} (By <strong> alternative.me </strong>)</> : <Skeleton />} </span>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

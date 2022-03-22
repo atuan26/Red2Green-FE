@@ -10,6 +10,7 @@ import Template1 from "./Template/T1";
 import Dashboard from "./components/Pages/Dashboard";
 import CalendarEvent from "./components/Pages/Calendar";
 import Signals from "./components/Pages/Signals";
+import Airdrop from "./components/Pages/Airdrop";
 
 import Table from "./components/Other/Table";
 import { ToastContainer } from "react-toastify";
@@ -192,13 +193,7 @@ function App() {
 					<Route path="/r2g/signals" element={<Signals />} />
 					<Route
 						path="/r2g/airdrop"
-						element={
-							<Table
-								title="Airdrop"
-								hasFilter={true}
-								data={data}
-							/>
-						}
+						element={<Airdrop />}
 					/>
 					<Route
 						path="/r2g/account"

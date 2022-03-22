@@ -6,6 +6,7 @@ export const EventInput = ({
   label,
   type,
   autoFocus,
+  noWaring,
   meta: { touched, error },
 }) => {
   return (
@@ -24,14 +25,14 @@ export const EventInput = ({
         required
         autoFocus={autoFocus}
         {...input}
-      />
-      <p>
-        {touched && error && (
-          <span className="text-xs text-red-600 dark:text-red-500">
-            {error}
-          </span>
-        )}
-      </p>
+      />{noWaring ||
+        <p>
+          {touched && error && (
+            <span className="text-xs text-red-600 dark:text-red-500">
+              {error}
+            </span>
+          )}
+        </p>}
     </div>
   );
 };
@@ -71,7 +72,7 @@ export const FieldDatePicker = ({
 }) => {
   return (
     <>
-      <label className="relative block text-sm font-medium text-gray-900 dark:text-gray-400">
+      <label className="relative block text-sm font-medium text-gray-900 dark:text-gray-400 mr-2">
         {label}
         {touched && error && (
           <span className="z-50 absolute top-0 -right-20 text-sm text-red-500 dark:text-red-500">
@@ -121,7 +122,7 @@ export const SubmitButton = ({ label, disabled, ...props }) => {
           />
         </svg>
       )}
-      {label}
+      {label || 'Submit'}
     </button>
   );
 };
@@ -145,3 +146,22 @@ export const ColorEventInput = ({ input, label, type, color, ...props }) => {
     </div>
   );
 };
+
+const COLORPICKER = ({ input: { value, onChange } }) => (
+  <div>
+    <button
+      type="button"
+      className={value === 'male' ? 'orangeTextButton' : ''}
+      onClick={() => onChange('male')}
+    >
+      Male
+    </button>
+    <button
+      type="button"
+      className={value === 'female' ? 'orangeTextButton' : ''}
+      onClick={() => onChange('female')}
+    >
+      Female
+    </button>
+  </div>
+);

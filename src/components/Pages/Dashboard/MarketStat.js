@@ -20,7 +20,8 @@ const MarketStat = () => {
     })
     client.onmessage = (message) => {
       setTimeout(() => {
-        setBtc(parseFloat(JSON.parse(message.data)['p']).toFixed(2))
+        let btcPrice = JSON.parse(message.data)['p']
+        setBtc(Number(btcPrice).toLocaleString('en-US', { maximumFractionDigits: 0 }))
       }, 1000);
     };
   }, [])

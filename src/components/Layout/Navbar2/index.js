@@ -89,7 +89,7 @@ const Navbar = () => {
 	return (
 		<div className="fixed top-0 left-0 z-30 flex min-h-screen overflow-y-auto no-scrollbar">
 			<div className=" w-52 h-screen bg-white xl:w-56 dark:bg-gray-800">
-				<nav className="mt-10 px-6 ">
+				<nav className="relative mt-10 px-6 ">
 					{navItem1.map((item, index) => {
 						return item.icon ? (
 							<NavItem
@@ -107,6 +107,7 @@ const Navbar = () => {
 							</p>
 						);
 					})}
+					{/* <div className="absolute top-0 hover:text-gray-800 hover:bg-gray-200 flex items-center p-2 my-1 transition-colors dark:hover:text-white dark:hover:bg-gray-600 duration-200  text-gray-800 dark:text-gray-100 rounded-md bg-gray-200 dark:bg-gray-600">{" "}</div> */}
 				</nav>
 				<div className="absolute bottom-0 my-10">
 					<a

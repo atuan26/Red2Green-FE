@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Table from "./Table";
-import FilterForm from "./FilterForm";
 import api from "../../../redux/actions";
+import Filter from "./Filter2";
 
 const App = () => {
 	const [data, setData] = useState({ count: 0, results: [] });
@@ -17,7 +17,6 @@ const App = () => {
 			});
 	}, []);
 
-	const setDatas = (data) => setData(data);
 	const priceHeader = [
 		"+1m",
 		"+5m",
@@ -41,10 +40,7 @@ const App = () => {
 				Header: "Price",
 				accessor: "price",
 				className: "text-center text-yellow-400 ",
-				Cell: (props) => {
-					console.log(typeof parseFloat(props.value));
-					return parseFloat(props.value);
-				},
+				Cell: (props) => parseFloat(props.value),
 				sortMethod: (a, b) => Number(a) - Number(b),
 				// sortMethod:
 			},
@@ -176,11 +172,11 @@ const App = () => {
 	);
 	return (
 		<>
-			<FilterForm setData={setDatas} />
-			<div className="w-full shadow-lg rounde2xl bg-white mb-4 ">
-				<br />
-				<div>
-					Showing the first 20{" "}
+			{/* <FilterForm setData={setDatas} /> */}
+			<Filter />
+			<div className="w-full shadow-lg rounded-lg bg-white mb-4 ">
+				<div className="p-6 pb-0">
+					Showing the first {data.count < 20 ? data.count : 20}{" "}
 					results of {data.count} rows
 				</div>
 				<Table

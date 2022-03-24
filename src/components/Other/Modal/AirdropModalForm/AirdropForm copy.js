@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { CgPlayListAdd, CgRemove } from "react-icons/cg";
 import { connect } from "react-redux";
 import { Field, FieldArray, reduxForm } from "redux-form";
@@ -18,7 +18,7 @@ let AirdropForm = (props) => {
     return (
         <form
             onSubmit={handleSubmit}
-            className="grid grid-cols-2 gap-6 rounded-lg px-6 overflow-y-scroll max-h-[80vh] border-b-6 border-b-white lg:px-8 sm:pb-6 xl:pb-8"
+            className="rounded-lg px-6 overflow-y-scroll max-h-[80vh] pb-4 space-y-3 lg:px-8 sm:pb-6 xl:pb-8"
         >
             <Field
                 name="name"
@@ -33,36 +33,34 @@ let AirdropForm = (props) => {
                 type="text"
                 component={EventInput}
                 label="Link"
-                noWaring={true}
             />
-            <div className="">
-                <label className=" text-sm font-medium text-gray-900 dark:text-gray-400 mr-2">Time</label>
-                <div className="flex items-center ml-8 mb-2">
-                    <label className="w-1/3" contentEditable={false}>Start</label>
-                    <Field
-                        component={FieldDatePicker}
-                        name="start"
-                        placeholder="YYYY/MM/DD"
-                    />
-                </div>
-                <div className="flex items-center ml-8 mb-2">
-                    <label className="w-1/3" contentEditable={false}>End</label>
-                    <Field
-                        component={FieldDatePicker}
-                        name="end"
-                        placeholder="YYYY/MM/DD"
-                    />
-                </div>
-                <EditableLabelDateField label='Result' editable={true} />
+            <div className="flex justify-between items-center !mt-0">
+                <Field
+                    component={FieldDatePicker}
+                    name="start"
+                    placeholder="YYYY/MM/DD"
+                    label="Time: "
+                />
+                <div className="text-gray-400 ml-2">-</div>
+                <Field
+                    component={FieldDatePicker}
+                    name="end"
+                    placeholder="YYYY/MM/DD"
+                />
+                <div className="text-gray-400 ml-2">-</div>
+                <Field
+                    component={FieldDatePicker}
+                    name="result"
+                    placeholder="YYYY/MM/DD"
+                />
             </div>
-            <FieldArray name="task_list" component={renderTasks} />
             <Field
                 name="description"
                 type="text"
                 component={EventTextArea}
                 label="Description"
-                className="col-span-2"
             />
+            <FieldArray name="task_list" component={renderTasks} />
             {error && <strong>{error}</strong>}
             <SubmitButton
                 disabled={submitting}
@@ -84,7 +82,6 @@ const validate = (values) => {
 
 const renderTasks = ({ fields, meta: { touched, error } }) => (
     <ul>
-        <label>Task: </label>
         <li>
             <button type="button" className="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
                 onClick={() => fields.push({})}>
@@ -116,23 +113,6 @@ const renderTasks = ({ fields, meta: { touched, error } }) => (
         )}
     </ul>
 )
-
-const EditableLabelDateField = ({ label, editable }) => {
-    const [labelEditable, setLabelEditable] = useState(label || '')
-    const handleChange = (e) => {
-        setLabelEditable(e.currentTarget.textContent)
-    }
-
-    return <div className="flex items-center ml-8 mb-2">
-        <label className="w-1/3" onInput={handleChange} contentEditable={editable} >{labelEditable}</label>
-        <Field
-            component={FieldDatePicker}
-            name={labelEditable}
-            placeholder="YYYY/MM/DD"
-        />
-    </div>
-}
-
 AirdropForm = reduxForm({
     form: "airdropForm",
     validate,

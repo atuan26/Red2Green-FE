@@ -1,14 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
 import AirdropForm from "./AirdropForm";
+import WizardForm from "./WizardForm";
 
 const AirdropModalForm = ({ label, close }) => {
   return (
     <>
-      <div className="fixed overflow-hidden left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 outline-none focus:outline-none">
-        <div className="max-h-[85vh] w-[800] my-6 rounded-lg ">
-          {/* <div className="relative w-full my-6 sm:max-w-sm md:max-w-md"> */}
-          <div className="bg-white rounded-lg shadow dark:bg-gray-700  overflow-hidden">
+      <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+        <div className="relative w-full my-6 sm:max-w-sm md:max-w-md">
+
+          {/* <div className="fixed overflow-hidden left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 outline-none focus:outline-none">
+        <div className=" w-full  my-6 rounded-lg "> */}
+          <div className="bg-white rounded-lg shadow dark:bg-gray-700">
             <div className="flex justify-between p-2">
               <h3 className="mt-2 pl-6 text-xl font-medium text-gray-900 dark:text-white">Add new airdop
               </h3>
@@ -31,9 +34,10 @@ const AirdropModalForm = ({ label, close }) => {
                 </svg>
               </button>
             </div>
-            <AirdropForm
+            {/* <AirdropForm
               close={close}
-            />
+            /> */}
+            <WizardForm />
           </div>
         </div>
       </div>

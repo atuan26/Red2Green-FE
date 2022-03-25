@@ -8,7 +8,7 @@ const WizardFormFirstPage = props => {
   const { error, handleSubmit, submitting } =
     props;
   return (
-    <form onSubmit={handleSubmit} className="rounded-lg px-6 overflow-y-scroll max-h-[80vh] min-h-[60vh] pb-4 lg:px-8 sm:pb-6 xl:pb-8">
+    <form onSubmit={handleSubmit} className="flex justify-between flex-col rounded-lg px-6 overflow-y-scroll max-h-[80vh] min-h-[60vh] pb-4 lg:px-8 sm:pb-6 xl:pb-8">
       <Field
         name="name"
         type="text"
@@ -35,10 +35,13 @@ const WizardFormFirstPage = props => {
         component={EventInput}
         label="Max participants"
       />
-      <SubmitButton
-        label="Next"
-        disabled={submitting}
-      />
+      <div className='flex justify-center'>
+        <div className='w-1/2 '>
+          <SubmitButton
+            label="Next"
+          />
+        </div>
+      </div>
     </form>
   )
 }

@@ -8,7 +8,7 @@ import validate from '../validate'
 const WizardFormThirdPage = props => {
   const { handleSubmit, pristine, previousPage, submitting } = props
   return (
-    <form onSubmit={handleSubmit} className="rounded-lg px-6 overflow-y-scroll min-h-[60vh]  max-h-[80vh] pb-4 lg:px-8 sm:pb-6 xl:pb-8">
+    <form onSubmit={handleSubmit} className="flex justify-between flex-col rounded-lg px-6 overflow-y-scroll min-h-[60vh]  max-h-[80vh] pb-4 lg:px-8 sm:pb-6 xl:pb-8">
       <Field
         name="social.telegram_channel"
         type="text"

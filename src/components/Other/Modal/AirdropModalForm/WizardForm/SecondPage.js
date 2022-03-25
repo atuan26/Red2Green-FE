@@ -16,7 +16,7 @@ const WizardFormSecondPage = props => {
         <EditableLabelDateField label="Start" name="time.start" className="mb-4" />
         <EditableLabelDateField label="End" name="time.end" className="mb-4" />
         <div className='divider' />
-        <FieldArray name='time' component={renderDateInput} />
+        {/* <FieldArray name='time' component={renderDateInput} /> */}
       </div>
       <div className='flex gap-4'>
         <SubmitButton
@@ -31,7 +31,7 @@ const WizardFormSecondPage = props => {
 }
 
 const renderDateInput = ({ fields, meta: { touched, error } }) => (
-  <ul>
+  < ul >
     <li>
       <button type="button" className="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
         onClick={() => fields.push({})}>
@@ -39,13 +39,15 @@ const renderDateInput = ({ fields, meta: { touched, error } }) => (
       </button>
       {touched && error && <span>{error}</span>}
     </li>
-    {fields.map((task, index) =>
-      <li key={index} className="flex items-center justify-between  mb-4">
-        <EditableLabelDateField label="Event name" editable={true} />
-        <CgClose onClick={() => fields.remove(index)} className="inline w-4 h-4 text-red-400 hover:text-white hover:bg-red-500 p-2 border-2 border-red-500 rounded-md box-content" />
-      </li>
-    )}
-  </ul>
+    {
+      fields.map((event, index) =>
+        <li key={index} className="flex items-center justify-between  mb-4">
+          <EditableLabelDateField label="Event name" name={fields.name} editable={true} />
+          <CgClose onClick={() => fields.remove(index)} className="inline w-4 h-4 text-red-400 hover:text-white hover:bg-red-500 p-2 border-2 border-red-500 rounded-md box-content" />
+        </li>
+      )
+    }
+  </ul >
 )
 
 const EditableLabelDateField = ({ label, name, editable, className }) => {
@@ -54,7 +56,11 @@ const EditableLabelDateField = ({ label, name, editable, className }) => {
   const handleChange = (e) => {
     setLabelEditable(e.target.innerHTML)
   }
-
+  // if (editable)
+  //   console.log(labelEditable, `${name}.${labelEditable}`);
+  // else
+  //   console.log(label, name);
+  console.log(editable ? `${name}.${labelEditable.replace(/\s+/g, '_').trim()}` : `${name}`)
   return <div className={"flex items-center justify-between " + className}>
     <label className="flex-1 min-w-[80px] w-1/3 whitespace-nowrap "
       onInput={handleChange}
@@ -63,12 +69,41 @@ const EditableLabelDateField = ({ label, name, editable, className }) => {
     />
     <Field
       component={FieldDatePicker}
-      name={labelEditable || name}
+      // name={labelEditable}
+      name={editable ? `${name}.${labelEditable.replace(/\s+/g, '_').trim()}` : `${name}`}
       placeholder="YYYY/MM/DD"
       className='flex-1 '
     />
   </div>
 }
+// const EditableLabelDateField = ({ label, name, editable, className }) => {
+
+//   const [labelEditable, setLabelEditable] = useState(editable ? label || 'Event' : label)
+//   const [nameEditable, setNameEditable] = useState(editable ? (name + '.' + label.replace(/\s+/g, '_')).trim() : name)
+//   const value = useRef(labelEditable)
+//   console.log(value.current, nameEditable);
+//   const handleChange = (e) => {
+//     if (editable) {
+//       setLabelEditable(`${e.target.innerHTML}`)
+//       // setNameEditable(e.target.innerHTML.trim().replace(/\s+/g, '_'))
+//     }
+//   }
+
+//   return <div className={"flex items-center justify-between " + className}>
+//     <label className="flex-1 min-w-[80px] w-1/3 whitespace-nowrap "
+//       onInput={handleChange}
+//       contentEditable={editable}
+//       dangerouslySetInnerHTML={{ __html: value.current }}
+//     />
+//     <Field
+//       component={FieldDatePicker}
+//       // name={nameEditable}
+//       name={name}
+//       placeholder="YYYY/MM/DD"
+//       className='flex-1 '
+//     />
+//   </div>
+// }
 
 export default reduxForm({
   form: 'wizard',

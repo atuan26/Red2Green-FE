@@ -60,6 +60,7 @@ const renderTasks = ({ fields, meta: { touched, error } }) => (
     </li>
     {fields.map((task, index) =>
       <li className='mb-4' key={index}>
+        <div className='divider m-0' />
         <h4 className='flex justify-between items-center'>Task #{index + 1}
           <CgClose onClick={() => fields.remove(index)} className="inline w-4 h-4 text-red-400 hover:text-white hover:bg-red-500 p-2 border-2 border-red-500 rounded-md box-content" />
         </h4>

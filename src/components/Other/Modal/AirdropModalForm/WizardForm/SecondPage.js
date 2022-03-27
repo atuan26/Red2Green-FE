@@ -64,6 +64,11 @@ const EditableLabelDateField = ({ label, name, editable, className }) => {
       contentEditable={editable}
       dangerouslySetInnerHTML={{ __html: value.current }}
     />
+    {/* <input
+      value={labelEditable}
+      className="flex-1 min-w-[80px] w-1/3 whitespace-nowrap "
+      onChange={e => setLabelEditable(e.target.value)}
+    /> */}
     <Field
       component={FieldDatePicker}
       name={name}

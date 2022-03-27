@@ -94,7 +94,7 @@ export const FieldDatePicker = ({
   );
 };
 
-export const SubmitButton = ({ label, disabled, ...props }) => {
+export const SubmitButton = ({ label, type, disabled, ...props }) => {
   const disabledClass =
     "w-full text-white bg-blue-500 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center";
   const activeClass =
@@ -102,7 +102,7 @@ export const SubmitButton = ({ label, disabled, ...props }) => {
 
   return (
     <button
-      type="submit"
+      type={type || "submit"}
       className={disabled ? disabledClass : activeClass}
       disabled={disabled}
       {...props}

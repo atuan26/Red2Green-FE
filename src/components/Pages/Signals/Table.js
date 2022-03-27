@@ -130,29 +130,29 @@ const Table = ({
 					</tbody>
 				</table>
 			</div>
-			<div className="pagination">
-				<button
+			<div className="btn-group mt-2">
+				<button className="btn"
 					onClick={() => gotoPage(0)}
 					disabled={!canPreviousPage}
 				>
 					{"<<"}
 				</button>{" "}
-				<button
+				<button className="btn"
 					onClick={() => previousPage()}
 					disabled={!canPreviousPage}
 				>
 					{"<"}
 				</button>{" "}
-				<span>
-					Page{" "}
-					<strong>
-						{pageIndex + 1} of {pageOptions.length}
+				<btn className="btn">
+					Page
+					<strong className="ml-1">
+						{data.count ? pageIndex + 1 : 0} of {pageOptions.length}
 					</strong>{" "}
-				</span>
-				<button onClick={() => nextPage()} disabled={!canNextPage}>
+				</btn>
+				<button className="btn" onClick={() => nextPage()} disabled={!canNextPage}>
 					{">"}
 				</button>{" "}
-				<button
+				<button className="btn"
 					onClick={() => gotoPage(pageCount - 1)}
 					disabled={!canNextPage}
 				>

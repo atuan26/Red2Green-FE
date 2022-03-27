@@ -4,12 +4,14 @@ import api from "../../../redux/actions";
 import Filter from "./Filter2";
 import { CgAdd } from "react-icons/cg";
 import AirdropModalForm from "../../Other/Modal/AirdropModalForm";
+import { BsFillPatchCheckFill, BsFillPatchExclamationFill, BsPatchQuestionFill } from "react-icons/bs";
 
 const App = () => {
   const [data, setData] = useState({ count: 0, results: [] });
   const [showAirdropModal, setshowAirdropModal] = useState(false)
 
   useEffect(() => {
+    // loadAirdrop()
     api.get("/airdrops/")
       .then((result) => {
         // console.log(result.data);
@@ -32,11 +34,13 @@ const App = () => {
       },
       {
         Header: "Name",
-        accessor: "title",
+        accessor: "name",
       },
       {
         Header: "Reward",
-        accessor: "information?.reward ",
+        accessor: "information.reward",
+        Cell: (row) => { return row.value || <div className="text-gray-500">N/A</div> },
+        className: 'text-center ',
       },
       {
         Header: "Start time",
@@ -57,12 +61,35 @@ const App = () => {
       {
         Header: "Status",
         accessor: "",
+        Cell: (row) => {
+          let status
+          status = new Date(row.row.original.end) - new Date()
+          console.log('status', status);
+          if (new Date(row.row.original.start) - new Date() > 0) {
+            return <button
+              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Upcoming</button>
+          }
+          else if (status >= 0) {
+            return <button
+              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-yellow-400 rounded-lg hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-100 dark:bg-yellow-600 dark:hover:bg-yellow-500 dark:focus:ring-yellow-600">Ongoing</button>
+          }
+          else if (status < 0) {
+            return <button
+              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">Ended</button>
+          }
+        },
+        width: 120,
       },
       {
         Header: "Distribution",
         accessor: "is_distributed",
-        className: 'text-center',
-        Cell: (row) => { if (row.value === true) return 'Yes'; else if (row.value === false) return 'No'; else return 'Unknown' },
+        Cell: (row) => {
+          if (row.value === true) return <BsFillPatchCheckFill className="inline w-6 h-6 text-green-400" />;
+          else if (row.value === false) return <BsFillPatchExclamationFill className="inline w-6 h-6 text-red-500" />;
+          else return <BsPatchQuestionFill className="inline w-6 h-6 text-yellow-300" />
+        },
+        width: 120,
+        className: 'text-center ',
       },
     ], []);
   return (

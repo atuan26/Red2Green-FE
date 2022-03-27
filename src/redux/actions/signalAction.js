@@ -9,16 +9,16 @@ export const airdropConstants = {
   DELETE_AIRDROP: "DELETE_AIRDROP",
 };
 
-export const loadAirdrop = () => {
-  const loadAirdropSuccess = (payload) => {
+export const loadAirdop = () => {
+  const loadAirdopSuccess = (payload) => {
     return { type: airdropConstants.LOAD_AIRDROP, payload };
   };
   return (dispatch) => {
     api
       .get("/airdrops/")
       .then((res) => {
-        dispatch(loadAirdropSuccess(res.data));
-        toast.success("Airdrop loaded!");
+        dispatch(loadAirdopSuccess(res.data));
+        toast.success("Airdop loaded!");
       })
       .catch((err) => {
         console.log(err);
@@ -27,16 +27,16 @@ export const loadAirdrop = () => {
   };
 };
 
-export const addAirdrop = (payload, dispatch) => {
+export const addAirdop = (payload, dispatch) => {
   console.log(payload);
-  const addAirdropSuccess = (payload) => {
+  const addAirdopSuccess = (payload) => {
     return { type: airdropConstants.ADD_AIRDROP, payload };
   };
   return api
     .post("/airdrops/", payload)
     .then((res) => {
       console.log(res.data);
-      dispatch(addAirdropSuccess(res.data));
+      dispatch(addAirdopSuccess(res.data));
       toast.success("New airdrop added");
       dispatch(reset("airdropForm"));
     })
@@ -49,12 +49,12 @@ export const addAirdrop = (payload, dispatch) => {
     });
 };
 
-export const editAirdrop = (payload, dispatch) => {
+export const editAirdop = (payload, dispatch) => {
   return api
     .put(`/airdrops/${payload.id}/`, payload)
     .then((res) => {
       console.log(res.data);
-      toast.success("Airdrop is edited");
+      toast.success("Airdop is edited");
       dispatch({ type: airdropConstants.EDIT_AIRDROP, payload: res.data });
     })
     .catch((err) => {
@@ -65,7 +65,7 @@ export const editAirdrop = (payload, dispatch) => {
       });
     });
 };
-export const deleteAirdrop = (payload) => {
+export const deleteAirdop = (payload) => {
   return (dispatch) => {
     api
       .delete("/airdrops/" + payload.id)

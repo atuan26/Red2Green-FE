@@ -30,10 +30,10 @@ const WizardFormFirstPage = props => {
         label="Reward"
       />
       <Field
-        name="information.max_participant"
-        type="number"
+        name="information.winner"
+        type="text"
         component={EventInput}
-        label="Max participants"
+        label="Winner"
       />
       <div className='flex justify-center'>
         <div className='w-1/2 '>
@@ -47,7 +47,7 @@ const WizardFormFirstPage = props => {
 }
 
 export default reduxForm({
-  form: 'wizard', // <------ same form name
+  form: 'airdropForm', // <------ same form name
   destroyOnUnmount: false, // <------ preserve form data
   forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
   validate

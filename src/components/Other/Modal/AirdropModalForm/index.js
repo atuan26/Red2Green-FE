@@ -34,9 +34,6 @@ const AirdropModalForm = ({ label, close }) => {
                 </svg>
               </button>
             </div>
-            {/* <AirdropForm
-              close={close}
-            /> */}
             <WizardForm />
           </div>
         </div>

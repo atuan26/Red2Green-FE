@@ -16,6 +16,7 @@ api.interceptors.request.use(function (config) {
 
 api.interceptors.response.use(
   (response) => {
+    console.log(response);
     return response;
   },
   async function (error) {

@@ -1,28 +1,49 @@
 import React from 'react'
 import { CgClose, CgPlayListAdd, CgRemove } from 'react-icons/cg'
 import { Field, FieldArray, reduxForm } from 'redux-form'
-import { EventInput, EventTextArea, SubmitButton } from '../../EventModal/EventInput'
+import { EventTextArea, RenderSelectInputCreatable, SubmitButton } from '../../EventModal/EventInput'
 import validate from '../validate'
+import { MdOutlineContactMail, MdOutlineEmail } from 'react-icons/md'
+import { ImPhone } from 'react-icons/im'
+import { FaFacebookSquare, FaTelegramPlane, FaTwitterSquare, FaDiscord } from 'react-icons/fa'
 
 
 const WizardFormThirdPage = props => {
   const { handleSubmit, pristine, previousPage, submitting } = props
+  const options = [
+    { value: 'kyc', icon: <MdOutlineContactMail className='inline w-4 h-4 mr-2 mb-1' />, label: "KYC" },
+    { value: 'phoneNumber', icon: <ImPhone className='inline w-4 h-4 mr-2 mb-1' />, label: "Phone Number" },
+    { value: 'email', icon: <MdOutlineEmail className='inline w-4 h-4 mr-2 mb-1' />, label: "Email" },
+    { value: 'telegram', icon: <FaTelegramPlane className='inline w-4 h-4 mr-2 mb-1' />, label: "Telegram" },
+    { value: 'twitter', icon: <FaTwitterSquare className='inline w-4 h-4 mr-2 mb-1' />, label: "Twitter" },
+    { value: 'facebook', icon: <FaFacebookSquare className='inline w-4 h-4 mr-2 mb-1' />, label: "Facebook" },
+    { value: 'discord', icon: <FaDiscord className='inline w-4 h-4 mr-2 mb-1' />, label: "Discord" },
+  ];
   return (
     <form onSubmit={handleSubmit} className="flex justify-between flex-col rounded-lg px-6 overflow-y-scroll min-h-[60vh]  max-h-[80vh] pb-4 lg:px-8 sm:pb-6 xl:pb-8">
-
-      {/* <Field
-        name={`task_list.task0`}
-        type="text"
-        component={EventTextArea}
-        label="Detail"
-        rows={2} /> */}
-      <FieldArray name="task_list" component={renderTasks} />
+      <div>
+        <Field label="Requirements" name='information.requirement'
+          component={RenderSelectInputCreatable}
+          options={options}
+          placeholder="Requirement"
+          getOptionLabel={e => (
+            <div>
+              {e.icon}
+              {e.label}
+            </div>)
+          }
+        />
+        <div className='divider m-0' />
+        <FieldArray name="task_list" component={renderTasks} />
+      </div>
       <div className='flex gap-4'>
         <SubmitButton
+          type='button'
           label="Previous" onClick={previousPage}
         />
         <SubmitButton
-          label="Submit" disabled={pristine || submitting}
+          label="Submit"
+          disabled={submitting}
         />
       </div>
     </form>
@@ -30,7 +51,6 @@ const WizardFormThirdPage = props => {
 }
 const renderTasks = ({ fields, meta: { touched, error } }) => (
   <ul>
-    {/* <label>Task: </label> */}
     <li className='flex justify-center mt-2'>
       <button type="button" className="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
         onClick={() => fields.push({})}>
@@ -43,7 +63,6 @@ const renderTasks = ({ fields, meta: { touched, error } }) => (
         <h4 className='flex justify-between items-center'>Task #{index + 1}
           <CgClose onClick={() => fields.remove(index)} className="inline w-4 h-4 text-red-400 hover:text-white hover:bg-red-500 p-2 border-2 border-red-500 rounded-md box-content" />
         </h4>
-        {console.log(task, typeof task)}
         <Field
           name={`${task}.task`}
           type="text"
@@ -57,7 +76,7 @@ const renderTasks = ({ fields, meta: { touched, error } }) => (
   </ul>
 )
 export default reduxForm({
-  form: 'wizard',
+  form: 'airdropForm',
   initialValues: {
     task_list: [{}]
   },

@@ -108,7 +108,17 @@ const Table = ({
 										return (
 											<td
 												className="border p-4 dark:border-dark-5 overflow-hidden"
-												{...cell.getCellProps()}
+												{...cell.getCellProps([
+													{
+														className:
+															cell.column
+																.className,
+														style: cell.column
+															.style,
+													},
+													getCellProps(cell),
+													getColumnProps(cell),
+												])}
 											>
 												{cell.render("Cell")}
 											</td>
@@ -125,60 +135,34 @@ const Table = ({
 					Showing the first {data.count < 20 ? data.count : 20}{" "}
 					results of {data.count} rows
 				</div>
-				<div className="pagination">
-					<button
+				<div className="btn-group">
+					<button className="btn"
 						onClick={() => gotoPage(0)}
 						disabled={!canPreviousPage}
 					>
 						{"<<"}
 					</button>{" "}
-					<button
+					<button className="btn"
 						onClick={() => previousPage()}
 						disabled={!canPreviousPage}
 					>
 						{"<"}
 					</button>{" "}
-					<span>
+					<span className="btn">
 						Page{" "}
-						<strong>
+						<strong className="ml-1">
 							{data.count ? pageIndex + 1 : 0} of {pageOptions.length}
 						</strong>{" "}
 					</span>
-					<button onClick={() => nextPage()} disabled={!canNextPage}>
+					<button className="btn" onClick={() => nextPage()} disabled={!canNextPage}>
 						{">"}
 					</button>{" "}
-					<button
+					<button className="btn"
 						onClick={() => gotoPage(pageCount - 1)}
 						disabled={!canNextPage}
 					>
 						{">>"}
 					</button>{" "}
-					{/* <span className="">
-						| Go to page:{" "}
-						<input
-							type="number"
-							defaultValue={pageIndex + 1}
-							onChange={(e) => {
-								const page = e.target.value
-									? Number(e.target.value) - 1
-									: 0;
-								gotoPage(page);
-							}}
-						// style={{ width: "100px" }}
-						/>
-					</span>{" "} */}
-					{/* <select
-						value={pageSize}
-						onChange={(e) => {
-							setPageSize(Number(e.target.value));
-						}}
-					>
-						{[10, 20, 30, 40, 50].map((pageSize) => (
-							<option key={pageSize} value={pageSize}>
-								Show {pageSize}
-							</option>
-						))}
-					</select> */}
 				</div>
 			</div>
 		</div>

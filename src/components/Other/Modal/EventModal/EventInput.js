@@ -1,5 +1,35 @@
 import DatePicker from "react-datepicker";
 
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+import CreatableSelect from 'react-select/creatable'
+
+const animatedComponents = makeAnimated();
+
+export const RenderSelectInputCreatable = ({ input, options, name, label, placeholder, getOptionLabel }) => (
+  <div>
+    <label
+      htmlFor={name}
+      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+    >
+      {label}
+    </label>
+    <CreatableSelect
+      name={input.name}
+      value={input.value.value}
+      onChange={input.onChange}
+      onBlurResetsInput={false}
+      onCloseResetsInput={false}
+      onFocus={input.onFocus}
+      options={options}
+      components={animatedComponents}
+      closeMenuOnSelect={false}
+      isMulti
+      placeholder={placeholder}
+      getOptionLabel={getOptionLabel}
+    />
+  </div>
+)
 export const EventInput = ({
   input,
   name,
@@ -75,10 +105,10 @@ export const FieldDatePicker = ({
 }) => {
   return (
     <>
-      <label className="relative block text-sm font-medium text-gray-900 dark:text-gray-400 mr-2">
+      <label htmlFor={input.name} className="relative block text-sm font-medium text-gray-900 dark:text-gray-400 mr-2">
         {label}
         {touched && error && (
-          <span className="z-50 absolute top-0 -right-20 text-sm text-red-500 dark:text-red-500">
+          <span htmlFor={input.name} className="z-20 absolute -bottom-3 -right-24 text-base text-red-500 dark:text-red-500">
             {error}
           </span>
         )}
@@ -94,7 +124,7 @@ export const FieldDatePicker = ({
   );
 };
 
-export const SubmitButton = ({ label, disabled, ...props }) => {
+export const SubmitButton = ({ label, disabled, type, ...props }) => {
   const disabledClass =
     "w-full text-white bg-blue-500 dark:bg-blue-500 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center";
   const activeClass =
@@ -102,7 +132,7 @@ export const SubmitButton = ({ label, disabled, ...props }) => {
 
   return (
     <button
-      type="submit"
+      type={type || "submit"}
       className={disabled ? disabledClass : activeClass}
       disabled={disabled}
       {...props}

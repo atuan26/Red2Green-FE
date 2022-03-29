@@ -47,7 +47,6 @@ const App = () => {
         accessor: "information.requirement",
         Cell: (row) => {
           if (row.value) {
-            console.log(row.value)
             return row.value.map(r => r.label).join(' ')
           }
           return 'No requirement'

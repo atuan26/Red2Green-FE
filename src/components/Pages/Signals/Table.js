@@ -1,12 +1,16 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import {
+	useExpanded,
 	useFlexLayout,
 	usePagination,
 	useResizeColumns,
 	useSortBy,
 	useTable,
 } from "react-table";
+import ApexChart from "../../Other/Chart/Candle";
+import CandleChart from "../../Other/Chart/Candle";
+import TelegramPost from "../../Other/TelegramWidget";
 
 const defaultPropGetter = () => ({});
 
@@ -17,11 +21,12 @@ const Table = ({
 	getColumnProps = defaultPropGetter,
 	getRowProps = defaultPropGetter,
 	getCellProps = defaultPropGetter,
+	renderRowSubComponent,
 }) => {
 	const defaultColumn = useMemo(
 		() => ({
 			minWidth: 30,
-			width: 200,
+			width: 120,
 			maxWidth: 400,
 		}),
 		[]
@@ -41,7 +46,8 @@ const Table = ({
 		nextPage,
 		previousPage,
 		setPageSize,
-		state: { pageIndex, pageSize },
+		visibleColumns,
+		state: { pageIndex, pageSize, expanded },
 	} = useTable(
 		{
 			columns,
@@ -53,7 +59,8 @@ const Table = ({
 		useSortBy,
 		useResizeColumns,
 		useFlexLayout,
-		usePagination
+		useExpanded,
+		usePagination,
 	);
 
 	return (
@@ -99,32 +106,37 @@ const Table = ({
 					<tbody {...getTableBodyProps()}>
 						{page.map((row, i) => {
 							prepareRow(row);
+							const rowProps = row.getRowProps();
 							return (
-								<tr
-									className="text-gray-700 hover:!bg-gray-500 dark:hover:!bg-gray-700"
-									{...row.getRowProps()}
-								>
-									{row.cells.map((cell) => {
-										return (
-											<td
-												className="border p-4 dark:border-dark-5 overflow-hidden"
-												{...cell.getCellProps([
-													{
-														className:
-															cell.column
-																.className,
-														style: cell.column
-															.style,
-													},
-													getCellProps(cell),
-													getColumnProps(cell),
-												])}
-											>
-												{cell.render("Cell")}
-											</td>
-										);
-									})}
-								</tr>
+								<>
+									<tr
+										className="text-gray-700 hover:!bg-gray-500 dark:hover:!bg-gray-700"
+										{...rowProps}
+									>
+										{row.cells.map((cell) => {
+											return (
+												<td
+													className="border p-4 dark:border-dark-5 overflow-hidden"
+													{...cell.getCellProps([
+														{
+															className:
+																cell.column
+																	.className,
+															style: cell.column
+																.style,
+														},
+														getCellProps(cell),
+														getColumnProps(cell),
+													])}
+												>
+													{cell.render("Cell")}
+												</td>
+											);
+										})}
+									</tr>
+									{row.isExpanded &&
+										renderRowSubComponent({ row, rowProps, visibleColumns })}
+								</>
 							);
 						})}
 					</tbody>
@@ -188,5 +200,62 @@ const Table = ({
 		</div>
 	);
 };
+
+export const SubRowAsync = ({ row, rowProps, visibleColumns }) => {
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setLoading(false);
+		}, 1500);
+
+		return () => {
+			clearTimeout(timer);
+		};
+	}, []);
+
+	return (
+		<SubRows
+			row={row}
+			rowProps={rowProps}
+			visibleColumns={visibleColumns}
+			// data={data}
+			loading={loading}
+		/>
+	);
+}
+export const SubRows = ({ row, rowProps, visibleColumns, data, loading }) => {
+	if (loading) {
+		return (
+			<tr>
+				<td colSpan={visibleColumns.length}>
+					Loading...
+				</td>
+			</tr>
+		);
+	}
+
+	return (
+		<tr className="flex">
+			<td className="p-0" />
+			<td
+				colSpan={visibleColumns.length}
+				className='flex pl-0 gap-10'
+			>
+				<div>
+					<TelegramPost
+						channel={row.original.signals.channel.username}
+						postID={row.original.signals.post_id}
+						userPic="true"
+					// dark='1'
+					/>
+				</div>
+				<div className="w-[750px]">
+					<ApexChart />
+				</div>
+			</td>
+		</tr>
+	);
+}
 
 export default Table;

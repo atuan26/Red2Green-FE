@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import Table from "./Table";
+import React, { useCallback, useEffect, useState } from "react";
+import Table, { SubRowAsync } from "./Table";
 import api from "../../../redux/actions";
 import Filter from "./Filter2";
 
@@ -34,7 +34,15 @@ const App = () => {
 				Header: "Symbol",
 				accessor: "symbol",
 				className: "text-center !sticky !left-0",
-				Cell: (props) => props.value.split("/")[0],
+				// Cell: (props) => props.value.split("/")[0],
+				id: 'expander', // It needs an ID
+				Cell: ({ value, row, }) => (
+					<span {...row.getToggleRowExpandedProps()}>
+						{row.isExpanded ? '👇' : '👉'}
+						{value.split("/")[0]}
+					</span>
+				),
+				SubCell: () => null
 			},
 			{
 				Header: "Price",
@@ -155,21 +163,26 @@ const App = () => {
 					`${new Date(props.value).toLocaleDateString()} ${new Date(
 						props.value
 					).toLocaleTimeString()}`,
-				// sortType: (a, b) => {
-				// 	var a1 = new Date(a).getTime();
-				// 	var b1 = new Date(b).getTime();
-				// 	if (a1 < b1) return 1;
-				// 	else if (a1 > b1) return -1;
-				// 	else return 0;
-				// },
 			},
 			{
 				Header: "Signals Channel",
-				accessor: "signals.channel.name",
+				accessor: "signals",
+				Cell: (props) => {
+					// console.log('### props.value :', props.value)
+					return props.value.channel.name
+				}
 			},
 		],
 		[]
 	);
+	const renderRowSubComponent = useCallback(({ row, rowProps, visibleColumns }) => (
+		<SubRowAsync
+			row={row}
+			rowProps={rowProps}
+			visibleColumns={visibleColumns}
+		/>
+	), []);
+
 	return (
 		<>
 			{/* <FilterForm setData={setDatas} /> */}
@@ -182,6 +195,7 @@ const App = () => {
 				<Table
 					columns={columns}
 					data={data}
+					renderRowSubComponent={renderRowSubComponent}
 					getCellProps={(cellInfo) => {
 						if (priceHeader.includes(cellInfo.column.Header)) {
 							if (cellInfo.value > 0)

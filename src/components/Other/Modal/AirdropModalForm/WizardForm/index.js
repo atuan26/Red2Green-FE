@@ -47,7 +47,6 @@ const WizardForm = () => {
       {currentPage === 4 && (
         <WizardFormFourthPage
           previousPage={() => setCurrentPage(currentPage => currentPage - 1)}
-          // onSubmit={(values) => console.log('Form value:', JSON.stringify(values))}
           onSubmit={addAirdrop}
         />
       )}
@@ -100,7 +99,7 @@ const StepForm = ({ currentPage, pageList, setCurrentPage }) => {
           <StepCom name={page.name} key={i} icon={page.icon}
             position={pt}
             onClick={() => (currentPage > i) && setCurrentPage(i + 1)} />
-          {i !== pageList.length - 1 && <Divider active={currentPage > i} />}
+          {i !== pageList.length - 1 && <Divider active={currentPage - 1 > i} />}
         </>
       })}
     </div>

@@ -17,6 +17,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
 
+import ChartComponent from "./components/Other/Chart/Chart2";
+
 function App() {
 	const data = [
 		{
@@ -204,13 +206,11 @@ function App() {
 							/>
 						}
 					/>
-					<Route
+					{/* <Route
 						path="/r2g/user"
-						element={
-							<Table title="User" hasFilter={true} data={data} />
-						}
-					/>
-					<Route path="/r2g/api" element={<Template1 />} />
+						element={<ApexChart2 />}
+					/> */}
+					<Route path="/r2g/api" element={<ChartComponent />} />
 					<Route
 						path="*"
 						element={

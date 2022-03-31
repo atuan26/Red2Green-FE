@@ -8,8 +8,7 @@ import {
 	useSortBy,
 	useTable,
 } from "react-table";
-import ApexChart from "../../Other/Chart/Candle";
-import CandleChart from "../../Other/Chart/Candle";
+import ChartComponent from "../../Other/Chart/Chart2";
 import TelegramPost from "../../Other/TelegramWidget";
 
 const defaultPropGetter = () => ({});
@@ -250,8 +249,9 @@ export const SubRows = ({ row, rowProps, visibleColumns, data, loading }) => {
 					// dark='1'
 					/>
 				</div>
-				<div className="w-[750px]">
-					<ApexChart />
+				<div className="w-[750px] h-[400px]">
+					{/* <ApexChart /> */}
+					<ChartComponent />
 				</div>
 			</td>
 		</tr>

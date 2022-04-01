@@ -37,7 +37,7 @@ const App = () => {
 				// Cell: (props) => props.value.split("/")[0],
 				id: 'expander', // It needs an ID
 				Cell: ({ value, row, }) => (
-					<span {...row.getToggleRowExpandedProps()}>
+					<span {...row.getToggleRowExpandedProps({ title: "See detail" })}>
 						{row.isExpanded ? '👇' : '👉'}
 						{value.split("/")[0]}
 					</span>

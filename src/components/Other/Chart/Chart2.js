@@ -2,11 +2,10 @@
 import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
 import React, { useEffect, useState } from 'react';
+import Skeleton from "react-loading-skeleton";
 import { Chart, ChartCanvas } from "react-stockcharts";
-import { XAxis, YAxis } from "react-stockcharts/lib/axes"; import {
-  OHLCTooltip,
-} from "react-stockcharts/lib/tooltip";
-import { LabelAnnotation, Label, Annotate } from "react-stockcharts/lib/annotation";
+import { Annotate, buyPath, Label, SvgPathAnnotation } from "react-stockcharts/lib/annotation";
+import { XAxis, YAxis } from "react-stockcharts/lib/axes";
 import {
   CrossHairCursor,
   MouseCoordinateX,
@@ -18,7 +17,10 @@ import {
   BarSeries,
   CandlestickSeries
 } from "react-stockcharts/lib/series";
-import { last } from "react-stockcharts/lib/utils";
+import {
+  OHLCTooltip
+} from "react-stockcharts/lib/tooltip";
+import { last, head } from "react-stockcharts/lib/utils";
 
 
 
@@ -39,34 +41,38 @@ const candlesAppearance = {
   clip: false
 }
 
-const ChartComponent = ({ symbol, since, }) => {
+const ChartComponent = ({ symbol = "BTCUSDT", exchange = "binance", since, timeframe = '15m' }) => {
   const [data, setData] = useState()
+  const preTime = 1 * 1000 * 60 * 60 * 12
+  const time = new Date(since).getTime() - preTime
+
   useEffect(() => {
-    let exchange = new ccxt['binance']()
+    let exc = new ccxt[exchange]()
+
     const fetch = (async () => {
-      let btc = (await exchange.fetchOHLCV('BTC/USDT', '15m', 1638709460000, 100))
+      let btc = (await exc.fetchOHLCV(symbol, timeframe, time, 200))
       btc = btc.map((b, i) => {
         let [date, open, high, low, close, volume] = b
         date = new Date(date)
-        b = { date, open, high, low, close, volume }
-        return b
+        return { date, open, high, low, close, volume }
       })
       setData(btc)
     })
-    const fetchID = setInterval(() => { fetch() }, 2000)
-    return () => { clearInterval(fetchID) }
+    fetch()
+    // const fetchID = setInterval(() => { fetch() }, 2000)
+    // return () => { clearInterval(fetchID) }
   }, [data])
 
 
   if (data == null) {
-    return <div>Loading...</div>
+    return <><Skeleton height="400px" width="100%" /></>
   }
-  return < Chart2 label={'BTCUSDT'} data={data} />
+  return < Chart2 label={`${symbol} ${timeframe} (${exchange}) `} data={data} since={new Date(since).getTime()} />
 }
 
 
 let Chart2 = (props) => {
-  const { label, data: initialData, width, ratio } = props;
+  const { label, data: initialData, width, ratio, since } = props;
 
   const xScaleProvider = discontinuousTimeScaleProvider
     .inputDateAccessor(d => d.date);
@@ -76,8 +82,16 @@ let Chart2 = (props) => {
     xAccessor,
     displayXAccessor,
   } = xScaleProvider(initialData);
+  const postDate = {
+    onClick: console.log.bind(console),
+    y: ({ yScale, datum }) => datum.close > datum.open ? yScale(datum.open) : yScale(datum.close),
+    fill: "#86198F",
+    opacity: 0.7,
+    path: buyPath,
+    tooltip: "Post date",
+  };
 
-  const start = xAccessor(last(data));
+  const start = xAccessor(head(data));
   const end = xAccessor(data[Math.max(0, data.length - 100)]);
   const xExtents = [start, end];
   const margin = { left: 50, right: 50, top: 10, bottom: 30 }
@@ -113,12 +127,18 @@ let Chart2 = (props) => {
         <MouseCoordinateX
           at="bottom"
           orient="bottom"
-          displayFormat={timeFormat("%Y-%m-%d")} />
+          displayFormat={timeFormat("%b %d %H:%M")} />
         <MouseCoordinateY
           at="left"
           orient="left"
           displayFormat={format(".4s")} />
         <OHLCTooltip origin={[10, 0]} />
+        <Annotate with={SvgPathAnnotation}
+          when={d => {
+            const diff = new Date(since).getTime() - d.date.getTime()
+            return diff <= 60 * 15 * 1000 && diff >= 0
+          }}
+          usingProps={postDate} />
       </Chart>
       <Chart id={2} origin={(w, h) => [0, h - 50]} height={50} yExtents={d => d.volume}>
         <XAxis axisAt="bottom" orient="bottom" />

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
+import Skeleton from "react-loading-skeleton";
 import {
 	useExpanded,
 	useFlexLayout,
@@ -10,7 +11,6 @@ import {
 } from "react-table";
 import ChartComponent from "../../Other/Chart/Chart2";
 import TelegramPost from "../../Other/TelegramWidget";
-
 const defaultPropGetter = () => ({});
 
 const Table = ({
@@ -218,17 +218,20 @@ export const SubRowAsync = ({ row, rowProps, visibleColumns }) => {
 			row={row}
 			rowProps={rowProps}
 			visibleColumns={visibleColumns}
-			// data={data}
 			loading={loading}
 		/>
 	);
 }
-export const SubRows = ({ row, rowProps, visibleColumns, data, loading }) => {
+export const SubRows = ({ row, rowProps, visibleColumns, loading }) => {
 	if (loading) {
 		return (
 			<tr>
-				<td colSpan={visibleColumns.length}>
-					Loading...
+				<td
+					colSpan={visibleColumns.length}
+					className='flex pl-0 gap-10'
+				>
+					<Skeleton height="400px" width="300px" />
+					<Skeleton height="400px" width="750px" />
 				</td>
 			</tr>
 		);
@@ -246,13 +249,18 @@ export const SubRows = ({ row, rowProps, visibleColumns, data, loading }) => {
 						channel={row.original.signals.channel.username}
 						postID={row.original.signals.post_id}
 						userPic="true"
+						width="300px"
 					// dark='1'
 					/>
 				</div>
 				<div className="w-[750px] h-[400px]">
-					{/* <ApexChart /> */}
-					<ChartComponent />
+					<ChartComponent
+						symbol={row.original.symbol}
+						exchange={row.original.exchange}
+						since={row.original.signals.post_date}
+					/>
 				</div>
+				{console.log(row.original)}
 			</td>
 		</tr>
 	);

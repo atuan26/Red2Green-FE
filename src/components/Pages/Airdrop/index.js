@@ -5,8 +5,9 @@ import Filter from "./Filter2";
 import { CgAdd } from "react-icons/cg";
 import AirdropModalForm from "../../Other/Modal/AirdropModalForm";
 import { BsFillPatchCheckFill, BsFillPatchExclamationFill, BsPatchQuestionFill } from "react-icons/bs";
+import { connect } from "react-redux";
 
-const App = () => {
+const App = ({ isAuthenticated }) => {
   const [data, setData] = useState({ count: 0, results: [] });
   const [showAirdropModal, setshowAirdropModal] = useState(false)
 
@@ -20,7 +21,7 @@ const App = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [isAuthenticated]);
 
   const columns = React.useMemo(
     () => [
@@ -133,5 +134,13 @@ const App = () => {
     </>
   );
 };
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
 
-export default App;
+const mapDispatchtoProps = (dispatch) => ({
+  // loadTask: () => dispatch(loadTask()),
+  // loadEvent: () => dispatch(loadEvent()),
+});
+
+export default connect(mapStateToProps, mapDispatchtoProps)(App);

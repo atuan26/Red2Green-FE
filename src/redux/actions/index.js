@@ -21,11 +21,11 @@ api.interceptors.response.use(
   },
   async function (error) {
     if (error.response.status === 401) {
-      toast("SESSION EXPIRED");
+      toast("Please login first.");
       store.dispatch({ type: "LOGOUT" });
       localStorage.removeItem("user");
     }
-    return Promise.reject(error);
+    // return Promise.reject(error);
   }
 );
 export default api;

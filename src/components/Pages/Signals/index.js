@@ -2,8 +2,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import Table, { SubRowAsync } from "./Table";
 import api from "../../../redux/actions";
 import Filter from "./Filter2";
+import { connect } from "react-redux";
+import { RiArrowDownSFill, RiArrowRightSFill } from "react-icons/ri"
+import { timeFormat } from "d3-time-format";
 
-const App = () => {
+const App = ({ isAuthenticated }) => {
 	const [data, setData] = useState({ count: 0, results: [] });
 
 	useEffect(() => {
@@ -15,7 +18,7 @@ const App = () => {
 			.catch((error) => {
 				console.log(error);
 			});
-	}, []);
+	}, [isAuthenticated]);
 
 	const priceHeader = [
 		"+1m",
@@ -38,7 +41,7 @@ const App = () => {
 				id: 'expander', // It needs an ID
 				Cell: ({ value, row, }) => (
 					<span {...row.getToggleRowExpandedProps({ title: "See detail" })}>
-						{row.isExpanded ? '👇' : '👉'}
+						{row.isExpanded ? <RiArrowDownSFill className="inline w-4 h-4 mr-2 text-cyan-500" /> : <RiArrowRightSFill className="inline w-4 h-4 mr-2" />}
 						{value.split("/")[0]}
 					</span>
 				),
@@ -159,18 +162,12 @@ const App = () => {
 			{
 				Header: "Date",
 				accessor: "signals.post_date",
-				Cell: (props) =>
-					`${new Date(props.value).toLocaleDateString()} ${new Date(
-						props.value
-					).toLocaleTimeString()}`,
+				Cell: (props) => timeFormat("%d-%b-%Y %H:%M")(new Date(props.value))
 			},
 			{
 				Header: "Signals Channel",
 				accessor: "signals",
-				Cell: (props) => {
-					// console.log('### props.value :', props.value)
-					return props.value.channel.name
-				}
+				Cell: (props) => props.value.channel.name
 			},
 		],
 		[]
@@ -223,4 +220,14 @@ const App = () => {
 	);
 };
 
-export default App;
+const mapStateToProps = (state) => ({
+	isAuthenticated: state.auth.isAuthenticated,
+});
+
+const mapDispatchtoProps = (dispatch) => ({
+	// loadTask: () => dispatch(loadTask()),
+	// loadEvent: () => dispatch(loadEvent()),
+});
+
+export default connect(mapStateToProps, mapDispatchtoProps)(App);
+

@@ -10,7 +10,7 @@ import {
 	useTable,
 } from "react-table";
 import ChartComponent from "../../Other/Chart/Chart2";
-import TelegramPost from "../../Other/TelegramWidget";
+import { TelegramPost } from "../../Other/TelegramWidget";
 const defaultPropGetter = () => ({});
 
 const Table = ({
@@ -228,10 +228,11 @@ export const SubRows = ({ row, rowProps, visibleColumns, loading }) => {
 			<tr>
 				<td
 					colSpan={visibleColumns.length}
-					className='flex pl-0 gap-10'
+					className='flex pl-0 gap-5 !sticky !left-0 p-0'
 				>
+					<Skeleton height="400px" width="320px" />
+					<Skeleton height="400px" width="600px" />
 					<Skeleton height="400px" width="300px" />
-					<Skeleton height="400px" width="750px" />
 				</td>
 			</tr>
 		);
@@ -239,28 +240,32 @@ export const SubRows = ({ row, rowProps, visibleColumns, loading }) => {
 
 	return (
 		<tr className="flex">
-			<td className="p-0" />
 			<td
 				colSpan={visibleColumns.length}
-				className='flex pl-0 gap-10'
+				className='flex pl-0 gap-5 p-0'
 			>
 				<div>
 					<TelegramPost
 						channel={row.original.signals.channel.username}
 						postID={row.original.signals.post_id}
 						userPic="true"
-						width="300px"
+						width="320px"
 					// dark='1'
 					/>
 				</div>
-				<div className="w-[750px] h-[400px]">
+				<div className="w-[600px] h-[400px]">
 					<ChartComponent
 						symbol={row.original.symbol}
 						exchange={row.original.exchange}
 						since={row.original.signals.post_date}
 					/>
 				</div>
-				{console.log(row.original)}
+				<div className=" rounded-lg bg-slate-50 shadow-sm w-[300px] h-full">
+					<ul className="p-6">
+						<li>Sentiment: Positive 😟🙁😐🙂😊</li>
+						<li>Category: Upgrade</li>
+					</ul>
+				</div>
 			</td>
 		</tr>
 	);

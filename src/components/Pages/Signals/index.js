@@ -37,7 +37,6 @@ const App = ({ isAuthenticated }) => {
 				Header: "Symbol",
 				accessor: "symbol",
 				className: "text-center !sticky !left-0",
-				// Cell: (props) => props.value.split("/")[0],
 				id: 'expander', // It needs an ID
 				Cell: ({ value, row, }) => (
 					<span {...row.getToggleRowExpandedProps({ title: "See detail" })}>

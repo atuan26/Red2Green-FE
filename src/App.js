@@ -18,6 +18,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./App.css";
 
 import ChartComponent from "./components/Other/Chart/Chart2";
+import Trading from "./components/Pages/Trading";
 
 function App() {
 	const data = [
@@ -191,6 +192,7 @@ function App() {
 				<Routes>
 					<Route path="/r2g/" element={<Dashboard />} />
 					<Route path="/r2g/calendar" element={<CalendarEvent />} />
+					<Route path="/r2g/trading" element={<Trading />} />
 					<Route path="/r2g/signals" element={<Signals />} />
 					<Route
 						path="/r2g/airdrop"

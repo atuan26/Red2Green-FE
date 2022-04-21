@@ -3,7 +3,7 @@ import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
 import React, { useEffect, useState } from 'react';
 import Skeleton from "react-loading-skeleton";
-import { Chart, ChartCanvas } from "react-stockcharts";
+import { Chart, ChartCanvas, ZoomButtons } from "react-stockcharts";
 import { Annotate, buyPath, Label, SvgPathAnnotation } from "react-stockcharts/lib/annotation";
 import { XAxis, YAxis } from "react-stockcharts/lib/axes";
 import {
@@ -144,6 +144,9 @@ let Chart2 = (props) => {
         <XAxis axisAt="bottom" orient="bottom" />
         <YAxis axisAt="left" orient="left" ticks={5} tickFormat={format(".2s")} />
         <BarSeries yAccessor={d => d.volume} fill={(d) => d.close > d.open ? "#22c55e" : "#ef4444"} />
+        <ZoomButtons
+        // onReset={this.handleReset}
+        />
       </Chart>
       <CrossHairCursor />
     </ChartCanvas>

@@ -19,6 +19,7 @@ import "./App.css";
 
 import ChartComponent from "./components/Other/Chart/Chart2";
 import Trading from "./components/Pages/Trading";
+import Profile from "./components/Pages/Profile";
 
 function App() {
 	const data = [
@@ -213,6 +214,7 @@ function App() {
 						element={<ApexChart2 />}
 					/> */}
 					<Route path="/r2g/api" element={<ChartComponent />} />
+					<Route path="/r2g/profile" element={<Profile />} />
 					<Route
 						path="*"
 						element={

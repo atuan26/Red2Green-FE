@@ -92,7 +92,7 @@ let Chart2 = (props) => {
   };
 
   const start = xAccessor(head(data));
-  const end = xAccessor(data[Math.min(data.length, data.length - 100) - 1]);
+  const end = data.length > 100 ? xAccessor(data[50]) : xAccessor(data[data.length - 1])
   const xExtents = [start, end];
 
 

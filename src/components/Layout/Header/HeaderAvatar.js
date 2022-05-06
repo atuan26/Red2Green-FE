@@ -34,7 +34,7 @@ const HeaderAvatar = ({ username, logout }) => {
           </svg>
         </button>
         {isComponentVisible &&
-          <div className="absolute right-0 z-20 w-56 py-2 mt-2 overflow-hidden bg-white border-2 border-gray-300 rounded-md shadow-xl dark:bg-gray-800">
+          <div className=" hover:shadow border  absolute right-0 z-20 w-56 py-2 mt-2 overflow-hidden bg-white rounded-md  dark:bg-gray-800">
             <a href="#" className="flex items-center p-3 -mt-2 text-sm text-gray-600 transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
               <img className="flex-shrink-0 object-cover mx-1 rounded-full w-9 h-9" src="https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8d29tYW4lMjBibHVlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=face&w=500&q=200" alt="jane avatar" />
               <div className="mx-1">
@@ -99,7 +99,7 @@ const NotifyIcon = () => {
                 <img className="flex-shrink-0 object-cover w-8 h-8 mx-1 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80" alt="avatar" />
                 <p className="mx-2 text-sm text-gray-600 dark:text-white"><span className="font-bold" href="#">Sara Salah</span> replied on the <span className="font-bold text-blue-500" href="#">Upload Image</span> artical . 2m</p>
               </a>
-              <a href="#" className="flex items-center px-4 py-3 -mx-2 transition-colors duration-200 transform border-b border-gray-100 hover:bg-white dark:hover:bg-gray-700 dark:border-gray-700">
+              <a href="#" className="flex items-center px-4 py-3 -mx-2 transition-colors duration-200 transform border-b  border-gray-100 hover:bg-white dark:hover:bg-gray-700 dark:border-gray-700">
                 <img className="flex-shrink-0 object-cover w-8 h-8 mx-1 rounded-full" src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80" alt="avatar" />
                 <p className="mx-2 text-sm text-gray-600 dark:text-white"><span className="font-bold" href="#">Slick Net</span> start following you . 45m</p>
               </a>

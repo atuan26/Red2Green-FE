@@ -45,7 +45,7 @@ const ChartComponent = ({ symbol = "BTCUSDT", exchange = "binance", since, timef
   const [data, setData] = useState()
   const preTime = 1 * 1000 * 60 * 60 * 12
   const time = new Date(since).getTime() - preTime
-
+  console.log('### Re render :', symbol)
   useEffect(() => {
     let exc = new ccxt[exchange]()
 
@@ -61,7 +61,7 @@ const ChartComponent = ({ symbol = "BTCUSDT", exchange = "binance", since, timef
     fetch()
     // const fetchID = setInterval(() => { fetch() }, 2000)
     // return () => { clearInterval(fetchID) }
-  }, [data])
+  }, [])
 
 
   if (data == null) {
@@ -92,8 +92,10 @@ let Chart2 = (props) => {
   };
 
   const start = xAccessor(head(data));
-  const end = xAccessor(data[Math.max(0, data.length - 100)]);
+  const end = xAccessor(data[Math.min(data.length, data.length - 100) - 1]);
   const xExtents = [start, end];
+
+
   const margin = { left: 50, right: 50, top: 10, bottom: 30 }
 
   return (
@@ -114,11 +116,11 @@ let Chart2 = (props) => {
       }}
     >
       <Label x={(width - margin.left - margin.right) / 2} y={30}
-        fontSize="30" text={label} />
+        fontSize={30} text={label} />
       <Chart id={1} height={300} yExtents={d => [d.high, d.low]} >
         <YAxis axisAt="left" orient="left" ticks={5}
           innerTickSize={-1 * (width - margin.left - margin.right)}
-          tickStrokeDasharray={1}
+          tickStrokeDasharray={'Solid'}
           tickStrokeOpacity={0.1}
           tickStrokeWidth={1}
         />

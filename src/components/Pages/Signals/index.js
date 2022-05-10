@@ -1,18 +1,26 @@
-import React, { useCallback, useEffect, useState } from "react";
-import Table, { SubRowAsync } from "./Table";
+import React, { useEffect, useState } from "react";
+import Table, { } from "./Table";
 import api from "../../../redux/actions";
 import Filter from "./Filter2";
 import { connect } from "react-redux";
-import { RiArrowDownSFill, RiArrowRightSFill } from "react-icons/ri"
 import { timeFormat } from "d3-time-format";
+import { Modal } from "../../Other/Modal";
+import SignalDetailModal from "./SignalDetailModal";
 
 const App = ({ isAuthenticated }) => {
 	const [data, setData] = useState({ count: 0, results: [] });
+	const [signalModal, setSignalModal] = useState({ isOpen: false, data: null });
+
+	useEffect(() => {
+		signalModal && (document.body.style.overflow = 'hidden')
+		return () => {
+			document.body.style.overflow = 'unset';
+		}
+	}, [signalModal]);
 
 	useEffect(() => {
 		api.get("/price_data/?signals__post_date__gte=")
 			.then((result) => {
-				// setData(result.data.results);
 				setData(result.data);
 			})
 			.catch((error) => {
@@ -37,14 +45,14 @@ const App = ({ isAuthenticated }) => {
 				Header: "Symbol",
 				accessor: "symbol",
 				className: "text-center !sticky !left-0",
-				id: 'expander', // It needs an ID
 				Cell: ({ value, row, }) => (
-					<span {...row.getToggleRowExpandedProps({ title: "See detail" })}>
-						{row.isExpanded ? <RiArrowDownSFill className="inline w-4 h-4 mr-2 text-cyan-500" /> : <RiArrowRightSFill className="inline w-4 h-4 mr-2" />}
+					<span
+						onClick={() => setSignalModal({ isOpen: true, data: row.original })}
+						className="hover:text-blue-600 cursor-pointer"
+					>
 						{value.split("/")[0]}
 					</span>
 				),
-				SubCell: () => null
 			},
 			{
 				Header: "Price",
@@ -52,7 +60,6 @@ const App = ({ isAuthenticated }) => {
 				className: "text-center text-yellow-400 ",
 				Cell: (props) => parseFloat(props.value),
 				sortMethod: (a, b) => Number(a) - Number(b),
-				// sortMethod:
 			},
 			{
 				Header: "+1m",
@@ -171,17 +178,15 @@ const App = ({ isAuthenticated }) => {
 		],
 		[]
 	);
-	const renderRowSubComponent = useCallback(({ row, rowProps, visibleColumns }) => (
-		<SubRowAsync
-			row={row}
-			rowProps={rowProps}
-			visibleColumns={visibleColumns}
-		/>
-	), []);
-
 	return (
 		<>
-			{/* <FilterForm setData={setDatas} /> */}
+			{signalModal.isOpen &&
+				<Modal
+					label={"Signal Detail"}
+					close={() => setSignalModal(false)}
+					content={<SignalDetailModal data={signalModal.data} />}
+				/>
+			}
 			<Filter />
 			<div className="w-full shadow-lg rounded-lg bg-white mb-4 ">
 				<div className="p-6 pb-0">
@@ -191,7 +196,6 @@ const App = ({ isAuthenticated }) => {
 				<Table
 					columns={columns}
 					data={data}
-					renderRowSubComponent={renderRowSubComponent}
 					getCellProps={(cellInfo) => {
 						if (priceHeader.includes(cellInfo.column.Header)) {
 							if (cellInfo.value > 0)

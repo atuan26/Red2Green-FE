@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import Skeleton from "react-loading-skeleton";
 import {
-	useExpanded,
 	useFlexLayout,
 	usePagination,
 	useResizeColumns,
@@ -58,7 +57,6 @@ const Table = ({
 		useSortBy,
 		useResizeColumns,
 		useFlexLayout,
-		useExpanded,
 		usePagination,
 	);
 
@@ -133,8 +131,8 @@ const Table = ({
 											);
 										})}
 									</tr>
-									{row.isExpanded &&
-										renderRowSubComponent({ row, rowProps, visibleColumns })}
+									{/* {row.isExpanded &&
+										renderRowSubComponent({ row, rowProps, visibleColumns })} */}
 								</>
 							);
 						})}
@@ -169,20 +167,6 @@ const Table = ({
 				>
 					{">>"}
 				</button>{" "}
-				<span className="hidden">
-					| Go to page:{" "}
-					<input
-						type="number"
-						defaultValue={pageIndex + 1}
-						onChange={(e) => {
-							const page = e.target.value
-								? Number(e.target.value) - 1
-								: 0;
-							gotoPage(page);
-						}}
-						style={{ width: "100px" }}
-					/>
-				</span>{" "}
 				<select
 					value={pageSize}
 					onChange={(e) => {

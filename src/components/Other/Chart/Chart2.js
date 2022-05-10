@@ -41,7 +41,7 @@ const candlesAppearance = {
   clip: false
 }
 
-const ChartComponent = ({ symbol = "BTCUSDT", exchange = "binance", since, timeframe = '15m' }) => {
+const ChartComponent = ({ symbol = "BTCUSDT", exchange = "binance", since, timeframe = '15m', width }) => {
   const [data, setData] = useState()
   const preTime = 1 * 1000 * 60 * 60 * 12
   const time = new Date(since).getTime() - preTime
@@ -67,7 +67,7 @@ const ChartComponent = ({ symbol = "BTCUSDT", exchange = "binance", since, timef
   if (data == null) {
     return <><Skeleton height="400px" width="100%" /></>
   }
-  return < Chart2 label={`${symbol} ${timeframe} (${exchange}) `} data={data} since={new Date(since).getTime()} />
+  return < Chart2 label={`${symbol} ${timeframe} (${exchange}) `} width={width} data={data} since={new Date(since).getTime()} />
 }
 
 
@@ -93,6 +93,7 @@ let Chart2 = (props) => {
 
   const start = xAccessor(head(data));
   const end = data.length > 100 ? xAccessor(data[50]) : xAccessor(data[data.length - 1])
+  if (end === undefined) return <>No data</>;
   const xExtents = [start, end];
 
 
@@ -101,7 +102,7 @@ let Chart2 = (props) => {
   return (
     <ChartCanvas height={400}
       ratio={ratio}
-      width={width}
+      width={width || 600}
       margin={margin}
       type='svg'
       seriesName="MSFT"

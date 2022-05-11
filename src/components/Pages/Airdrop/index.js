@@ -7,7 +7,7 @@ import AirdropModalForm from "../../Other/Modal/AirdropModalForm";
 import { BsFillPatchCheckFill, BsFillPatchExclamationFill, BsPatchQuestionFill } from "react-icons/bs";
 import { connect } from "react-redux";
 
-const App = ({ isAuthenticated }) => {
+const AirdropPage = ({ isAuthenticated }) => {
   const [data, setData] = useState({ count: 0, results: [] });
   const [showAirdropModal, setshowAirdropModal] = useState(false)
 
@@ -143,4 +143,4 @@ const mapDispatchtoProps = (dispatch) => ({
   // loadEvent: () => dispatch(loadEvent()),
 });
 
-export default connect(mapStateToProps, mapDispatchtoProps)(App);
+export default connect(mapStateToProps, mapDispatchtoProps)(AirdropPage);

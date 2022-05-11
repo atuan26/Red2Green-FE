@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
-import Skeleton from "react-loading-skeleton";
 import {
 	useFlexLayout,
 	usePagination,
@@ -8,9 +7,9 @@ import {
 	useSortBy,
 	useTable,
 	useGlobalFilter,
+	useAsyncDebounce,
 } from "react-table";
-import ChartComponent from "../../Other/Chart/Chart2";
-import { TelegramPost } from "../../Other/TelegramWidget";
+import { matchSorter } from "match-sorter";
 const defaultPropGetter = () => ({});
 
 const Table = ({
@@ -20,7 +19,6 @@ const Table = ({
 	getColumnProps = defaultPropGetter,
 	getRowProps = defaultPropGetter,
 	getCellProps = defaultPropGetter,
-	renderRowSubComponent,
 }) => {
 	const defaultColumn = useMemo(
 		() => ({
@@ -30,6 +28,23 @@ const Table = ({
 		}),
 		[]
 	);
+	const filterTypes = useMemo(
+		() => ({
+			fuzzyText: fuzzyTextFilterFn,
+			text: (rows, id, filterValue) => {
+				return rows.filter((row) => {
+					const rowValue = row.values[id];
+					return rowValue !== undefined
+						? String(rowValue)
+							.toLowerCase()
+							.startsWith(String(filterValue).toLowerCase())
+						: true;
+				});
+			}
+		}),
+		[]
+	);
+
 	const {
 		getTableProps,
 		getTableBodyProps,
@@ -45,24 +60,38 @@ const Table = ({
 		nextPage,
 		previousPage,
 		setPageSize,
+		state,
 		visibleColumns,
-		state: { pageIndex, pageSize, expanded },
+		preGlobalFilteredRows,
+		setGlobalFilter,
+		state: { pageIndex, pageSize },
 	} = useTable(
 		{
 			columns,
 			data: data.results,
 			defaultColumn,
 			autoResetSortBy: false,
-			// initialState: { pageIndex: 0 },
+			filterTypes,
 		},
+		useGlobalFilter,
 		useSortBy,
 		useResizeColumns,
 		useFlexLayout,
 		usePagination,
 	);
-
 	return (
 		<div className="w-full rounded-lg p-6">
+			<div className="flex items-center justify-between pb-6">
+				<div className="font-medium text-gray-400 text-sm">
+					Loaded {data.results.length}{" "}
+					results from {data.count} records
+				</div>
+				<GlobalFilter
+					preGlobalFilteredRows={preGlobalFilteredRows}
+					globalFilter={state.globalFilter}
+					setGlobalFilter={setGlobalFilter}
+				/>
+			</div>
 			<div className="overflow-auto w-full">
 				<table className="table bg-white shadow" {...getTableProps()}>
 					<thead>
@@ -102,18 +131,20 @@ const Table = ({
 						))}
 					</thead>
 					<tbody {...getTableBodyProps()}>
-						{page.map((row, i) => {
+						{page.map((row, rowIndex) => {
 							prepareRow(row);
 							const rowProps = row.getRowProps();
 							return (
 								<>
 									<tr
+										key={rowIndex}
 										{...rowProps}
 										className=" "
 									>
-										{row.cells.map((cell) => {
+										{row.cells.map((cell, cellIndex) => {
 											return (
 												<td
+													key={cellIndex}
 													className="border p-4 dark:border-dark-5 overflow-hidden"
 													{...cell.getCellProps([
 														{
@@ -151,12 +182,12 @@ const Table = ({
 				>
 					{"<"}
 				</button>{" "}
-				<btn className="btn">
+				<button className="btn">
 					Page
 					<strong className="ml-1">
 						{data.count ? pageIndex + 1 : 0} of {pageOptions.length}
 					</strong>{" "}
-				</btn>
+				</button>
 				<button className="btn" onClick={() => nextPage()} disabled={!canNextPage}>
 					{">"}
 				</button>{" "}
@@ -183,75 +214,43 @@ const Table = ({
 	);
 };
 
-export const SubRowAsync = ({ row, rowProps, visibleColumns }) => {
-	const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			setLoading(false);
-		}, 1500);
-
-		return () => {
-			clearTimeout(timer);
-		};
-	}, []);
-
-	return (
-		<SubRows
-			row={row}
-			rowProps={rowProps}
-			visibleColumns={visibleColumns}
-			loading={loading}
-		/>
-	);
-}
-export const SubRows = ({ row, rowProps, visibleColumns, loading }) => {
-	if (loading) {
-		return (
-			<tr>
-				<td
-					colSpan={visibleColumns.length}
-					className='flex pl-0 gap-5 !sticky !left-0 p-0'
-				>
-					<Skeleton height="400px" width="320px" />
-					<Skeleton height="400px" width="600px" />
-					<Skeleton height="400px" width="300px" />
-				</td>
-			</tr>
-		);
-	}
+export const GlobalFilter = ({
+	preGlobalFilteredRows,
+	globalFilter,
+	setGlobalFilter,
+}) => {
+	// const count = preGlobalFilteredRows?.length || 0
+	const count = preGlobalFilteredRows?.length || 0
+	const [value, setValue] = useState(globalFilter)
+	const onChange = useAsyncDebounce(value => {
+		setGlobalFilter(value || undefined)
+	}, 200)
 
 	return (
-		<tr className="flex">
-			<td
-				colSpan={visibleColumns.length}
-				className='flex pl-0 gap-5 p-0'
-			>
-				<div>
-					<TelegramPost
-						channel={row.original.signals.channel.username}
-						postID={row.original.signals.post_id}
-						userPic="true"
-						width="320px"
-					// dark='1'
-					/>
-				</div>
-				<div className="w-[600px] h-[400px]">
-					<ChartComponent
-						symbol={row.original.symbol}
-						exchange={row.original.exchange}
-						since={row.original.signals.post_date}
-					/>
-				</div>
-				<div className=" rounded-lg bg-slate-50 shadow-sm w-[300px] h-full">
-					<ul className="p-6">
-						<li>Sentiment: Positive 😟🙁😐🙂😊</li>
-						<li>Category: Upgrade</li>
-					</ul>
-				</div>
-			</td>
-		</tr>
-	);
+		<div className="relative">
+			<div className="absolute flex items-center ml-4 h-full">
+				<svg className="w-4 h-4 fill-current text-primary-gray-dark" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M15.8898 15.0493L11.8588 11.0182C11.7869 10.9463 11.6932 10.9088 11.5932 10.9088H11.2713C12.3431 9.74952 12.9994 8.20272 12.9994 6.49968C12.9994 2.90923 10.0901 0 6.49968 0C2.90923 0 0 2.90923 0 6.49968C0 10.0901 2.90923 12.9994 6.49968 12.9994C8.20272 12.9994 9.74952 12.3431 10.9088 11.2744V11.5932C10.9088 11.6932 10.9495 11.7869 11.0182 11.8588L15.0493 15.8898C15.1961 16.0367 15.4336 16.0367 15.5805 15.8898L15.8898 15.5805C16.0367 15.4336 16.0367 15.1961 15.8898 15.0493ZM6.49968 11.9994C3.45921 11.9994 0.999951 9.54016 0.999951 6.49968C0.999951 3.45921 3.45921 0.999951 6.49968 0.999951C9.54016 0.999951 11.9994 3.45921 11.9994 6.49968C11.9994 9.54016 9.54016 11.9994 6.49968 11.9994Z"></path>
+				</svg>
+			</div>
+
+			<input
+				value={value || ""}
+				onChange={e => {
+					setValue(e.target.value);
+					onChange(e.target.value);
+				}}
+				placeholder={`Search ${count} records...`}
+				className="pl-10 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm" />
+		</div>)
 }
+
+function fuzzyTextFilterFn(rows, id, filterValue) {
+	return { matchSorter }(rows, filterValue, { keys: [(row) => row.values[id]] });
+}
+
+// Let the table remove the filter if the string is empty
+fuzzyTextFilterFn.autoRemove = (val) => !val;
 
 export default Table;

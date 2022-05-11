@@ -2,16 +2,48 @@ import { toast } from "react-toastify";
 import { reset, SubmissionError } from "redux-form";
 import api from ".";
 
-export const airdropConstants = {
-  LOAD_AIRDROP: "LOAD_AIRDROP",
+export const signalConstants = {
+  SET_FILTER: "SET_FILTER",
+  RESET_FILTER: "RESET_FILTER",
+  LOAD_DATA: "LOAD_DATA",
   ADD_AIRDROP: "ADD_AIRDROP",
   EDIT_AIRDROP: "EDIT_AIRDROP",
   DELETE_AIRDROP: "DELETE_AIRDROP",
 };
 
+export const setQuery = (payload) => {
+  return (dispatch) => {
+    dispatch({ type: signalConstants.SET_FILTER, payload: payload });
+  };
+};
+export const resetQuery = (payload) => {
+  return (dispatch) => {
+    dispatch({ type: signalConstants.RESET_FILTER });
+  };
+};
+
+export const loadSignal = (filterQuery) => {
+  // return (dispatch) => {
+  //   dispatch({ type: signalConstants.LOAD_DATA, payload });
+  // };
+  return (dispatch) => {
+    api
+      .get(`/price_data/${filterQuery || ""}`)
+      .then((res) => {
+        dispatch({ type: signalConstants.LOAD_DATA, payload: (res.data) });
+        toast.success("Signal loaded!");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Error when loading signals.");
+      });
+  };
+};
+
+
 export const loadAirdop = () => {
   const loadAirdopSuccess = (payload) => {
-    return { type: airdropConstants.LOAD_AIRDROP, payload };
+    return { type: signalConstants.LOAD_AIRDROP, payload };
   };
   return (dispatch) => {
     api
@@ -30,7 +62,7 @@ export const loadAirdop = () => {
 export const addAirdop = (payload, dispatch) => {
   console.log(payload);
   const addAirdopSuccess = (payload) => {
-    return { type: airdropConstants.ADD_AIRDROP, payload };
+    return { type: signalConstants.ADD_AIRDROP, payload };
   };
   return api
     .post("/airdrops/", payload)
@@ -55,7 +87,7 @@ export const editAirdop = (payload, dispatch) => {
     .then((res) => {
       console.log(res.data);
       toast.success("Airdop is edited");
-      dispatch({ type: airdropConstants.EDIT_AIRDROP, payload: res.data });
+      dispatch({ type: signalConstants.EDIT_AIRDROP, payload: res.data });
     })
     .catch((err) => {
       console.log(err);
@@ -72,7 +104,7 @@ export const deleteAirdop = (payload) => {
       .then((res) => {
         console.log(res.data);
         toast.success(payload.title + " is deleted.");
-        dispatch({ type: airdropConstants.DELETE_AIRDROP, payload });
+        dispatch({ type: signalConstants.DELETE_AIRDROP, payload });
       })
       .catch((err) => {
         console.log(err);

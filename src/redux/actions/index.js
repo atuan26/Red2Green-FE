@@ -4,7 +4,7 @@ import store from "../store";
 
 let api = axios.create({
   baseURL: "http://127.0.0.1:8000/api",
-  timeout: 1000,
+  timeout: 3000,
 });
 
 api.interceptors.request.use(function (config) {
@@ -16,16 +16,16 @@ api.interceptors.request.use(function (config) {
 
 api.interceptors.response.use(
   (response) => {
-    console.log(response);
+    // console.log(response);
     return response;
   },
   async function (error) {
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       toast("Please login first.");
       store.dispatch({ type: "LOGOUT" });
       localStorage.removeItem("user");
     }
-    // return Promise.reject(error);
+    return Promise.reject(error);
   }
 );
 export default api;

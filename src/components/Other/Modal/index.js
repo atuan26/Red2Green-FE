@@ -5,7 +5,7 @@ export const Modal = ({ label, close, content, width, ...props }) => {
       {/* <div
         className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
       > */}
-      <div class="justify-center items-center flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0  md:h-full">
+      <div class="justify-center items-center flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
         <div class="relative p-4 w-full max-w-7xl h-full md:h-auto">
           <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <div

@@ -16,6 +16,7 @@ img {
 	max-width: 100%;
 	height: auto;
 }
+
 p:empty::before {
 	content: "";
 	display: inline-block;
@@ -27,6 +28,7 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
 	transition: background-color 5000s ease-in-out 0s;
 }
+
 /* .no-scrollbar::-webkit-scrollbar { */
 /* display: none;
 } */
@@ -40,10 +42,12 @@ input:-webkit-autofill:active {
 	width: 6px;
 	height: 6px;
 }
+
 ::-webkit-scrollbar-thumb {
 	background: #94A3B8;
 	border-radius: 6px;
 }
+
 ::-webkit-scrollbar-track {
 	background: #f9fafb;
 }
@@ -61,11 +65,22 @@ input:-webkit-autofill:active {
 	touch-action: none;
 }
 
-table td:first-child, th:first-child{	
+table td:first-child,
+th:first-child {
 	position: sticky !important;
-	left: 0; 
+	left: 0;
 }
+
+.react-datepicker-popper {
+	z-index: 9999 !important;
+}
+
 .scroller::-webkit-scrollbar-thumb:horizontal:hover,
-.scroller::-webkit-scrollbar-thumb:vertical:hover { /* hover thumb styles */ }
+.scroller::-webkit-scrollbar-thumb:vertical:hover {
+	/* hover thumb styles */
+}
+
 .scroller::-webkit-scrollbar-thumb:horizontal:active,
-.scroller::-webkit-scrollbar-thumb:vertical:active { /* active thumb styles */ }
+.scroller::-webkit-scrollbar-thumb:vertical:active {
+	/* active thumb styles */
+}

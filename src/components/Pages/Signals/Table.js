@@ -7,6 +7,7 @@ import {
 	useResizeColumns,
 	useSortBy,
 	useTable,
+	useGlobalFilter,
 } from "react-table";
 import ChartComponent from "../../Other/Chart/Chart2";
 import { TelegramPost } from "../../Other/TelegramWidget";
@@ -107,8 +108,8 @@ const Table = ({
 							return (
 								<>
 									<tr
-										className="text-gray-700 hover:!bg-gray-500 dark:hover:!bg-gray-700"
 										{...rowProps}
+										className=" "
 									>
 										{row.cells.map((cell) => {
 											return (
@@ -131,8 +132,6 @@ const Table = ({
 											);
 										})}
 									</tr>
-									{/* {row.isExpanded &&
-										renderRowSubComponent({ row, rowProps, visibleColumns })} */}
 								</>
 							);
 						})}

@@ -49,7 +49,6 @@ const FilterForm = ({ setData }) => {
 					label="From"
 					datePicker={true}
 					selected={true}
-					name="signals__post_date__gte"
 				/>
 				<InputFilter
 					label="To"

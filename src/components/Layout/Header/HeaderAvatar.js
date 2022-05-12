@@ -16,7 +16,6 @@ const HeaderAvatar = ({ username, logout }) => {
     isComponentVisible,
     setIsComponentVisible
   } = useComponentVisible(false);
-  console.log('isComponentVisible', isComponentVisible);
 
   return (
     <>

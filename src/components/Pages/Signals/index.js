@@ -8,8 +8,7 @@ import { Modal } from "../../Other/Modal";
 import SignalDetailModal from "./SignalDetailModal";
 import { loadSignal } from "../../../redux/actions/signalAction";
 
-const SignalPage = ({ signalData, isAuthenticated, loadSignal }) => {
-	// const [data, setData] = useState({ count: 0, results: [] });
+const SignalPage = ({ signalData, isAuthenticated, loadSignal, query, signalLoading }) => {
 	const [signalModal, setSignalModal] = useState({ isOpen: false, data: null });
 
 	useEffect(() => {
@@ -184,7 +183,7 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal }) => {
 						content={<SignalDetailModal data={signalModal.data} />}
 					/>
 				}
-				<Filter />
+				<Filter onSubmitFilter={(e) => { e.preventDefault(); loadSignal(query); }} />
 				<div className="w-full shadow-lg rounded-lg bg-white mb-4 ">
 					<Table
 						columns={columns}
@@ -210,6 +209,7 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal }) => {
 								};
 							}
 						}}
+						signalLoading={signalLoading}
 					/>
 				</div>
 			</div>
@@ -220,8 +220,9 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal }) => {
 
 const mapStateToProps = (state) => ({
 	isAuthenticated: state.auth.isAuthenticated,
-	// filterQuery: state.signal.query,
-	signalData: state.signal.data
+	query: state.signal.query,
+	signalData: state.signal.data,
+	signalLoading: state.signal.loading,
 });
 
 const mapDispatchtoProps = (dispatch) => ({

@@ -10,6 +10,7 @@ import {
 	useAsyncDebounce,
 } from "react-table";
 import { matchSorter } from "match-sorter";
+import Skeleton from "react-loading-skeleton";
 const defaultPropGetter = () => ({});
 
 const Table = ({
@@ -19,6 +20,7 @@ const Table = ({
 	getColumnProps = defaultPropGetter,
 	getRowProps = defaultPropGetter,
 	getCellProps = defaultPropGetter,
+	signalLoading,
 }) => {
 	const defaultColumn = useMemo(
 		() => ({
@@ -45,6 +47,20 @@ const Table = ({
 		[]
 	);
 
+	const tableData = useMemo(
+		() => (signalLoading ? Array(50).fill({}) : data.results),
+		[signalLoading, data.results]
+	);
+	const tableColumns = useMemo(
+		() =>
+			signalLoading
+				? columns.map((column) => ({
+					...column,
+					Cell: <Skeleton />,
+				}))
+				: columns,
+		[signalLoading, columns]
+	);
 	const {
 		getTableProps,
 		getTableBodyProps,
@@ -67,8 +83,10 @@ const Table = ({
 		state: { pageIndex, pageSize },
 	} = useTable(
 		{
-			columns,
-			data: data.results,
+			// columns,
+			// data: data.results,
+			columns: tableColumns,
+			data: tableData,
 			defaultColumn,
 			autoResetSortBy: false,
 			filterTypes,
@@ -79,6 +97,7 @@ const Table = ({
 		useFlexLayout,
 		usePagination,
 	);
+
 	return (
 		<div className="w-full rounded-lg p-6">
 			<div className="flex items-center justify-between pb-6">
@@ -95,10 +114,11 @@ const Table = ({
 			<div className="overflow-auto w-full">
 				<table className="table bg-white shadow" {...getTableProps()}>
 					<thead>
-						{headerGroups.map((headerGroup) => (
-							<tr {...headerGroup.getHeaderGroupProps()}>
-								{headerGroup.headers.map((column) => (
+						{headerGroups.map((headerGroup, headerGroupIndex) => (
+							<tr key={headerGroupIndex} {...headerGroup.getHeaderGroupProps()}>
+								{headerGroup.headers.map((column, columnIndex) => (
 									<th
+										key={columnIndex}
 										className="border p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900"
 										{...column.getHeaderProps(
 											column.getSortByToggleProps()
@@ -250,7 +270,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 	return { matchSorter }(rows, filterValue, { keys: [(row) => row.values[id]] });
 }
 
-// Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val;
+
 
 export default Table;

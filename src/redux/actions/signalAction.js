@@ -6,6 +6,7 @@ export const signalConstants = {
   SET_FILTER: "SET_FILTER",
   RESET_FILTER: "RESET_FILTER",
   LOAD_DATA: "LOAD_DATA",
+  SET_LOADING: "SET_LOADING",
   ADD_AIRDROP: "ADD_AIRDROP",
   EDIT_AIRDROP: "EDIT_AIRDROP",
   DELETE_AIRDROP: "DELETE_AIRDROP",
@@ -23,15 +24,14 @@ export const resetQuery = (payload) => {
 };
 
 export const loadSignal = (filterQuery) => {
-  // return (dispatch) => {
-  //   dispatch({ type: signalConstants.LOAD_DATA, payload });
-  // };
   return (dispatch) => {
+    dispatch({ type: signalConstants.SET_LOADING, payload: true });
     api
       .get(`/price_data/${filterQuery || ""}`)
       .then((res) => {
         dispatch({ type: signalConstants.LOAD_DATA, payload: (res.data) });
         toast.success("Signal loaded!");
+        dispatch({ type: signalConstants.SET_LOADING, payload: false });
       })
       .catch((err) => {
         console.log(err);

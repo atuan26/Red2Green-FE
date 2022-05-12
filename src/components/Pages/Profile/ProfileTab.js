@@ -48,14 +48,14 @@ const ProfileTab = () => {
             <ProfileTabItem
               key={i}
               currentTab={i == currentTab}
-              onClick={() => setCurrentTab(i)}
+              onClick={() => { if (!tab.disable) setCurrentTab(i); }}
               {...tab}
             />)
           )
           }
         </ul>
       </div>
-      {tabList.map((tab, i) => <>{currentTab == i ? tab.component : null}</>)}
+      {tabList.map((tab, i) => <span key={i}>{currentTab == i ? tab.component : null}</span>)}
     </div>
   </>
 }
@@ -67,12 +67,12 @@ const ProfileTabItem = ({ label, icon, currentTab, disable, ...props }) => {
       href="#"
       className={classNameItem}
       {...props}
-      onClick={disable || props.onClick}
+      onClick={props.onClick}
     >
       {icon}
       {label}
     </a>
-  </li>
+  </li >
 }
 
 export default ProfileTab

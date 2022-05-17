@@ -22,7 +22,7 @@ const signalReducer = (state = initialState, action) => {
     case signalConstants.SET_LOADING:
       return { ...state, loading: action.payload }
     case signalConstants.LOAD_DATA:
-      return { ...state, data: action.payload }
+      return { ...state, data: action.payload, loading: false }
     default:
       return state
   }

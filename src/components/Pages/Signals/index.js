@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Table, { } from "./Table";
 import api from "../../../redux/actions";
-import Filter from "./Filter2";
+import Filter from "./Filter";
 import { connect } from "react-redux";
 import { timeFormat } from "d3-time-format";
 import { Modal } from "../../Other/Modal";
@@ -9,6 +9,8 @@ import SignalDetailModal from "./SignalDetailModal";
 import { loadSignal } from "../../../redux/actions/signalAction";
 
 const SignalPage = ({ signalData, isAuthenticated, loadSignal, query, signalLoading }) => {
+	console.log('signal page re render');
+
 	const [signalModal, setSignalModal] = useState({ isOpen: false, data: null });
 
 	useEffect(() => {
@@ -18,10 +20,9 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal, query, signalLoad
 		}
 	}, [signalModal.isOpen]);
 
-
-	useEffect(() => {
-		loadSignal("");
-	}, [isAuthenticated]);
+	// useEffect(() => {
+	// loadSignal("");
+	// }, [isAuthenticated]);
 
 	const priceHeader = [
 		"+1m",
@@ -34,7 +35,8 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal, query, signalLoad
 		"+1d",
 		"+1w",
 	];
-	const columns = React.useMemo(
+
+	const columns = useMemo(
 		() => [
 			{
 				Header: "Symbol",
@@ -51,6 +53,7 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal, query, signalLoad
 			},
 			{
 				Header: "Price",
+				disableGlobalFilter: true,
 				accessor: "price",
 				className: "text-center text-yellow-400 ",
 				Cell: (props) => parseFloat(props.value),
@@ -58,6 +61,7 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal, query, signalLoad
 			},
 			{
 				Header: "+1m",
+				disableGlobalFilter: true,
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_1m_price) *
@@ -71,6 +75,7 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal, query, signalLoad
 			},
 			{
 				Header: "+5m",
+				disableGlobalFilter: true,
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_5m_price) *
@@ -84,6 +89,7 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal, query, signalLoad
 			},
 			{
 				Header: "+15m",
+				disableGlobalFilter: true,
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_15m_price) *
@@ -97,6 +103,7 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal, query, signalLoad
 			},
 			{
 				Header: "+1h",
+				disableGlobalFilter: true,
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_1h_price) *
@@ -110,6 +117,7 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal, query, signalLoad
 			},
 			{
 				Header: "+4h",
+				disableGlobalFilter: true,
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_4h_price) *
@@ -123,6 +131,7 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal, query, signalLoad
 			},
 			{
 				Header: "+6h",
+				disableGlobalFilter: true,
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_6h_price) *
@@ -136,6 +145,7 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal, query, signalLoad
 			},
 			{
 				Header: "+1d",
+				disableGlobalFilter: true,
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_1d_price) *
@@ -149,6 +159,8 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal, query, signalLoad
 			},
 			{
 				Header: "+1w",
+				disableGlobalFilter: true,
+				sortable: false,
 				accessor: (row) =>
 					Math.round(
 						(100 - (row.price * 100) / row.after_1w_price) *
@@ -183,7 +195,11 @@ const SignalPage = ({ signalData, isAuthenticated, loadSignal, query, signalLoad
 						content={<SignalDetailModal data={signalModal.data} />}
 					/>
 				}
-				<Filter onSubmitFilter={(e) => { e.preventDefault(); loadSignal(query); }} />
+				<Filter onSubmitFilter={(e) => {
+					console.log('submit');
+					e.preventDefault();
+					loadSignal(query);
+				}} />
 				<div className="w-full shadow-lg rounded-lg bg-white mb-4 ">
 					<Table
 						columns={columns}

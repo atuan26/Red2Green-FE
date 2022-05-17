@@ -29,9 +29,8 @@ export const loadSignal = (filterQuery) => {
     api
       .get(`/price_data/${filterQuery || ""}`)
       .then((res) => {
-        dispatch({ type: signalConstants.LOAD_DATA, payload: (res.data) });
         toast.success("Signal loaded!");
-        dispatch({ type: signalConstants.SET_LOADING, payload: false });
+        dispatch({ type: signalConstants.LOAD_DATA, payload: (res.data) });
       })
       .catch((err) => {
         console.log(err);

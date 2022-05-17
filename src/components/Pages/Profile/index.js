@@ -4,9 +4,11 @@ import ProfileTab from './ProfileTab'
 
 const Profile = () => {
   return <div>
-    <div className="container mx-auto ">
-      <div className="md:flex no-wrap md:-mx-2 ">
-        <div className="w-full md:w-9/12 mx-2 h-64">
+    {/* <div className="container mx-auto ">
+      <div className="md:flex no-wrap md:-mx-2 "> */}
+    <div className="grid grid-cols-4 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6 ">
+      <div className="col-span-4 z-base md:col-span-2 lg:col-span-3">
+        <div className="w-full mx-2 h-64">
           <ProfileTab />
           <div className="my-4"></div>
 
@@ -71,19 +73,27 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        <div className="w-full md:w-3/12 md:mx-2">
-          <div className="bg-white p-3  rounded-lg">
+      </div>
+      <div className="col-span-4 md:col-span-1">
+        {/* <div className="w-full md:w-3/12 md:mx-2"> */}
+        <div className="w-full  md:mx-2">
+          <div className="bg-white p-6  rounded-lg">
             <div className="image overflow-hidden">
               <img className="h-auto w-full mx-auto"
                 src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
                 alt="" />
             </div>
-            <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
-              Jane Doe
-              <span className='ml-2 rounded-md p-1 bg-gray-100 hover:bg-gray-200 w-4 h-4 text-gray-700'>
-                <FiEdit className='  inline' />
+            <div className='flex justify-between  my-2'>
+              <h1 className="text-gray-900 font-bold text-xl leading-8">
+                Jane Doe
+              </h1>
+              <span className='ml-2 rounded-md p-2 pt-1 bg-gray-100 hover:bg-gray-200  text-gray-700 cursor-pointer'>
+                <FiEdit className='w-5 h-5 inline mr-2' />
+                <span className='align-middle text-xs font-medium '>
+                  Edit profile
+                </span>
               </span>
-            </h1>
+            </div>
             <h3 className="text-gray-600 font-lg text-semibold leading-6">Owner at Her Company Inc.</h3>
             <ul
               className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">

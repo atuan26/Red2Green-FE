@@ -1,13 +1,14 @@
-import React, { useState } from "react"
+import React, { memo, useState } from "react"
 import { FloatingLabelInput } from "../../Other/Form"
 
-import { GrPowerReset } from "react-icons/gr"
+import { IoIosRefresh } from "react-icons/io"
 import { MdOutlineManageSearch } from "react-icons/md"
 import ReactDatePicker from "react-datepicker"
 import { connect } from "react-redux"
-import { loadSignal, resetQuery, setQuery } from "../../../redux/actions/signalAction"
+import { resetQuery, setQuery } from "../../../redux/actions/signalAction"
 
 const Filter = ({ onSubmitFilter, filterQuery, setQuery, resetQuery }) => {
+    console.log('Filter re render');
     const [dateRange, setDateRange] = useState([null, null]);
     const [startDate, endDate] = dateRange;
     const handleChange = (e) => {
@@ -74,18 +75,18 @@ const Filter = ({ onSubmitFilter, filterQuery, setQuery, resetQuery }) => {
                 />
             </div>
             <div className="-mt-4 col-span-2 md:col-span-3 xl:col-span-4 flex items-center justify-center gap-4 ">
+                <div
+                    onClick={resetQuery}
+                    className="flex items-center gap-2 text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+                >
+                    <IoIosRefresh className="w-5 h-5" />
+                    Reset filter
+                </div>
                 <button
                     type="submit"
-                    className="px-4 py-2 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm text-center ">
-                    <MdOutlineManageSearch className="w-5 h-5 inline mr-2" />
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 flex items-center  gap-2 ">
+                    <MdOutlineManageSearch className="w-6 h-6" />
                     Search
-                </button>
-
-                <button
-                    onClick={resetQuery}
-                    className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-md">
-                    <GrPowerReset className="w-4 h-4 inline mr-2" />
-                    Reset Filter
                 </button>
             </div>
 
@@ -101,7 +102,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchtoProps = (dispatch) => ({
     setQuery: (filterQuery) => dispatch(setQuery(filterQuery)),
     resetQuery: () => dispatch(resetQuery()),
-    // loadSignal: (query) => dispatch(loadSignal(query)),
 });
 
-export default connect(mapStateToProps, mapDispatchtoProps)(Filter);
+export default connect(mapStateToProps, mapDispatchtoProps)(memo(Filter));

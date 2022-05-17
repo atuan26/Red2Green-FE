@@ -22,6 +22,7 @@ const Table = ({
 	getCellProps = defaultPropGetter,
 	signalLoading,
 }) => {
+	console.log('table re render');
 	const defaultColumn = useMemo(
 		() => ({
 			minWidth: 30,

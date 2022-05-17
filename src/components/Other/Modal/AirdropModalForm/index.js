@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import AirdropForm from "./AirdropForm";
 import WizardForm from "./WizardForm";
 
 const AirdropModalForm = ({ label, close }) => {

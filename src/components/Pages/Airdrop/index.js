@@ -1,34 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Table from "./Table";
 import api from "../../../redux/actions";
-import Filter from "./Filter2";
-import { CgAdd } from "react-icons/cg";
-import AirdropModalForm from "../../Other/Modal/AirdropModalForm";
 import { BsFillPatchCheckFill, BsFillPatchExclamationFill, BsPatchQuestionFill } from "react-icons/bs";
 import { connect } from "react-redux";
 
 const AirdropPage = ({ isAuthenticated }) => {
   const [data, setData] = useState({ count: 0, results: [] });
-  const [showAirdropModal, setshowAirdropModal] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // loadAirdrop()
+    setLoading(true)
     api.get("/airdrops/")
       .then((result) => {
         console.log(result.data);
         setData(result.data);
+        setLoading(false)
       })
       .catch((error) => {
         console.log(error);
       });
   }, [isAuthenticated]);
 
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
         Header: "#",
-        filterable: false,
-        sortable: false,
         width: 50,
         Cell: (row) => <div>{parseInt(row.row.id) + 1}</div>,
         className: 'text-center',
@@ -36,6 +32,7 @@ const AirdropPage = ({ isAuthenticated }) => {
       {
         Header: "Name",
         accessor: "name",
+
       },
       {
         Header: "Reward",
@@ -57,6 +54,7 @@ const AirdropPage = ({ isAuthenticated }) => {
       {
         Header: "Start time",
         accessor: "start",
+        disableFilters: true,
         Cell: (props) =>
           `${new Date(props.value).toLocaleDateString()} ${new Date(
             props.value
@@ -65,6 +63,7 @@ const AirdropPage = ({ isAuthenticated }) => {
       {
         Header: "End time",
         accessor: "end",
+        disableFilters: true,
         Cell: (props) => {
           if (props.value)
             return `${new Date(props.value).toLocaleDateString()} ${new Date(
@@ -75,32 +74,48 @@ const AirdropPage = ({ isAuthenticated }) => {
       },
       {
         Header: "Status",
-        accessor: "",
+        accessor: "status",
+        // accessor: row => {
+        //   const status = new Date(row.end) - new Date()
+        //   if (!row.end) return { code: -1, label: "Unknown", className: "inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800" }
+        //   if (!row.start) return { code: 0, label: "Upcoming", className: "inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none       bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" }
+        //   if (status >= 0) return { code: 1, label: "Ongoing", className: "inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none       bg-yellow-400 hover:bg-yellow-600 focus:ring-yellow-100 dark:bg-yellow-600 dark:hover:bg-yellow-500 dark:focus:ring-yellow-600" }
+        //   else if (status < 0) return { code: 2, label: "Ended", className: "inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none       bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800" }
+        // },
         Cell: (row) => {
-          let status
-          status = new Date(row.row.original.end) - new Date()
-          if (!row.row.original.end) {
-            return <button
-              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-gray-700 rounded-lg hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Unknown</button>
+          let label
+          let styleButtonClassname = "inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none "
+          switch (row.value) {
+            case -1:
+              label = "Unknown"
+              styleButtonClassname += "bg-gray-700 hover:bg-gray-800 focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+              break;
+            case 0:
+              label = "Upcoming"
+              styleButtonClassname += "bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              break;
+            case 1:
+              label = "Ongoing"
+              styleButtonClassname += "bg-yellow-400 hover:bg-yellow-600 focus:ring-yellow-100 dark:bg-yellow-600 dark:hover:bg-yellow-500 dark:focus:ring-yellow-600"
+              break;
+            case 2:
+              label = "Ended"
+              styleButtonClassname += "bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800"
+              break;
+            default:
+              label = "Error"
+              styleButtonClassname += "bg-gray-700 hover:bg-gray-800 focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+              break;
           }
-          if (new Date(row.row.original.start) - new Date() > 0) {
-            return <button
-              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Upcoming</button>
-          }
-          else if (status >= 0) {
-            return <button
-              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-yellow-400 rounded-lg hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-100 dark:bg-yellow-600 dark:hover:bg-yellow-500 dark:focus:ring-yellow-600">Ongoing</button>
-          }
-          else if (status < 0) {
-            return <button
-              className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-blue-800">Ended</button>
-          }
+          return <button
+            className={styleButtonClassname}>{label}</button>
         },
         width: 120,
       },
       {
         Header: "Distribution",
         accessor: "is_distributed",
+        disableFilters: true,
         Cell: (row) => {
           if (row.value === true) return <BsFillPatchCheckFill className=" w-6 h-6 text-green-400" />;
           else if (row.value === false) return <BsFillPatchExclamationFill className=" w-6 h-6 text-red-500" />;
@@ -110,28 +125,21 @@ const AirdropPage = ({ isAuthenticated }) => {
         className: 'text-center  flex justify-center items-center ',
       },
     ], []);
+
   return (
-    <>
-      <Filter />
-      <div className="w-full shadow-lg rounded-lg bg-white mb-4 ">
-        <button
-          onClick={() => {
-            setshowAirdropModal(true);
-          }}
-          className="m-6 mb-0 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
-          <CgAdd className="inline h-4 w-4 mr-1" />New airdrop
-        </button>
-        {showAirdropModal && (
-          <AirdropModalForm
-            close={() => setshowAirdropModal(false)}
+    <div className="grid grid-cols-4 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6 ">
+      <div className="col-span-4 z-base md:col-span-2 lg:col-span-3">
+        <div className="w-full shadow-lg rounded-lg bg-white mb-4 ">
+
+          <Table
+            columns={columns}
+            data={data}
+            airdropLoading={[loading, setLoading]}
           />
-        )}
-        <Table
-          columns={columns}
-          data={data}
-        />
+        </div>
       </div>
-    </>
+      <div className="col-span-4 md:col-span-1"></div>
+    </div>
   );
 };
 const mapStateToProps = (state) => ({
@@ -139,8 +147,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchtoProps = (dispatch) => ({
-  // loadTask: () => dispatch(loadTask()),
-  // loadEvent: () => dispatch(loadEvent()),
 });
 
 export default connect(mapStateToProps, mapDispatchtoProps)(AirdropPage);

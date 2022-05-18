@@ -18,15 +18,6 @@ let EventForm = (props) => {
       onSubmit={handleSubmit}
       className="px-6 pb-4 space-y-3 lg:px-8 sm:pb-6 xl:pb-8"
     >
-      <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-        {initialValues.title ? (
-          <span>
-            Edit <strong>{initialValues.title}</strong>
-          </span>
-        ) : (
-          "Add new event"
-        )}
-      </h3>
       <Field
         name="title"
         type="text"
@@ -94,10 +85,10 @@ let EventForm = (props) => {
       />
       {error && <strong>{error}</strong>}
       <SubmitButton
-        label={initialValues.title ? "Save" : "Add"}
+        label={initialValues?.title ? "Save" : "Add"}
         disabled={submitting}
       />
-      {initialValues.id && (
+      {initialValues?.id && (
         <button
           onClick={() => {
             deleteEvent(initialValues);

@@ -10,6 +10,15 @@ const EventModal = ({ label, initialValues, close }) => {
         <div className="relative w-full my-6 mx-auto sm:max-w-sm md:max-w-md">
           <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <div className="flex justify-end p-2">
+              <h3 className="mt-2 pl-6 text-xl font-medium text-gray-900 dark:text-white">
+                {initialValues?.title ? (
+                  <>
+                    Edit <strong className='text-gray-600 hover:text-gray-500'>{initialValues.title}</strong>
+                  </>
+                ) : (
+                  "Add new event"
+                )}
+              </h3>
               <button
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
@@ -30,8 +39,8 @@ const EventModal = ({ label, initialValues, close }) => {
               </button>
             </div>
             <EventForm
-              label={label}
-              onSubmit={initialValues.id ? editEvent : addEvent}
+              // label={label}
+              onSubmit={initialValues?.id ? editEvent : addEvent}
               initialValues={initialValues}
               close={close}
             />

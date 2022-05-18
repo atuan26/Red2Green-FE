@@ -31,7 +31,7 @@ const TaskList = ({ currentCategory, categoryList, taskList, addTask }) => {
           <FaTasks className="inline-block mx-3 h-4" />
           {currentCategory.title || "All Task"}
           <span className="text-sm text-gray-500 dark:text-gray-300 ml-2">
-            ({taskList.length})
+            ({taskList.filter(c => c.is_complete === true).length}/{taskList.length})
           </span>
         </button>
         <button>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 // import "./Calendar.css";
@@ -19,11 +19,6 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
     ({ start, end }) => {
       setInitialValues({ start, end })
       setShowEventModal(true)
-      // const title = window.prompt('New Event name')
-      // if (title) {
-      //   console.log('### title :', title)
-      //   //   setEvents((prev) => [...prev, { start, end, title }])
-      // }
     },
     []
     // [setEvents]
@@ -37,13 +32,6 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
     []
   )
 
-  const { defaultDate, scrollToTime } = useMemo(
-    () => ({
-      defaultDate: new Date(2015, 3, 12),
-      scrollToTime: new Date(1970, 1, 1, 6),
-    }),
-    []
-  )
   useEffect(() => {
     if (isAuthenticated) {
       loadEvent();
@@ -72,13 +60,12 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
               onSelectEvent={handleSelectEvent}
               onSelectSlot={handleSelectSlot}
               selectable
-              scrollToTime={scrollToTime}
               style={{ height: 768, padding: 24 }}
             />
           </div>
         </div>
       </div>
-      {/*  */}
+      {/* Incoming events */}
       <div className="col-span-4 xl:col-span-1"></div>
     </div>
   );

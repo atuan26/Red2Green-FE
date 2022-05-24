@@ -1,10 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaBitcoin, FaMoneyBill } from "react-icons/fa";
 import { GrTransaction } from "react-icons/gr";
 import Skeleton from "react-loading-skeleton";
 
-const ccxt = window.ccxt;
+// const ccxt = window.ccxt;
 
 const client = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
 

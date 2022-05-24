@@ -53,7 +53,6 @@ export const EventInput = ({
         type={type}
         name={name}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        // placeholder=" "
         required={required}
         autoFocus={autoFocus}
         {...input}
@@ -105,10 +104,10 @@ export const FieldDatePicker = ({
 }) => {
   return (
     <>
-      <label htmlFor={input.name} className="relative block text-sm font-medium text-gray-900 dark:text-gray-400 mr-2">
+      <label htmlFor={input.name} className="relative flex items-center text-sm font-medium text-gray-900 dark:text-gray-400 mr-2">
         {label}
         {touched && error && (
-          <span htmlFor={input.name} className="z-20 absolute -bottom-3 -right-24 text-base text-red-500 dark:text-red-500">
+          <span htmlFor={input.name} className="z-20 absolute -right-20 text-xs  text-red-500 dark:text-red-500">
             {error}
           </span>
         )}

@@ -2,9 +2,9 @@ import React from 'react'
 
 
 export class TelegramPost extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
   componentDidMount() {
     const { channel, postID, width, dark, userPic } = this.props;
     // window.TelegramLoginWidget = {
@@ -39,9 +39,9 @@ export class TelegramPost extends React.Component {
 
 
 export class Discussion extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
   componentDidMount() {
     const { channel, postID, width, dark, commentLimit } = this.props;
     // window.TelegramLoginWidget = {

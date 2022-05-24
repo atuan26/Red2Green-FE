@@ -1,5 +1,5 @@
-import { matchSorter } from "match-sorter";
-import { useEffect, useMemo, useState } from "react";
+// import { matchSorter } from "match-sorter";
+import { useMemo, useState } from "react";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import Skeleton from "react-loading-skeleton";
 import { GrStackOverflow } from "react-icons/gr"
@@ -53,7 +53,6 @@ const Table = ({
 			minWidth: 30,
 			width: 200,
 			maxWidth: 400,
-			// Filter: DefaultColumnFilter,
 		}),
 		[]
 	);
@@ -77,7 +76,7 @@ const Table = ({
 		headerGroups,
 		page,
 		prepareRow,
-		setFilter,
+		// setFilter,
 		setAllFilters,
 
 		canPreviousPage,
@@ -106,13 +105,6 @@ const Table = ({
 		useFlexLayout,
 		usePagination,
 	);
-	// const handleFilter = (filtersObjectArray, timeout = 500) => {
-	// 	setairdropLoading(true)
-	// 	setTimeout(() => {
-	// 		setAllFilters(filtersObjectArray);
-	// 		setairdropLoading(false)
-	// 	}, [timeout])
-	// }
 	return (
 		<>
 			{addAirdropModal && (

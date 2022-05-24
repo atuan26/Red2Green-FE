@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { } from 'react'
 import { FiEdit } from 'react-icons/fi'
 import ProfileTab from './ProfileTab'
 
@@ -125,25 +125,25 @@ const Profile = () => {
                 <img className="h-16 w-16 rounded-full mx-auto"
                   src="https://cdn.australianageingagenda.com.au/wp-content/uploads/2015/06/28085920/Phil-Beckett-2-e1435107243361.jpg"
                   alt="" />
-                <a href="#" className="text-main-color">Kojstantin</a>
+                <a href="# " className="text-main-color">Kojstantin</a>
               </div>
               <div className="text-center my-2">
                 <img className="h-16 w-16 rounded-full mx-auto"
                   src="https://widgetwhats.com/app/uploads/2019/11/free-profile-photo-whatsapp-4.png"
                   alt="" />
-                <a href="#" className="text-main-color">James</a>
+                <a href="# " className="text-main-color">James</a>
               </div>
               <div className="text-center my-2">
                 <img className="h-16 w-16 rounded-full mx-auto"
                   src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
                   alt="" />
-                <a href="#" className="text-main-color">Natie</a>
+                <a href="# " className="text-main-color">Natie</a>
               </div>
               <div className="text-center my-2">
                 <img className="h-16 w-16 rounded-full mx-auto"
                   src="https://bucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com/public/images/f04b52da-12f2-449f-b90c-5e4d5e2b1469_361x361.png"
                   alt="" />
-                <a href="#" className="text-main-color">Casey</a>
+                <a href="# " className="text-main-color">Casey</a>
               </div>
             </div>
           </div>

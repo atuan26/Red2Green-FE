@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import {
 	useFlexLayout,
@@ -78,7 +78,7 @@ const Table = ({
 		previousPage,
 		setPageSize,
 		state,
-		visibleColumns,
+		// visibleColumns,
 		preGlobalFilteredRows,
 		setGlobalFilter,
 		state: { pageIndex, pageSize },

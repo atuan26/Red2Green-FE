@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import ReactDOM from "react-dom";
+import { useState, useEffect, useRef } from "react";
+// import ReactDOM from "react-dom";
 
 export function useComponentVisible(initialIsVisible) {
   const [isComponentVisible, setIsComponentVisible] = useState(

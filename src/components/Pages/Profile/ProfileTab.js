@@ -47,7 +47,7 @@ const ProfileTab = () => {
           {tabList.map((tab, i) => (
             <ProfileTabItem
               key={i}
-              currentTab={i == currentTab}
+              currentTab={i === currentTab}
               onClick={() => { if (!tab.disable) setCurrentTab(i); }}
               {...tab}
             />)
@@ -55,7 +55,7 @@ const ProfileTab = () => {
           }
         </ul>
       </div>
-      {tabList.map((tab, i) => <span key={i}>{currentTab == i ? tab.component : null}</span>)}
+      {tabList.map((tab, i) => <span key={i}>{currentTab === i ? tab.component : null}</span>)}
     </div>
   </>
 }
@@ -64,7 +64,7 @@ const ProfileTabItem = ({ label, icon, currentTab, disable, ...props }) => {
   const classNameItem = disable ? "inline-block p-4 rounded-t-lg border-b-2 border-transparent text-gray-400  cursor-not-allowed  dark:text-gray-500" : !currentTab ? "inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" : " inline-block p-4 text-blue-600 rounded-t-lg border-b-2 border-blue-600 active dark:text-blue-500 dark:border-blue-500"
   return <li className="mr-2">
     <a
-      href="#"
+      href="# "
       className={classNameItem}
       {...props}
       onClick={props.onClick}

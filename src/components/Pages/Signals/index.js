@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Table, { } from "./Table";
-import api from "../../../redux/actions";
 import Filter from "./Filter";
 import { connect } from "react-redux";
 import { timeFormat } from "d3-time-format";

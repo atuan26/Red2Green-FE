@@ -4,7 +4,6 @@ import Header from "./components/Layout/Header";
 import Navbar from "./components/Layout/Navbar2";
 // import Footer from "./components/Layout/Footer";
 import Footer from "./components/Layout/Footer/Footer5";
-import Template1 from "./Template/T1";
 
 import Dashboard from "./components/Pages/Dashboard";
 import CalendarEvent from "./components/Pages/Calendar";

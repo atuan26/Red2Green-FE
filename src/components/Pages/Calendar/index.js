@@ -11,6 +11,7 @@ import { loadEvent } from '../../../redux/actions/eventAction';
 import EventModal from "../../Other/Modal/EventModal";
 import { invertColor } from '../../../ultils/convertColor';
 import EventList from './EventList';
+import { MonthEvent, WeekEvent } from './RBCCustomComponent';
 
 
 const localizer = momentLocalizer(moment);
@@ -22,15 +23,25 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
 
   const eventPropGetter = useCallback(
     (event, start, end, isSelected) => {
-      if (event.color) {
+      if (!event.color) {
         var style = {
-          backgroundColor: event.color,
-          color: invertColor(event.color, 1),
+          backgroundColor: "#1c64f2",
+          color: "#fff",
         };
         return {
           style: style
         };
 
+      }
+      else {
+        var style = {
+          backgroundColor: event.color,
+          color: invertColor(event.color, 1),
+        };
+
+        return {
+          style: style
+        };
       }
     },
     []
@@ -99,11 +110,16 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
               startAccessor="start"
               endAccessor="end"
               popup
+              // slotPropGetter={slotPropGetter}
+              components={{
+                month: { event: MonthEvent },
+                // week: { event: WeekEvent },
+                // event: MonthEvent
+              }}
+              // eventPropGetter={eventPropGetter}
 
               onDoubleClickEvent={handleSelectEvent}
               onSelectSlot={handleSelectSlot}
-              eventPropGetter={eventPropGetter}
-              slotPropGetter={slotPropGetter}
 
               selectable
               style={{ height: 800, padding: 24 }}

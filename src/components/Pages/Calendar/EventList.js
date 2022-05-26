@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import eventSvg from './undraw_events_re_98ue.svg';
 import eventSvg2 from "./undraw_schedule_re_2vro.svg"
@@ -8,12 +8,14 @@ dayjs.extend(relativeTime)
 dayjs.extend(calendar)
 
 const EventList = ({ onGoing, eventList }) => {
+  const eventColor = onGoing ? 'yellow-400' : 'blue-500'
+
   if (onGoing)
     eventList.sort(function (a, b) {
       var keyA = new Date(a.end),
         keyB = new Date(b.end);
-      if (keyA < keyB) return 1;
-      if (keyA > keyB) return -1;
+      if (keyA > keyB) return 1;
+      if (keyA < keyB) return -1;
       return 0;
     });
   else
@@ -29,13 +31,21 @@ const EventList = ({ onGoing, eventList }) => {
     <img src={onGoing ? eventSvg : eventSvg2} className="absolute opacity-20 bottom-0 right-0 object-cover h-60" draggable={false} alt="" />
     <div className='h-full shadow-lg rounded-lg bg-white dark:bg-gray-700 overflow-y-scroll overflow-x-hidden p-2'>
 
-      <div className='py-2 px-5 text-xl font-semibold text-gray-600'>{onGoing ? "Ongoing events" : "Upcoming events"}</div>
+      <div
+        className={`mb-4 mt-2 mx-5 px-2 py-1 text-xl font-semibold text-gray-600 border-l-8 border-${eventColor} dark:border-${eventColor}`}
+      >
+        {onGoing ? "Ongoing events" : "Upcoming events"}
+        {onGoing ?
+          <span class="ml-2 bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-200 dark:text-yellow-900">{eventList.length}</span>
+          :
+          <span class="ml-2 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">{eventList.length}</span>
+        }
+      </div>
       <ol
         className="relative border-l border-gray-200 dark:border-gray-700 translate-x-8 mr-12"
       >
         {eventList.map((e, i) => {
-          console.log('### e :', e)
-          return <EventItem event={e} onGoing={onGoing} />
+          return <EventItem key={i} event={e} onGoing={onGoing} />
         })}
       </ol>
 
@@ -44,7 +54,17 @@ const EventList = ({ onGoing, eventList }) => {
 }
 
 const EventItem = ({ onGoing, event: { title, start, end, allDay, color, description } }) => {
+  const [relativeTime, setRelativeTime] = useState(onGoing ? "end " + dayjs(end).fromNow() : "start " + dayjs(start).fromNow())
   const eventColor = onGoing ? 'yellow' : 'blue'
+  useEffect(() => {
+    const relativeTimeInterval = setInterval(() => {
+      setRelativeTime(onGoing ? "end " + dayjs(end).fromNow() : "start " + dayjs(start).fromNow())
+    }, 60000);
+
+    return () => {
+      clearInterval(relativeTimeInterval)
+    }
+  }, [])
   return <li className="mb-2 ml-6">
     <span className={`flex absolute -left-3 justify-center items-center w-6 h-6 bg-${eventColor}-200 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-${eventColor}-900`}>
       <svg
@@ -53,7 +73,7 @@ const EventItem = ({ onGoing, event: { title, start, end, allDay, color, descrip
     </span>
     <h3 className="mb-1 text-lg font-semibold text-gray-900 dark:text-white -translate-y-[2px]">{title}</h3>
     <time className="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-      {onGoing ? "end " + dayjs(start).toNow() : "start " + dayjs(start).fromNow()}
+      {relativeTime}
     </time>
     <p className="text-base font-normal text-gray-500 dark:text-gray-400">{description}</p>
   </li>

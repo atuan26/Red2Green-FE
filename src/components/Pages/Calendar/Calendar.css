@@ -3,6 +3,21 @@
     background-color: #e5e7eb;
 } */
 
-.rbc-event-content:hover {
-    opacity: 0.9;
+/* .rbc-event-label {
+    display: none;
+} */
+
+/* 
+.rbc-today {
+    background-color: ;
+    border-radius: 6px;
+    border: 2px solid #1c64f280 !important;
+} */
+
+.rbc-month-view .rbc-event,
+.rbc-overlay .rbc-event,
+.rbc-month-view .rbc-event.rbc-selected {
+    background-color: transparent;
+    /* padding: 0;
+    margin-bottom: 1px; */
 }

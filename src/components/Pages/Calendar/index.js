@@ -10,9 +10,8 @@ import { loadEvent } from '../../../redux/actions/eventAction';
 
 import EventModal from "../../Other/Modal/EventModal";
 import { invertColor } from '../../../ultils/convertColor';
-import UpcomingEvent from './UpcomingEvent';
+import EventList from './EventList';
 
-import eventSvg from './undraw_events_re_98ue.svg';
 
 const localizer = momentLocalizer(moment);
 
@@ -112,12 +111,9 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
             />
           </div>
         </div>
-        <div className="col-span-4 xl:col-span-1 h-full">
-          <div className='shadow-lg rounded-xl bg-white dark:bg-gray-700 h-full relative'
-          >
-            <img src={`${eventSvg}`} className="absolute opacity-20 bottom-0 -right-12 " draggable={false} alt="" />
-            <UpcomingEvent eventList={eventList.filter(e => e.start > new Date())} />
-          </div>
+        <div className="col-span-4 xl:col-span-1 h-full w-[99%]  flex flex-col gap-4">
+          <EventList onGoing={true} eventList={eventList.filter(e => e.end > new Date() && e.start < new Date())} />
+          <EventList onGoing={false} eventList={eventList.filter(e => e.start > new Date())} />
         </div>
       </div>
     </div>

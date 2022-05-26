@@ -11,7 +11,7 @@ import { loadEvent } from '../../../redux/actions/eventAction';
 import EventModal from "../../Other/Modal/EventModal";
 import { invertColor } from '../../../ultils/convertColor';
 import EventList from './EventList';
-import { MonthEvent, WeekEvent } from './RBCCustomComponent';
+import { MonthEvent, WeekEvent, WeekHeader } from './RBCCustomComponent';
 
 
 const localizer = momentLocalizer(moment);
@@ -113,7 +113,10 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
               // slotPropGetter={slotPropGetter}
               components={{
                 month: { event: MonthEvent },
-                // week: { event: WeekEvent },
+                week: {
+                  event: WeekEvent,
+                  header: WeekHeader
+                },
                 // event: MonthEvent
               }}
               // eventPropGetter={eventPropGetter}

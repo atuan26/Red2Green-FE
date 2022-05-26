@@ -1,43 +1,60 @@
 import moment from 'moment';
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 export const MonthEvent = ({ event }) => {
+  const color = (alpha = "ff") => event?.color ? event.color + alpha : "#1c64f2" + alpha
   return (
     <div
-      className={`p-[2px] rounded-[4px] hover:!bg-gray-200`}
+      className={`py-[1px] px-2 mb-0.5 rounded-[3px] hover:!bg-gray-200`}
       style={{
-        backgroundColor: event?.color ? event.color + "40" : "#1c64f250",
-        color: '#333',
-        borderLeft: `8px solid ${event?.color || "#1c64f2"}`
+        backgroundColor: color('26'),
+        color: '#777',
+        borderLeft: `5px solid ${color()}`
       }}
-    >
-      <strong>{moment(event.start).format('ha')}</strong> {event.title}
+    >{moment(event.start).format('H:mm ')}
+      <strong className='text-gray-600'>{event.title}</strong>
 
     </div >
   );
 };
 export const WeekEvent = ({ event }) => {
+  const eventEle = useRef()
+  const color = (alpha = "ff") => event?.color ? event.color + alpha : "#1c64f2" + alpha
+  useEffect(() => {
+    eventEle.current.parentElement.parentElement.style.backgroundColor = color('26')
+    eventEle.current.parentElement.parentElement.style.border = "none"
+    eventEle.current.parentElement.parentElement.style.borderLeft = "3px solid " + color()
+    eventEle.current.parentElement.parentElement.style.color = "#777"
+  }, [])
   return (
     <div
-      className={`p-[2px] rounded-[4px] hover:!bg-gray-200`}
+      ref={eventEle}
+      className={`p-[2px] rounded-[4px]  h-full  `}
       style={{
-        backgroundColor: event?.color ? event.color + "40" : "#1c64f250",
+        // backgroundColor: event?.color ? event.color + "40" : "#1c64f250",
         color: '#333',
-        borderLeft: `8px solid ${event?.color || "#1c64f2"}`
+        //   borderLeft: `8px solid ${event?.color || "#1c64f2"}`
       }}
     >
-      {/* {event.allDay
-        ?
-        <></>
-        // <div className='font-semibold'>{moment(event.start).format('H:mm')} – {moment(event.end).format('H:mm')}</div>
-        :
-        <div className='font-semibold'>{moment(event.start).format('H:mm')} – {moment(event.end).format('H:mm')}</div>} */}
       {event.title}
 
     </div >
-    // <div title="1:00 AM – 3:00 AM: test3" class="rbc-event" >
-    //   <div class="rbc-event-label">1:00 AM – 3:00 AM</div>
-    //   <div class="rbc-event-content">test3</div>
-    // </div>
+  );
+};
+
+export const WeekHeader = ({ date, label }) => {
+  const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+  const dayWeek = weekday[date.getDay()].slice(0, 3);
+  const dayMonth = date.getDate()
+  return (
+    <div
+      className='font-normal '
+    >
+      {dayWeek}{' '}
+      <strong>
+        {dayMonth}
+      </strong>
+    </div >
   );
 };

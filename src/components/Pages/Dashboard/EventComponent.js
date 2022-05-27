@@ -1,15 +1,11 @@
+import moment from "moment";
 import React from "react";
 import { invertColor } from "../../../ultils/convertColor";
 
 export const EventItem = ({ title, start, end, color, icon, ...props }) => {
   color = color || "#3a82f6";
   const textColor = invertColor(color, 1);
-  const timeStr =
-    (new Date(start).getHours() < 10 ? "0" : "") +
-    new Date(start).getHours() +
-    ":" +
-    (new Date(start).getMinutes() < 10 ? "0" : "") +
-    new Date(start).getMinutes();
+  const timeStr = moment(start).format('H:mm')
 
   return (
     <div

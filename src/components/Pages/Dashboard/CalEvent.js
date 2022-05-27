@@ -5,6 +5,7 @@ import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { AddEventBtn, EventDot, EventItem } from "./EventComponent";
 import { connect } from "react-redux";
 import EventModal from "../../Other/Modal/EventModal";
+import moment from "moment";
 
 const CalendarEvent = ({ eventList }) => {
   const [showEventModal, setShowEventModal] = useState(false);
@@ -51,14 +52,10 @@ const CalendarEvent = ({ eventList }) => {
         />
       </div>
 
-      <div className=" max-h-[550px] overflow-auto shadow-lg rounded-xl w-full p-4 bg-white dark:bg-gray-800 relative no-scrollbar">
+      <div className="shadow-lg rounded-xl w-full p-4 px-6 bg-white dark:bg-gray-800 relative ">
         <div className="w-full flex items-center justify-between mb-4">
           <p className="text-gray-800 dark:text-white text-xl font-medium">
-            {selectedDay.getDate() +
-              "." +
-              (selectedDay.getMonth() + 1) +
-              "." +
-              selectedDay.getFullYear()}
+            {moment(selectedDay).format('YYYY-MM-DD')}
           </p>
           <AddEventBtn
             onClick={() => {
@@ -67,26 +64,28 @@ const CalendarEvent = ({ eventList }) => {
             }}
           />
         </div>
-        {dayEvent.length === 0 && (
-          <p className="text-gray-500 text-xl">No event</p>
-        )}
-        {dayEvent.map((e, i) => (
-          <EventItem
-            key={i}
-            title={e.title}
-            start={e.start}
-            end={e.end}
-            color={e.color}
-            onDoubleClick={() => {
-              setShowEventModal(true);
-              setInitialValues({
-                ...e,
-                start: new Date(e.start),
-                end: new Date(e.end),
-              });
-            }}
-          />
-        ))}
+        <div className=" max-h-[400px] overflow-auto ">
+          {dayEvent.length === 0 && (
+            <p className="text-gray-500 text-xl">No event</p>
+          )}
+          {dayEvent.map((e, i) => (
+            <EventItem
+              key={i}
+              title={e.title}
+              start={e.start}
+              end={e.end}
+              color={e.color}
+              onDoubleClick={() => {
+                setShowEventModal(true);
+                setInitialValues({
+                  ...e,
+                  start: new Date(e.start),
+                  end: new Date(e.end),
+                });
+              }}
+            />
+          ))}
+        </div>
       </div>
       {showEventModal && (
         <EventModal

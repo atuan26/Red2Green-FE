@@ -62,7 +62,8 @@
 .rbc-header,
 .rbc-label,
 .rbc-overlay-header,
-.rbc-agenda-date-cell {
+.rbc-agenda-date-cell,
+.rbc-show-more {
 
     color: #25396f;
 }

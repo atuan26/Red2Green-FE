@@ -47,29 +47,6 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
     []
   )
 
-  const slotPropGetter = useCallback(
-    (date) => ({
-      className: ' ',
-    }),
-    []
-  )
-  const { messages } = useMemo(
-    () => ({
-      messages: {
-        day: <div className='flex items-center gap-2'><BsCalendarDay className='w-4 h-4' />Day</div>,
-        week: <div className='flex items-center gap-2'><BsCalendarWeek className='w-4 h-4' />Week</div>,
-        month: <div className='flex items-center gap-2'><BsCalendarMonth className='w-4 h-4' />Month</div>,
-        next: <div className='flex items-center gap-2'><MdOutlineNavigateNext className='w-[18px] h-[18px]' /></div>,
-        previous: <div className='flex items-center gap-2'><MdOutlineNavigateBefore className='w-[18px] h-[18px]' /></div>,
-        today: <div className='flex items-center gap-2'><MdOutlineToday className='w-4 h-4' />Today</div>,
-        agenda: <div className='flex items-center gap-2'><MdOutlineViewAgenda className='w-4 h-4' />Agenda</div>,
-
-        showMore: (total) => `+${total} more`,
-      },
-    }),
-    []
-  )
-
   const handleSelectSlot = useCallback(
     ({ start, end }) => {
       setInitialValues({ start, end })
@@ -110,7 +87,6 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
               startAccessor="start"
               endAccessor="end"
               popup
-              // slotPropGetter={slotPropGetter}
               components={{
                 month: { event: MonthEvent },
                 week: {
@@ -126,14 +102,11 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
                 toolbar: RBCToolbar
                 // event: MonthEvent
               }}
-              // eventPropGetter={eventPropGetter}
-
               onDoubleClickEvent={handleSelectEvent}
               onSelectSlot={handleSelectSlot}
 
               selectable
               style={{ height: 800, padding: 24 }}
-            // messages={messages}
             />
           </div>
         </div>

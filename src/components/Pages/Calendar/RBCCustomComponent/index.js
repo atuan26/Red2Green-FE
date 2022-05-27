@@ -129,7 +129,7 @@ export const RBCToolbar = (props) => {
       );
     }
     props.onNavigate("prev", newDate);
-  }, [])
+  }, [props.label])
   const goToNext = useCallback(() => {
     let view = viewState;
     let mDate = props.date;
@@ -152,7 +152,7 @@ export const RBCToolbar = (props) => {
       );
     }
     props.onNavigate("next", newDate);
-  }, [])
+  }, [props.label])
 
   const goToToday = useCallback(() => {
     const now = new Date();
@@ -160,19 +160,19 @@ export const RBCToolbar = (props) => {
     props.date.setYear(now.getFullYear());
     props.date.setDate(now.getDate());
     props.onNavigate("current");
-  }, [])
+  }, [props.label])
 
   const goToBackYear = useCallback(() => {
     let mDate = props.date;
     let newDate = new Date(mDate.getFullYear() - 1, mDate.getMonth());
     props.onNavigate("prev", newDate);
-  }, [])
+  }, [props.label])
 
   const goToNextYear = useCallback(() => {
     let mDate = props.date;
     let newDate = new Date(mDate.getFullYear() + 1, mDate.getMonth());
     props.onNavigate("next", newDate);
-  }, [])
+  }, [props.label])
   return (
     <div className="rbc-toolbar">
       <div className="mb-4 flex items-center justify-between w-full">
@@ -244,10 +244,10 @@ const NavigateButton = memo(({ type, onClick }) => {
     5: <HiOutlineChevronDoubleRight className='w-4 h-4' />,
   }))
   return (
-    <button
+    <div
       className="btn  btn-sm flex items-center gap-2 bg-white text-[#1c64f2] !rounded-md border-[1px] border-gray-200 hover:!bg-[#1c64f2] hover:!text-white hover:!border-white hover:!rounded-md focus:!ring-2 focus:!ring-[#1c64f262]"
       onClick={onClick}>
       {btnIcon[type]}
-    </button>
+    </div>
   )
 })

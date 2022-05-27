@@ -10,6 +10,7 @@ import {
 import TaskItem from "./TaskItem";
 import "./TaskList.css";
 import CategoryList from "./CategoryList";
+import TaskListSvg from "./undraw_task_list_6x9d.svg"
 
 const TaskList = ({ currentCategory, categoryList, taskList, addTask }) => {
   const [newTask, setNewTask] = useState("");
@@ -22,8 +23,9 @@ const TaskList = ({ currentCategory, categoryList, taskList, addTask }) => {
     }
   };
   return (
-    <div className="relative  max-h-[550px] overflow-auto no-scrollbar shadow-lg rounded-2xl bg-white dark:bg-gray-700 ">
-      <div className="w-full flex justify-between">
+    <div className="relative max-h-[550px] overflow-auto no-scrollbar shadow-lg rounded-2xl bg-white dark:bg-gray-700 ">
+      <img className="absolute opacity-20 bottom-0 right-0 object-cover h-40" src={TaskListSvg} />
+      <div className="w-full p-2 pb-0 flex justify-between">
         <button
           className="font-bold w-full text-left text-md p-2 text-black dark:text-white hover:text-gray-800"
           onClick={() => setShowCategory(true)}
@@ -66,7 +68,7 @@ const TaskList = ({ currentCategory, categoryList, taskList, addTask }) => {
           categoryList={categoryList}
         />
       )}
-      <ul>
+      <ul className="px-1">
         {taskList.map((task, index) => (
           <TaskItem key={index} index={index} task={task} />
         ))}

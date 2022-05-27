@@ -11,7 +11,7 @@ import { loadEvent } from '../../../redux/actions/eventAction';
 import EventModal from "../../Other/Modal/EventModal";
 import { invertColor } from '../../../ultils/convertColor';
 import EventList from './EventList';
-import { MonthEvent, WeekEvent, WeekHeader } from './RBCCustomComponent';
+import { AgendaEvent, MonthEvent, RBCToolbar, WeekEvent, WeekHeader } from './RBCCustomComponent';
 
 
 const localizer = momentLocalizer(moment);
@@ -117,6 +117,13 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
                   event: WeekEvent,
                   header: WeekHeader
                 },
+                day: {
+                  event: WeekEvent
+                },
+                agenda: {
+                  event: AgendaEvent
+                },
+                toolbar: RBCToolbar
                 // event: MonthEvent
               }}
               // eventPropGetter={eventPropGetter}
@@ -126,7 +133,7 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
 
               selectable
               style={{ height: 800, padding: 24 }}
-              messages={messages}
+            // messages={messages}
             />
           </div>
         </div>

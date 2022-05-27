@@ -184,7 +184,7 @@ function App() {
 		},
 	];
 	return (
-		<div className=" bg-gray-100 dark:bg-gray-800 w-full min-h-screen">
+		<div className="app-background bg-gray-100 dark:bg-gray-800 w-full min-h-screen">
 			{/* <div className="flex items-start justify-between"> */}
 			<Navbar />
 			<div className="absolute left-56 w-[calc(100%-14rem)]  min-h-screen flex flex-col  pl-4 md:p-4 md:space-y-4  max-w-[2560px]">

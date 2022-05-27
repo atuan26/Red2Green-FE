@@ -77,14 +77,14 @@ const Filter = ({ onSubmitFilter, filterQuery, setQuery, resetQuery }) => {
             <div className="-mt-4 col-span-2 md:col-span-3 xl:col-span-4 flex items-center justify-center gap-4 ">
                 <div
                     onClick={resetQuery}
-                    className="flex items-center gap-2 text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-xs px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+                    className="btn btn-sm capitalize text-blue-600 bg-white border-blue-600 hover:bg-blue-500 hover:border-blue-500 hover:text-white"
                 >
                     <IoIosRefresh className="w-5 h-5" />
                     Reset filter
                 </div>
                 <button
                     type="submit"
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 flex items-center  gap-2 ">
+                    className="btn btn-sm  text-white bg-blue-600 border-blue-600 hover:bg-blue-500 capitalize hover:border-blue-500">
                     <MdOutlineManageSearch className="w-6 h-6" />
                     Search
                 </button>

@@ -30,25 +30,37 @@
   --toastify-spinner-color: #616161;
   --toastify-spinner-color-empty-area: #e0e0e0;
 
-  --toastify-color-progress-light: linear-gradient(
-    to right,
-    #4cd964,
-    #5ac8fa,
-    #007aff,
-    #34aadc,
-    #5856d6,
-    #ff2d55
-  );
+  --toastify-color-progress-light: linear-gradient(to right,
+      #4cd964,
+      #5ac8fa,
+      #007aff,
+      #34aadc,
+      #5856d6,
+      #ff2d55);
   --toastify-color-progress-dark: #bb86fc;
   --toastify-color-progress-info: var(--toastify-color-info);
   --toastify-color-progress-success: var(--toastify-color-success);
   --toastify-color-progress-warning: var(--toastify-color-warning);
   --toastify-color-progress-error: var(--toastify-color-error);
 }
+
 .Toastify__toast-container {
   top: 140px;
 }
+
 .Toastify__toast {
   border-radius: 15px;
   min-height: 80px;
+}
+
+.app-background {
+  background-color: rgb(248, 250, 252);
+  background-image: radial-gradient(at 100% 15%, rgb(229, 231, 235) 0, transparent 27%), radial-gradient(at 81% 9%, rgb(243, 232, 255) 0, transparent 74%), radial-gradient(at 14% 54%, rgb(237, 233, 254) 0, transparent 67%), radial-gradient(at 54% 4%, rgb(243, 232, 255) 0, transparent 67%), radial-gradient(at 20% 17%, rgb(34, 211, 238) 0, transparent 51%);
+
+}
+
+.app-background .dark {
+  background-color: rgb(99, 102, 241);
+  background-image: radial-gradient(at 99% 30%, rgb(6, 182, 212) 0, transparent 65%), radial-gradient(at 87% 26%, rgb(15, 23, 42) 0, transparent 71%), radial-gradient(at 21% 33%, rgb(20, 83, 45) 0, transparent 99%), radial-gradient(at 55% 82%, rgb(23, 23, 23) 0, transparent 86%), radial-gradient(at 96% 88%, rgb(87, 83, 78) 0, transparent 28%);
+
 }

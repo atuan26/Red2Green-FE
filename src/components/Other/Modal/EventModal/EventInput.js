@@ -1,8 +1,11 @@
+import { useCallback } from "react";
 import DatePicker from "react-datepicker";
 
-import Select from 'react-select';
+import { MdOutlineNavigateBefore, MdOutlineNavigateNext } from 'react-icons/md';
 import makeAnimated from 'react-select/animated';
 import CreatableSelect from 'react-select/creatable'
+import range from "../../../../ultils/range";
+import { FloatingLabelInput } from "./../../Form"
 
 const animatedComponents = makeAnimated();
 
@@ -43,20 +46,15 @@ export const EventInput = ({
 }) => {
   return (
     <div className={className}>
-      <label
-        htmlFor={name}
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-      >
-        {label}
-      </label>
-      <input
-        type={type}
+      <FloatingLabelInput
+        label={label}
         name={name}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        type={type}
         required={required}
         autoFocus={autoFocus}
         {...input}
-      />{noWaring ||
+      />
+      {noWaring ||
         <p>
           {touched && error && (
             <span className="text-xs text-red-600 dark:text-red-500">
@@ -102,6 +100,71 @@ export const FieldDatePicker = ({
   label,
   meta: { touched, error },
 }) => {
+  const years = range(1990, new Date().getFullYear() + 1, 1);
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const customHeader = useCallback(({
+    date,
+    changeYear,
+    changeMonth,
+    decreaseMonth,
+    increaseMonth,
+    prevMonthButtonDisabled,
+    nextMonthButtonDisabled
+  }) => (
+    <div
+      className="flex justify-between items-center p-2"
+    >
+      <button
+        className="btn btn-sm btn-circle bg-white text-black border-0  hover:bg-gray-200"
+        onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+        <MdOutlineNavigateBefore className="w-6 h-6 text-[#25396f]" />
+      </button>
+      <select
+        className="select select-sm	text-sm w-18 h-9 scale-90"
+        value={date.getFullYear()}
+        onChange={({ target: { value } }) => changeYear(value)}
+      >
+        {years.map(option => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+
+      <select
+        className="select select-sm text-sm w-18 h-9 scale-90"
+        value={months[date.getMonth()]}
+        onChange={({ target: { value } }) =>
+          changeMonth(months.indexOf(value))
+        }
+      >
+        {months.map(option => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+
+      <button
+        className="btn btn-sm btn-circle bg-white text-black border-0 hover:bg-gray-200"
+        onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+        <MdOutlineNavigateNext className="w-6 h-6 text-[#25396f]" />
+      </button>
+    </div>
+  ), [])
   return (
     <>
       <label htmlFor={input.name} className="relative flex items-center text-sm font-medium text-gray-900 dark:text-gray-400 mr-2">
@@ -113,6 +176,7 @@ export const FieldDatePicker = ({
         )}
       </label>
       <DatePicker
+        renderCustomHeader={customHeader}
         selected={input.value || null}
         onChange={input.onChange}
         showTimeInput
@@ -162,21 +226,25 @@ export const SubmitButton = ({ label, disabled, type, ...props }) => {
 
 export const ColorEventInput = ({ input, label, type, color, ...props }) => {
   return (
-    <div>
+    <>
       <input
         className={
-          "mx-4 radio shadow-sm border-2 transition duration-200  checked:bg-blue-600 checked:border-[#2164db] checked:border-4 focus:outline-none"
+          `mx-4 border-transparent shadow-sm border-2 transition duration-300 checked:border-4 checked:border-[${color}50]  
+          checked:ring-1 checked:ring-[${color}]
+          focus:outline-none 
+          checked:scale-110
+          `
         }
-        type={type}
+        type="radio"
+        {...props}
+        {...input}
         style={{
           backgroundColor: color,
           boxSizing: "content-box",
         }}
-        {...input}
-        {...props}
       />
       <label>{label}</label>
-    </div>
+    </>
   );
 };
 

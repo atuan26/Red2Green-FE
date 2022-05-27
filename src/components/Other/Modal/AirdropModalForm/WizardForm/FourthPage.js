@@ -20,8 +20,8 @@ const WizardFormThirdPage = props => {
     { value: 'discord', icon: <FaDiscord className='inline w-4 h-4 mr-2 mb-1' />, label: "Discord" },
   ];
   return (
-    <form onSubmit={handleSubmit} className="flex justify-between flex-col rounded-lg px-6 overflow-y-scroll min-h-[60vh]  max-h-[80vh] pb-4 lg:px-8 sm:pb-6 xl:pb-8">
-      <div>
+    <form onSubmit={handleSubmit} className="flex justify-between flex-col rounded-lg px-6 overflow-y-scroll max-h-[80vh] min-h-[60vh] pb-6 ">
+      <div className='mt-4 px-4'>
         <Field label="Requirements" name='information.requirement'
           component={RenderSelectInputCreatable}
           options={options}

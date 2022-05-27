@@ -3,8 +3,6 @@ import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from '
 import { BsCalendarDay, BsCalendarMonth, BsCalendarWeek } from 'react-icons/bs';
 import { MdOutlineNavigateBefore, MdOutlineNavigateNext, MdOutlineToday, MdOutlineViewAgenda } from 'react-icons/md';
 import { HiOutlineChevronDoubleLeft, HiOutlineChevronDoubleRight } from 'react-icons/hi';
-import { usePrevious } from '../../../../Hook';
-import { current } from 'daisyui/colors';
 
 
 export const MonthEvent = ({ event }) => {
@@ -222,11 +220,11 @@ const ButtonTabView = memo(({ type, onClick, isActive }) => {
     'day': <BsCalendarDay className='w-4 h-4' />,
     'agenda': <MdOutlineViewAgenda className='w-4 h-4' />,
   }))
-  const currentViewButtonClass = "btn btn-sm capitalize !border-transparent !bg-[#1c64f2] text-white !px-4 !py-1 !rounded-md hover:opacity-90"
+  const currentViewButtonClass = "btn btn-sm capitalize !border-transparent !bg-[#1c64f2] text-white !px-4 !py-1 !rounded-md hover:opacity-90  duration-300 ease-in-out"
   const otherButtonClass = "capitalize cursor-pointer bg-transparent text-[#1c64f2] px-4 py-1 rounded-md hover:opacity-90"
   return (
     <div
-      className={isActive ? currentViewButtonClass : otherButtonClass}
+      className={(isActive ? currentViewButtonClass : otherButtonClass)}
       onClick={onClick}
     >
       <span className="">

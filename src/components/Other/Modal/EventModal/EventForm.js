@@ -24,8 +24,9 @@ let EventForm = (props) => {
         component={EventInput}
         label="Title"
         autoFocus={true}
+        className="my-2"
       />
-      <div className="flex justify-between items-center !mt-0">
+      <div className="flex justify-between items-center !mt-0 !mb-2">
         <Field
           component={FieldDatePicker}
           name="start"
@@ -39,7 +40,7 @@ let EventForm = (props) => {
           placeholder="YYYY/MM/DD"
         />
       </div>
-      <div className="flex pt-1">
+      <div className="flex pt-1 gap-1">
         <label>Color: </label>
         <Field
           name="color"
@@ -85,7 +86,7 @@ let EventForm = (props) => {
       />
       {error && <strong>{error}</strong>}
       <SubmitButton
-        label={initialValues?.title ? "Save" : "Add"}
+        label={initialValues?.title ? "Save" : "Create"}
         disabled={submitting}
       />
       {initialValues?.id && (

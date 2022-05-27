@@ -1,11 +1,13 @@
-import React, { memo, useState } from "react"
+import React, { memo, useCallback, useState } from "react"
 import { FloatingLabelInput } from "../../Other/Form"
 
+import { MdOutlineNavigateBefore, MdOutlineNavigateNext } from 'react-icons/md';
 import { IoIosRefresh } from "react-icons/io"
 import { MdOutlineManageSearch } from "react-icons/md"
 import ReactDatePicker from "react-datepicker"
 import { connect } from "react-redux"
 import { resetQuery, setQuery } from "../../../redux/actions/signalAction"
+import range from "../../../ultils/range"
 
 const Filter = ({ onSubmitFilter, filterQuery, setQuery, resetQuery }) => {
     console.log('Filter re render');
@@ -14,6 +16,71 @@ const Filter = ({ onSubmitFilter, filterQuery, setQuery, resetQuery }) => {
     const handleChange = (e) => {
         setQuery({ [e.target.name]: e.target.value })
     }
+    const years = range(1990, new Date().getFullYear() + 1, 1);
+    const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+    const customHeader = useCallback(({
+        date,
+        changeYear,
+        changeMonth,
+        decreaseMonth,
+        increaseMonth,
+        prevMonthButtonDisabled,
+        nextMonthButtonDisabled
+    }) => (
+        <div
+            className="flex justify-between items-center p-2"
+        >
+            <button
+                className="btn btn-sm btn-circle bg-white text-black border-0  hover:bg-gray-200"
+                onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+                <MdOutlineNavigateBefore className="w-6 h-6 text-[#25396f]" />
+            </button>
+            <select
+                className="select select-sm	text-sm w-18 h-9 scale-90"
+                value={date.getFullYear()}
+                onChange={({ target: { value } }) => changeYear(value)}
+            >
+                {years.map(option => (
+                    <option key={option} value={option}>
+                        {option}
+                    </option>
+                ))}
+            </select>
+
+            <select
+                className="select select-sm text-sm w-18 h-9 scale-90"
+                value={months[date.getMonth()]}
+                onChange={({ target: { value } }) =>
+                    changeMonth(months.indexOf(value))
+                }
+            >
+                {months.map(option => (
+                    <option key={option} value={option}>
+                        {option}
+                    </option>
+                ))}
+            </select>
+
+            <button
+                className="btn btn-sm btn-circle bg-white text-black border-0 hover:bg-gray-200"
+                onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+                <MdOutlineNavigateNext className="w-6 h-6 text-[#25396f]" />
+            </button>
+        </div>
+    ), [])
     return <form
         onSubmit={onSubmitFilter}
         className="w-full  shadow p-5 rounded-lg bg-white mb-4"
@@ -61,6 +128,7 @@ const Filter = ({ onSubmitFilter, filterQuery, setQuery, resetQuery }) => {
             />
             <div>
                 <ReactDatePicker
+                    renderCustomHeader={customHeader}
                     selectsRange={true}
                     startDate={startDate}
                     endDate={endDate}

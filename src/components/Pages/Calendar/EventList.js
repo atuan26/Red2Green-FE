@@ -30,7 +30,6 @@ const EventList = ({ onGoing, eventList }) => {
     });
   return <div className='relative h-1/2'
   >
-    <img src={onGoing ? eventSvg : eventSvg2} className="absolute opacity-20 bottom-0 right-0 object-cover h-60" draggable={false} alt="" />
     <div className='h-full shadow-lg rounded-lg bg-white dark:bg-gray-700 overflow-hidden p-2'>
       <div className='p-6 py-3'>
         <div
@@ -54,6 +53,7 @@ const EventList = ({ onGoing, eventList }) => {
       </div>
 
     </div>
+    <img src={onGoing ? eventSvg : eventSvg2} className="absolute opacity-20 bottom-0 right-0 object-cover h-60 pointer-events-none" alt="" />
   </div >
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 
 const FloatingLabelInput = ({ label, type, name, value, ...props }) => {
-  return <div className="relative z-0 w-full mb-6 group">
+  return <div className="relative z-0 w-full  group">
     <input
       type={type}
       name={name}

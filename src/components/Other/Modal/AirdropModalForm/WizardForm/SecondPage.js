@@ -11,8 +11,8 @@ const renderError = ({ meta: { touched, error } }) =>
 const WizardFormSecondPage = props => {
   const { handleSubmit, previousPage } = props
   return (
-    <form onSubmit={handleSubmit} className="pt-2 flex flex-col justify-between overflow-y-scroll rounded-lg px-6  min-h-[60vh] max-h-[80vh] pb-4 lg:px-8 sm:pb-6 xl:pb-8">
-      <div className=''>
+    <form onSubmit={handleSubmit} className="flex justify-between flex-col rounded-lg px-6 overflow-y-scroll max-h-[80vh] min-h-[60vh] pb-6 ">
+      <div className='mt-4 px-4'>
         <EditableLabelDateField label="Start" name="start" className="mb-4" />
         <EditableLabelDateField label="End" name="end" className="mb-4" />
         <div className='divider' />

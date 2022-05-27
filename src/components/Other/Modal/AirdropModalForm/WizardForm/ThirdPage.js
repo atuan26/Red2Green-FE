@@ -8,31 +8,33 @@ import validate from '../validate'
 const WizardFormThirdPage = props => {
   const { handleSubmit, pristine, previousPage, submitting } = props
   return (
-    <form onSubmit={handleSubmit} className="pt-2 flex justify-between flex-col rounded-lg px-6 overflow-y-scroll min-h-[60vh]  max-h-[80vh] pb-4 lg:px-8 sm:pb-6 xl:pb-8">
-      <Field
-        name="social.telegram_channel"
-        type="text"
-        component={EventInput}
-        label="Telegram Channel"
-      />
-      <Field
-        name="social.twitter"
-        type="text"
-        component={EventInput}
-        label="Twitter"
-      />
-      <Field
-        name="social.facebook"
-        type="text"
-        component={EventInput}
-        label="Facebook"
-      />
-      <Field
-        name="social.medium"
-        type="text"
-        component={EventInput}
-        label="Medium"
-      />
+    <form onSubmit={handleSubmit} className="flex justify-between flex-col rounded-lg px-6 overflow-y-scroll max-h-[80vh] min-h-[60vh] pb-6 ">
+      <div className='mt-4 px-4'>
+        <Field
+          name="social.telegram_channel"
+          type="text"
+          component={EventInput}
+          label="Telegram Channel"
+        />
+        <Field
+          name="social.twitter"
+          type="text"
+          component={EventInput}
+          label="Twitter"
+        />
+        <Field
+          name="social.facebook"
+          type="text"
+          component={EventInput}
+          label="Facebook"
+        />
+        <Field
+          name="social.medium"
+          type="text"
+          component={EventInput}
+          label="Medium"
+        />
+      </div>
       <div className='flex gap-4'>
         <SubmitButton
           type='button'

@@ -24,7 +24,7 @@ const TaskList = ({ currentCategory, categoryList, taskList, addTask }) => {
   };
   return (
     <div className="relative max-h-[550px] overflow-auto no-scrollbar shadow-lg rounded-2xl bg-white dark:bg-gray-700 ">
-      <img className="absolute opacity-20 bottom-0 right-0 object-cover h-40" src={TaskListSvg} />
+      <img className="absolute opacity-20 bottom-0 right-0 object-cover h-40  pointer-events-none" src={TaskListSvg} alt="" />
       <div className="w-full p-2 pb-0 flex justify-between">
         <button
           className="font-bold w-full text-left text-md p-2 text-black dark:text-white hover:text-gray-800"

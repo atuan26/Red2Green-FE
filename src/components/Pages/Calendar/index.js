@@ -1,15 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
-import { MdOutlineNavigateBefore, MdOutlineNavigateNext, MdOutlineToday, MdOutlineViewAgenda } from "react-icons/md"
-import { BsCalendarDay, BsCalendarMonth, BsCalendarWeek } from "react-icons/bs"
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./Calendar.css"
 import { connect } from "react-redux";
 import { loadEvent } from '../../../redux/actions/eventAction';
 
 import EventModal from "../../Other/Modal/EventModal";
-import { invertColor } from '../../../ultils/convertColor';
 import EventList from './EventList';
 import { AgendaEvent, MonthEvent, RBCToolbar, WeekEvent, WeekHeader } from './RBCCustomComponent';
 
@@ -21,32 +18,6 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
   const [initialValues, setInitialValues] = useState({});
 
 
-  const eventPropGetter = useCallback(
-    (event, start, end, isSelected) => {
-      if (!event.color) {
-        var style = {
-          backgroundColor: "#1c64f2",
-          color: "#fff",
-        };
-        return {
-          style: style
-        };
-
-      }
-      else {
-        var style = {
-          backgroundColor: event.color,
-          color: invertColor(event.color, 1),
-        };
-
-        return {
-          style: style
-        };
-      }
-    },
-    []
-  )
-
   const handleSelectSlot = useCallback(
     ({ start, end }) => {
       setInitialValues({ start, end })
@@ -55,20 +26,20 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
     []
   )
 
-  const handleSelectEvent = useCallback(
+  const handleDoubleClickEvent = useCallback(
     (event) => {
-      console.log('### event :', event)
-      window.alert(event.title);
+      setInitialValues(event)
+      setShowEventModal(true)
     },
     []
   )
-
 
   useEffect(() => {
     if (isAuthenticated) {
       loadEvent();
     }
   }, [isAuthenticated, loadEvent]);
+
   return (
     <div className=" min-h-screen">
       {showEventModal && (
@@ -77,9 +48,15 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
           close={() => setShowEventModal(false)}
         />
       )}
-      <div className="grid grid-cols-4 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+      <div className=" grid grid-cols-4 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
         <div className="col-span-4 z-base  xl:col-span-3">
-          <div className=' shadow-lg rounded-2xl bg-white dark:bg-gray-700'>
+          <div className='relative shadow-lg rounded-2xl bg-white dark:bg-gray-700'>
+            <button
+              className='fixed btn btn-circle bg-[#1c64f2] border-0 hover:bg-[#1c64f2dd] bottom-20 right-20 z-20'
+              onClick={() => setShowEventModal(true)}
+            >
+              +
+            </button>
             <Calendar
               localizer={localizer}
               defaultView={"month"}
@@ -102,7 +79,7 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent }) => {
                 toolbar: RBCToolbar
                 // event: MonthEvent
               }}
-              onDoubleClickEvent={handleSelectEvent}
+              onDoubleClickEvent={handleDoubleClickEvent}
               onSelectSlot={handleSelectSlot}
 
               selectable

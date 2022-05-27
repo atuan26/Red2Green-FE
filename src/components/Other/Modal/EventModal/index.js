@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from "react-redux";
 import { addEvent, editEvent } from "../../../../redux/actions/eventAction";
 import EventForm from "./EventForm";
@@ -16,7 +16,7 @@ const EventModal = ({ label, initialValues, close }) => {
                     Edit <strong className='text-gray-600 hover:text-gray-500'>{initialValues.title}</strong>
                   </>
                 ) : (
-                  "Add new event"
+                  "Create new event"
                 )}
               </h3>
               <button

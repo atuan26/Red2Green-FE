@@ -28,7 +28,7 @@ const CalendarEvent = ({ eventList }) => {
   return (
     <>
       <div className="relative col-span-2  shadow-lg stats">
-        <img className="absolute opacity-20 bottom-0 right-0 object-cover h-72" src={ClockSvg} alt="" />
+        <img className="absolute opacity-20 bottom-0 right-0 object-cover h-72  pointer-events-none" src={ClockSvg} alt="" />
         <Calendar
           onChange={onChange}
           value={selectedDay}
@@ -56,7 +56,7 @@ const CalendarEvent = ({ eventList }) => {
       </div>
 
       <div className="shadow-lg rounded-xl w-full p-4 px-6 bg-white dark:bg-gray-800 relative ">
-        <img src={eventSvg} className="absolute opacity-20 bottom-0 right-0 object-cover h-40" draggable={false} alt="" />
+        <img src={eventSvg} className="absolute opacity-20 bottom-0 right-0 object-cover h-40 pointer-events-none" draggable={false} alt="" />
         <div className="w-full flex items-center justify-between mb-4">
           <p className="text-gray-800 dark:text-white text-xl font-medium">
             {moment(selectedDay).format('YYYY-MM-DD')}

@@ -23,9 +23,9 @@ const TaskList = ({ currentCategory, categoryList, taskList, addTask }) => {
     }
   };
   return (
-    <div className="relative max-h-[550px] overflow-auto no-scrollbar shadow-lg rounded-2xl bg-white dark:bg-gray-700 ">
+    <div className="relative max-h-[550px] shadow-lg rounded-2xl bg-white dark:bg-gray-700 overflow-hidden p-2">
       <img className="absolute opacity-20 bottom-0 right-0 object-cover h-40  pointer-events-none" src={TaskListSvg} alt="" />
-      <div className="w-full p-2 pb-0 flex justify-between">
+      <div className="w-full pb-0 flex justify-between">
         <button
           className="font-bold w-full text-left text-md p-2 text-black dark:text-white hover:text-gray-800"
           onClick={() => setShowCategory(true)}
@@ -68,7 +68,7 @@ const TaskList = ({ currentCategory, categoryList, taskList, addTask }) => {
           categoryList={categoryList}
         />
       )}
-      <ul className="px-1">
+      <ul className="p-2 pt-0 overflow-auto  max-h-[500px] ">
         {taskList.map((task, index) => (
           <TaskItem key={index} index={index} task={task} />
         ))}

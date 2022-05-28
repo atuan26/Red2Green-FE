@@ -40,7 +40,7 @@ const TaskItem = ({
     <li
       onDoubleClick={() => setEditingTask(task)}
       onBlur={handleEdit}
-      className="flex items-center hover:text-gray-500  text-gray-600 dark:text-gray-200 justify-between py-3 border-b-2 border-gray-100 dark:border-gray-800"
+      className="flex items-center hover:text-gray-500  text-gray-600 dark:text-gray-200 justify-between py-2 border-b-2 border-gray-100 dark:border-gray-800"
     >
       {editingTask.id === task.id ? (
         <input

@@ -16,7 +16,7 @@ const CategoryList = ({
         >
           {category.title || "Choose category:"}
         </div>
-        <ul className="overflow-auto h-[calc(100%-40px)] no-scrollbar">
+        <ul className="overflow-auto h-[calc(100%-40px)] ">
           <CategoryItem
             name="All"
             setCate={() => {
@@ -47,7 +47,7 @@ const CategoryList = ({
 const CategoryItem = ({ name, setCate }) => (
   <li
     onClick={setCate}
-    className="items-center text-gray-600 dark:text-gray-200 justify-between py-1 cursor-pointer hover:text-gray-800 hover:bg-gray-200 border-y-2 border-gray-100 dark:border-gray-800"
+    className="items-center text-gray-600 dark:text-gray-200 justify-between py-1 cursor-pointer hover:text-gray-800 hover:bg-gray-200 border-y-[1px] border-gray-100 dark:border-gray-800"
   >
     {name}
   </li>

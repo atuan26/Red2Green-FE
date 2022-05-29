@@ -1,33 +1,39 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import { FiClock } from "react-icons/fi"
 import { GiSandsOfTime } from "react-icons/gi"
 import eventSvg from './undraw_events_re_98ue.svg';
 import eventSvg2 from "./undraw_schedule_re_2vro.svg"
+import { usePrevious } from "./../../../hooks/index.js"
 var calendar = require('dayjs/plugin/calendar')
 var relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 dayjs.extend(calendar)
 
-const EventList = ({ onGoing, eventList }) => {
+const EventList = (props) => {
+  const { onGoing, eventList } = props
   const eventColor = onGoing ? 'yellow-400' : 'blue-500'
-
-  if (onGoing)
-    eventList.sort(function (a, b) {
+  let eventTypeList = []
+  if (onGoing) {
+    eventTypeList = eventList.filter(e => e.end > new Date() && e.start < new Date())
+    eventTypeList.sort(function (a, b) {
       var keyA = new Date(a.end),
         keyB = new Date(b.end);
       if (keyA > keyB) return 1;
       if (keyA < keyB) return -1;
       return 0;
-    });
-  else
-    eventList.sort(function (a, b) {
+    })
+  }
+  else {
+    eventTypeList = eventList.filter(e => e.start > new Date())
+    eventTypeList.sort(function (a, b) {
       var keyA = new Date(a.start),
         keyB = new Date(b.start);
       if (keyA < keyB) return -1;
       if (keyA > keyB) return 1;
       return 0;
     });
+  }
   return <div className='relative h-1/2'
   >
     <div className='h-full shadow-lg rounded-lg bg-white dark:bg-gray-700 overflow-hidden p-2'>
@@ -37,9 +43,9 @@ const EventList = ({ onGoing, eventList }) => {
         >
           {onGoing ? "Ongoing events" : "Upcoming events"}
           {onGoing ?
-            <span class="ml-2 bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-200 dark:text-yellow-900">{eventList.length}</span>
+            <span class="ml-2 bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-200 dark:text-yellow-900">{eventTypeList.length}</span>
             :
-            <span class="ml-2 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">{eventList.length}</span>
+            <span class="ml-2 bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">{eventTypeList.length}</span>
           }
         </div>
         {onGoing || <div className=' text-gray-500  '>Don't miss scheduled events</div>}
@@ -47,7 +53,7 @@ const EventList = ({ onGoing, eventList }) => {
       <div
         className="px-5 ml-2 max-h-[300px] overflow-x-visible overflow-y-auto "
       >
-        {eventList.map((e, i) => {
+        {eventTypeList.map((e, i) => {
           return <EventItem key={i} event={e} onGoing={onGoing} />
         })}
       </div>
@@ -58,6 +64,7 @@ const EventList = ({ onGoing, eventList }) => {
 }
 
 const EventItem = ({ onGoing, event: { title, start, end, allDay, color, description } }) => {
+  console.log('### rerender2 :',)
   const [relativeTime, setRelativeTime] = useState(onGoing ?
     <><GiSandsOfTime className='w-4 h-4' />end {dayjs(end).fromNow()}</>
     :
@@ -93,4 +100,4 @@ const EventItem = ({ onGoing, event: { title, start, end, allDay, color, descrip
 }
 
 
-export default EventList
+export default memo(EventList)

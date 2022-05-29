@@ -4,12 +4,11 @@ import { BsCalendarDay, BsCalendarMonth, BsCalendarWeek } from 'react-icons/bs';
 import { MdOutlineNavigateBefore, MdOutlineNavigateNext, MdOutlineToday, MdOutlineViewAgenda } from 'react-icons/md';
 import { HiOutlineChevronDoubleLeft, HiOutlineChevronDoubleRight } from 'react-icons/hi';
 
-
 export const MonthEvent = ({ event }) => {
-  const color = (alpha = "ff") => event?.color ? event.color + alpha : "#1c64f2" + alpha
+  const color = useCallback((alpha = "ff") => event?.color ? event.color + alpha : "#1c64f2" + alpha, [])
   return (
     <div
-      className={`py-[1px] px-2 mb-0.5 rounded-[3px] hover:!bg-gray-200`}
+      className={`popUpButton py-[1px] px-2 mb-0.5 rounded-[3px] hover:!bg-gray-200`}//popUpButton accessed to close popup
       style={{
         backgroundColor: color('26'),
         color: '#777',
@@ -17,10 +16,11 @@ export const MonthEvent = ({ event }) => {
       }}
     >{moment(event.start).format('H:mm ')}
       <strong className='text-gray-600'>{event.title}</strong>
-
     </div >
   );
 };
+
+
 export const WeekEvent = ({ event }) => {
   const eventEle = useRef()
   const color = (alpha = "ff") => event?.color ? event.color + alpha : "#1c64f2" + alpha
@@ -87,6 +87,7 @@ export const AgendaEvent = ({ event }) => {
 
 
 export const RBCToolbar = (props) => {
+  const { label } = props
   const [viewState, setViewState] = useState("month");
   const goToDayView = useCallback(() => {
     props.onView("day");
@@ -127,7 +128,7 @@ export const RBCToolbar = (props) => {
       );
     }
     props.onNavigate("prev", newDate);
-  }, [props.label])
+  }, [label])
   const goToNext = useCallback(() => {
     let view = viewState;
     let mDate = props.date;
@@ -150,7 +151,7 @@ export const RBCToolbar = (props) => {
       );
     }
     props.onNavigate("next", newDate);
-  }, [props.label])
+  }, [label])
 
   const goToToday = useCallback(() => {
     const now = new Date();
@@ -158,19 +159,19 @@ export const RBCToolbar = (props) => {
     props.date.setYear(now.getFullYear());
     props.date.setDate(now.getDate());
     props.onNavigate("current");
-  }, [props.label])
+  }, [label])
 
   const goToBackYear = useCallback(() => {
     let mDate = props.date;
     let newDate = new Date(mDate.getFullYear() - 1, mDate.getMonth());
     props.onNavigate("prev", newDate);
-  }, [props.label])
+  }, [label])
 
   const goToNextYear = useCallback(() => {
     let mDate = props.date;
     let newDate = new Date(mDate.getFullYear() + 1, mDate.getMonth());
     props.onNavigate("next", newDate);
-  }, [props.label])
+  }, [label])
   return (
     <div className="rbc-toolbar">
       <div className="mb-4 flex items-center justify-between w-full">
@@ -182,7 +183,7 @@ export const RBCToolbar = (props) => {
           <NavigateButton type={5} onClick={goToNextYear} />
         </div>
         <div className='text-2xl text-[#25396f] font-semibold'>
-          {props.label}{' '}
+          {label}{' '}
           {("week" === viewState || 'day' === viewState) && moment(props.date).format(', YYYY')}
         </div>
         <div className="bg-[#1c64f226] rounded-md flex gap-2 p-1">
@@ -219,7 +220,7 @@ const ButtonTabView = memo(({ type, onClick, isActive }) => {
     'week': <BsCalendarWeek className='w-4 h-4' />,
     'day': <BsCalendarDay className='w-4 h-4' />,
     'agenda': <MdOutlineViewAgenda className='w-4 h-4' />,
-  }))
+  }), [])
   const currentViewButtonClass = "btn btn-sm capitalize !border-transparent !bg-[#1c64f2] text-white !px-4 !py-1 !rounded-md hover:opacity-90  duration-300 ease-in-out"
   const otherButtonClass = "capitalize cursor-pointer bg-transparent text-[#1c64f2] px-4 py-1 rounded-md hover:opacity-90"
   return (
@@ -240,7 +241,7 @@ const NavigateButton = memo(({ type, onClick }) => {
     3: <MdOutlineToday className='w-4 h-4' />,
     4: <MdOutlineNavigateNext className='w-4 h-4' />,
     5: <HiOutlineChevronDoubleRight className='w-4 h-4' />,
-  }))
+  }), [])
   return (
     <div
       className="btn  btn-sm flex items-center gap-2 bg-white text-[#1c64f2] !rounded-md border-[1px] border-gray-200 hover:!bg-[#1c64f2] hover:!text-white hover:!border-white hover:!rounded-md focus:!ring-2 focus:!ring-[#1c64f262]"

@@ -28,7 +28,6 @@ export const loadEvent = () => {
 };
 
 export const addEvent = (payload, dispatch) => {
-  console.log(payload);
   const addEventSuccess = (payload) => {
     return { type: eventConstants.ADD_EVENT, payload };
   };
@@ -51,7 +50,7 @@ export const addEvent = (payload, dispatch) => {
 
 export const editEvent = (payload, dispatch) => {
   return api
-    .put(`/events/${payload.id}/`, payload)
+    .put(`/events/${payload?.id}/`, payload)
     .then((res) => {
       console.log(res.data);
       toast.success("Event is edited");

@@ -67,3 +67,8 @@
 
     color: #25396f;
 }
+
+/* USE FOR ABSOLUTE DETAILEVENTPOPUP
+.rbc-event-content .rbc-month-view {
+    position: relative;
+} */

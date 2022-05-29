@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { } from "react";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { IoLogOutOutline } from "react-icons/io5"
 import { MdHelpOutline } from "react-icons/md"
@@ -7,7 +7,7 @@ import { CgOrganisation } from "react-icons/cg"
 import { BiUser } from "react-icons/bi"
 // import { RiTeamLine } from "react-icons/ri"
 import { Link } from "react-router-dom";
-import { useComponentVisible } from "../../../Hook";
+import { useComponentVisible } from "../../../hooks";
 
 const HeaderAvatar = ({ username, logout }) => {
   const classNameIcon = 'w-5 h-5 mx-1';
@@ -34,7 +34,7 @@ const HeaderAvatar = ({ username, logout }) => {
         </button>
         {isComponentVisible &&
           <div className=" hover:shadow border  absolute right-0 z-20 w-56 py-2 mt-2 overflow-hidden bg-white rounded-md  dark:bg-gray-800">
-            <a href="#" className="flex items-center p-3 -mt-2 text-sm text-gray-600 transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
+            <a href="# " className="flex items-center p-3 -mt-2 text-sm text-gray-600 transition-colors duration-200 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
               <img className="flex-shrink-0 object-cover mx-1 rounded-full w-9 h-9" src="https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8d29tYW4lMjBibHVlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=face&w=500&q=200" alt="jane avatar" />
               <div className="mx-1">
                 <h1 className="text-sm font-semibold text-gray-700 dark:text-gray-200">Jane Doe</h1>
@@ -94,24 +94,24 @@ const NotifyIcon = () => {
         {isComponentVisible &&
           <div className="absolute right-0 z-20 mt-2 overflow-hidden bg-gray-100 rounded-md shadow-lg w-80 dark:bg-gray-800">
             <div className="py-2">
-              <a href="#" className="flex items-center px-4 py-3 -mx-2 transition-colors duration-200 transform border-b border-gray-100 hover:bg-white dark:hover:bg-gray-700 dark:border-gray-700">
+              <a href="# " className="flex items-center px-4 py-3 -mx-2 transition-colors duration-200 transform border-b border-gray-100 hover:bg-white dark:hover:bg-gray-700 dark:border-gray-700">
                 <img className="flex-shrink-0 object-cover w-8 h-8 mx-1 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80" alt="avatar" />
-                <p className="mx-2 text-sm text-gray-600 dark:text-white"><span className="font-bold" href="#">Sara Salah</span> replied on the <span className="font-bold text-blue-500" href="#">Upload Image</span> artical . 2m</p>
+                <p className="mx-2 text-sm text-gray-600 dark:text-white"><span className="font-bold" href="# ">Sara Salah</span> replied on the <span className="font-bold text-blue-500" href="# ">Upload Image</span> artical . 2m</p>
               </a>
-              <a href="#" className="flex items-center px-4 py-3 -mx-2 transition-colors duration-200 transform border-b  border-gray-100 hover:bg-white dark:hover:bg-gray-700 dark:border-gray-700">
+              <a href="# " className="flex items-center px-4 py-3 -mx-2 transition-colors duration-200 transform border-b  border-gray-100 hover:bg-white dark:hover:bg-gray-700 dark:border-gray-700">
                 <img className="flex-shrink-0 object-cover w-8 h-8 mx-1 rounded-full" src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80" alt="avatar" />
-                <p className="mx-2 text-sm text-gray-600 dark:text-white"><span className="font-bold" href="#">Slick Net</span> start following you . 45m</p>
+                <p className="mx-2 text-sm text-gray-600 dark:text-white"><span className="font-bold" href="# ">Slick Net</span> start following you . 45m</p>
               </a>
-              <a href="#" className="flex items-center px-4 py-3 -mx-2 transition-colors duration-200 transform border-b border-gray-100 hover:bg-white dark:hover:bg-gray-700 dark:border-gray-700">
+              <a href="# " className="flex items-center px-4 py-3 -mx-2 transition-colors duration-200 transform border-b border-gray-100 hover:bg-white dark:hover:bg-gray-700 dark:border-gray-700">
                 <img className="flex-shrink-0 object-cover w-8 h-8 mx-1 rounded-full" src="https://images.unsplash.com/photo-1450297350677-623de575f31c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80" alt="avatar" />
-                <p className="mx-2 text-sm text-gray-600 dark:text-white"><span className="font-bold" href="#">Jane Doe</span> Like Your reply on <span className="font-bold text-blue-500" href="#">Test with TDD</span> artical . 1h</p>
+                <p className="mx-2 text-sm text-gray-600 dark:text-white"><span className="font-bold" href="# ">Jane Doe</span> Like Your reply on <span className="font-bold text-blue-500" href="# ">Test with TDD</span> artical . 1h</p>
               </a>
-              <a href="#" className="flex items-center px-4 py-3 -mx-2 transition-colors duration-200 transform hover:bg-white dark:hover:bg-gray-700">
+              <a href="# " className="flex items-center px-4 py-3 -mx-2 transition-colors duration-200 transform hover:bg-white dark:hover:bg-gray-700">
                 <img className="flex-shrink-0 object-cover w-8 h-8 mx-1 rounded-full" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=398&q=80" alt="avatar" />
-                <p className="mx-2 text-sm text-gray-600 dark:text-white"><span className="font-bold" href="#">Abigail Bennett</span> start following you . 3h</p>
+                <p className="mx-2 text-sm text-gray-600 dark:text-white"><span className="font-bold" href="# ">Abigail Bennett</span> start following you . 3h</p>
               </a>
             </div>
-            <a href="#" className="block py-2 font-bold text-center text-white bg-gray-800 dark:bg-gray-700 hover:underline">See all notifications</a>
+            <a href="# " className="block py-2 font-bold text-center text-white bg-gray-800 dark:bg-gray-700 hover:underline">See all notifications</a>
           </div>
         }
       </div>

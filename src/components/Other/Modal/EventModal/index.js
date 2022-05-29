@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { addEvent, editEvent } from "../../../../redux/actions/eventAction";
 import EventForm from "./EventForm";
 
-const EventModal = ({ label, initialValues, close }) => {
+const EventModal = ({ initialValues, close }) => {
   return (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">

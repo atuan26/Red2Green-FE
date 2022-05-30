@@ -4,6 +4,7 @@ import { reducer as reduxFormReducer } from "redux-form";
 import eventReducer from "./eventReducer";
 import taskReducer from "./taskRuducer";
 import signalReducer from "./signalReducer";
+import notiReducer from "./notiReducer";
 
 const appReducer = combineReducers({
   form: reduxFormReducer,
@@ -11,6 +12,7 @@ const appReducer = combineReducers({
   event: eventReducer,
   task: taskReducer,
   signal: signalReducer,
+  noti: notiReducer,
 });
 
 const rootReducer = (state, action) => {

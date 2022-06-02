@@ -17,6 +17,7 @@ import {
 } from "./RBCCustomComponent";
 import EventDetailPopup from "./EventDetailPopup";
 import { relativeOffsetPosition } from "../../../ultils/relativeOffsetPosition";
+import { usePrevious } from "../../../ultils/hooks";
 
 const localizer = momentLocalizer(moment);
 
@@ -29,6 +30,9 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent, deleteEvent }) => {
   });
 
   const [showEventDetailPopup, setShowEventDetailPopup] = useState({});
+  const showEventDetailPopupPre = usePrevious(showEventDetailPopup);
+  console.log("### showEventDetailPopup :", showEventDetailPopupPre);
+
   function isDescendant(parent, child) {
     var node = child.parentElement;
     while (node !== null) {
@@ -42,7 +46,6 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent, deleteEvent }) => {
 
   useEffect(() => {
     const checkClickInside = (event) => {
-      console.log(!event?.target?.className.includes("popUpButton"));
       const isOtherPopupButton =
         event?.target?.className.includes("popUpButton") ||
         event?.target?.parentElement?.className.includes("popUpButton");
@@ -51,7 +54,6 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent, deleteEvent }) => {
         showEventDetailPopup?.event &&
         !isOtherPopupButton
       ) {
-        console.log("Popup closed");
         setShowEventDetailPopup({});
       }
     };
@@ -63,9 +65,10 @@ const MyCalendar = ({ eventList, isAuthenticated, loadEvent, deleteEvent }) => {
     };
   }, [showEventDetailPopup]);
 
-  const handleSelectSlot = useCallback(({ start, end }) => {
+  const handleSelectSlot = ({ start, end }) => {
     setShowEventModal({ show: true, initValues: { start, end } });
-  }, []);
+  };
+  // [showEventDetailPopupPre]
 
   const handleDoubleClickEvent = useCallback((event) => {
     setShowEventModal({ show: true, initValues: event });

@@ -7,6 +7,13 @@ export const airdropConstants = {
   ADD_AIRDROP: "ADD_AIRDROP",
   EDIT_AIRDROP: "EDIT_AIRDROP",
   DELETE_AIRDROP: "DELETE_AIRDROP",
+
+  SET_LOADING_AIRDROP: "SET_LOADING_AIRDROP",
+  SET_LOADING_FORM: "SET_LOADING_FORM",
+
+  SHOW_AIRDROP_DETAIL_MODAL: "SHOW_AIRDROP_DETAIL_MODAL",
+  SHOW_AIRDROP_FORM_MODAL: "SHOW_AIRDROP_FORM_MODAL",
+  CLOSE_MODAL: "CLOSE_MODAL",
 };
 
 export const loadAirdrop = () => {
@@ -18,7 +25,7 @@ export const loadAirdrop = () => {
       .get("/airdrops/")
       .then((res) => {
         dispatch(loadAirdropSuccess(res.data));
-        toast.success("Airdrop loaded!");
+        // toast.success("Airdrop loaded!");
       })
       .catch((err) => {
         console.log(err);
@@ -28,27 +35,28 @@ export const loadAirdrop = () => {
 };
 
 export const addAirdrop = (payload, dispatch) => {
+  console.log("payload", payload);
   let values = {
     ...payload,
     information: {
       ...payload.information,
-      requirement: payload.information.requirement.map((r) =>
-      ({
-        value: r.value, label: r.label
-      })
-      )
-    }
-  }
-  console.log('values', values);
+      requirement: payload?.information?.requirement?.map((r) => ({
+        value: r.value,
+        label: r.label,
+      })),
+    },
+  };
+  console.log("values", values);
   return api
     .post("/airdrops/", values)
     .then((res) => {
       console.log(res.data);
       toast.success("New airdrop added");
       dispatch(reset("airdropForm"));
+      dispatch(loadAirdrop());
     })
     .catch((err) => {
-      console.log(err)
+      console.log(err);
       toast.error("Error when adding airdrops.");
       throw new SubmissionError({
         _error: "Add failed!",

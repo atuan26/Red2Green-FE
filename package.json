@@ -29,7 +29,7 @@
     "react-select": "^5.2.2",
     "react-stockcharts": "^0.7.8",
     "react-table": "^7.7.0",
-    "react-toastify": "^4.0.0",
+    "react-toastify": "^9.0.3",
     "redux": "^4.1.2",
     "redux-form": "^8.3.8",
     "redux-logger": "^3.0.6",

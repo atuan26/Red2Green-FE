@@ -1,29 +1,25 @@
-
 import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Chart, ChartCanvas, ZoomButtons } from "react-stockcharts";
-import { Annotate, buyPath, Label, SvgPathAnnotation } from "react-stockcharts/lib/annotation";
+import {
+  Annotate,
+  buyPath,
+  Label,
+  SvgPathAnnotation,
+} from "react-stockcharts/lib/annotation";
 import { XAxis, YAxis } from "react-stockcharts/lib/axes";
 import {
   CrossHairCursor,
   MouseCoordinateX,
-  MouseCoordinateY
+  MouseCoordinateY,
 } from "react-stockcharts/lib/coordinates";
 import { fitWidth } from "react-stockcharts/lib/helper";
 import { discontinuousTimeScaleProvider } from "react-stockcharts/lib/scale";
-import {
-  BarSeries,
-  CandlestickSeries
-} from "react-stockcharts/lib/series";
-import {
-  OHLCTooltip
-} from "react-stockcharts/lib/tooltip";
+import { BarSeries, CandlestickSeries } from "react-stockcharts/lib/series";
+import { OHLCTooltip } from "react-stockcharts/lib/tooltip";
 import { last, head } from "react-stockcharts/lib/utils";
-
-
-
 
 const ccxt = window.ccxt;
 
@@ -38,53 +34,66 @@ const candlesAppearance = {
   candleStrokeWidth: 1,
   widthRatio: 0.8,
   opacity: 0.8,
-  clip: false
-}
+  clip: false,
+};
 
-const ChartComponent = ({ symbol = "BTCUSDT", exchange = "binance", since, timeframe = '15m', width }) => {
-  const [data, setData] = useState()
-  const preTime = 1 * 1000 * 60 * 60 * 12
-  const time = new Date(since).getTime() - preTime
-  console.log('### Re render :', symbol)
+const ChartComponent = ({
+  symbol = "BTCUSDT",
+  exchange = "binance",
+  since,
+  timeframe = "15m",
+  width,
+}) => {
+  const [data, setData] = useState();
+  const preTime = 1 * 1000 * 60 * 60 * 12;
+  const time = new Date(since).getTime() - preTime;
+  console.log("### Re render :", symbol);
   useEffect(() => {
-    let exc = new ccxt[exchange]()
+    let exc = new ccxt[exchange]();
 
-    const fetch = (async () => {
-      let btc = (await exc.fetchOHLCV(symbol, timeframe, time, 200))
+    const fetch = async () => {
+      let btc = await exc.fetchOHLCV(symbol, timeframe, time, 200);
       btc = btc.map((b, i) => {
-        let [date, open, high, low, close, volume] = b
-        date = new Date(date)
-        return { date, open, high, low, close, volume }
-      })
-      setData(btc)
-    })
-    fetch()
+        let [date, open, high, low, close, volume] = b;
+        date = new Date(date);
+        return { date, open, high, low, close, volume };
+      });
+      setData(btc);
+    };
+    fetch();
     // const fetchID = setInterval(() => { fetch() }, 2000)
     // return () => { clearInterval(fetchID) }
-  }, [])
-
+  }, []);
 
   if (data == null) {
-    return <><Skeleton height="400px" width="100%" /></>
+    return (
+      <>
+        <Skeleton height="400px" width="100%" />
+      </>
+    );
   }
-  return < Chart2 label={`${symbol} ${timeframe} (${exchange}) `} width={width} data={data} since={new Date(since).getTime()} />
-}
-
+  return (
+    <Chart2
+      label={`${symbol} ${timeframe} (${exchange}) `}
+      width={width}
+      data={data}
+      since={new Date(since).getTime()}
+    />
+  );
+};
 
 let Chart2 = (props) => {
   const { label, data: initialData, width, ratio, since } = props;
 
-  const xScaleProvider = discontinuousTimeScaleProvider
-    .inputDateAccessor(d => d.date);
-  const {
-    data,
-    xScale,
-    xAccessor,
-    displayXAccessor,
-  } = xScaleProvider(initialData);
+  const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(
+    (d) => d.date
+  );
+  const { data, xScale, xAccessor, displayXAccessor } =
+    xScaleProvider(initialData);
   const postDate = {
     onClick: console.log.bind(console),
-    y: ({ yScale, datum }) => datum.close > datum.open ? yScale(datum.open) : yScale(datum.close),
+    y: ({ yScale, datum }) =>
+      datum.close > datum.open ? yScale(datum.open) : yScale(datum.close),
     fill: "#86198F",
     opacity: 0.7,
     path: buyPath,
@@ -92,19 +101,20 @@ let Chart2 = (props) => {
   };
 
   const start = xAccessor(head(data));
-  const end = data.length > 100 ? xAccessor(data[50]) : xAccessor(data[data.length - 1])
+  const end =
+    data.length > 100 ? xAccessor(data[50]) : xAccessor(data[data.length - 1]);
   if (end === undefined) return <>No data</>;
   const xExtents = [start, end];
 
-
-  const margin = { left: 50, right: 50, top: 10, bottom: 30 }
+  const margin = { left: 50, right: 50, top: 10, bottom: 30 };
 
   return (
-    <ChartCanvas height={400}
+    <ChartCanvas
+      height={400}
       ratio={ratio}
       width={width || 600}
       margin={margin}
-      type='svg'
+      type="svg"
       seriesName="MSFT"
       data={data}
       xScale={xScale}
@@ -113,40 +123,65 @@ let Chart2 = (props) => {
       xExtents={xExtents}
       padding={{
         left: 0,
-        right: 0
+        right: 0,
       }}
     >
-      <Label x={(width - margin.left - margin.right) / 2} y={30}
-        fontSize={30} text={label} />
-      <Chart id={1} height={300} yExtents={d => [d.high, d.low]} >
-        <YAxis axisAt="left" orient="left" ticks={5}
+      <Label
+        // x={(width - margin.left - margin.right) / 2}
+        x={300}
+        y={30}
+        fontSize={30}
+        text={label}
+      />
+      <Chart id={1} height={300} yExtents={(d) => [d.high, d.low]}>
+        <YAxis
+          axisAt="left"
+          orient="left"
+          ticks={5}
           innerTickSize={-1 * (width - margin.left - margin.right)}
-          tickStrokeDasharray={'Solid'}
+          tickStrokeDasharray={"Solid"}
           tickStrokeOpacity={0.1}
           tickStrokeWidth={1}
         />
         <XAxis axisAt="bottom" orient="bottom" showTicks={false} />
-        <CandlestickSeries  {...candlesAppearance} />
+        <CandlestickSeries {...candlesAppearance} />
         <MouseCoordinateX
           at="bottom"
           orient="bottom"
-          displayFormat={timeFormat("%b %d %H:%M")} />
+          displayFormat={timeFormat("%b %d %H:%M")}
+        />
         <MouseCoordinateY
           at="left"
           orient="left"
-          displayFormat={format(".4s")} />
+          displayFormat={format(".4s")}
+        />
         <OHLCTooltip origin={[10, 0]} />
-        <Annotate with={SvgPathAnnotation}
-          when={d => {
-            const diff = new Date(since).getTime() - d.date.getTime()
-            return diff <= 60 * 15 * 1000 && diff >= 0
+        <Annotate
+          with={SvgPathAnnotation}
+          when={(d) => {
+            const diff = new Date(since).getTime() - d.date.getTime();
+            return diff <= 60 * 15 * 1000 && diff >= 0;
           }}
-          usingProps={postDate} />
+          usingProps={postDate}
+        />
       </Chart>
-      <Chart id={2} origin={(w, h) => [0, h - 50]} height={50} yExtents={d => d.volume}>
+      <Chart
+        id={2}
+        origin={(w, h) => [0, h - 50]}
+        height={50}
+        yExtents={(d) => d.volume}
+      >
         <XAxis axisAt="bottom" orient="bottom" />
-        <YAxis axisAt="left" orient="left" ticks={5} tickFormat={format(".2s")} />
-        <BarSeries yAccessor={d => d.volume} fill={(d) => d.close > d.open ? "#22c55e" : "#ef4444"} />
+        <YAxis
+          axisAt="left"
+          orient="left"
+          ticks={5}
+          tickFormat={format(".2s")}
+        />
+        <BarSeries
+          yAccessor={(d) => d.volume}
+          fill={(d) => (d.close > d.open ? "#22c55e" : "#ef4444")}
+        />
         <ZoomButtons
         // onReset={this.handleReset}
         />
@@ -154,7 +189,7 @@ let Chart2 = (props) => {
       <CrossHairCursor />
     </ChartCanvas>
   );
-}
+};
 Chart2 = fitWidth(Chart2);
 
-export default ChartComponent
+export default ChartComponent;

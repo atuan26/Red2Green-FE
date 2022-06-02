@@ -1,15 +1,22 @@
 import { useCallback } from "react";
 import DatePicker from "react-datepicker";
 
-import { MdOutlineNavigateBefore, MdOutlineNavigateNext } from 'react-icons/md';
-import makeAnimated from 'react-select/animated';
-import CreatableSelect from 'react-select/creatable'
+import { MdOutlineNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
+import makeAnimated from "react-select/animated";
+import CreatableSelect from "react-select/creatable";
 import range from "../../../../ultils/range";
-import { FloatingLabelInput } from "./../../Form"
+import { FloatingLabelInput } from "./../../Form";
 
 const animatedComponents = makeAnimated();
 
-export const RenderSelectInputCreatable = ({ input, options, name, label, placeholder, getOptionLabel }) => (
+export const RenderSelectInputCreatable = ({
+  input,
+  options,
+  name,
+  label,
+  placeholder,
+  getOptionLabel,
+}) => (
   <div>
     <label
       htmlFor={name}
@@ -32,7 +39,7 @@ export const RenderSelectInputCreatable = ({ input, options, name, label, placeh
       getOptionLabel={getOptionLabel}
     />
   </div>
-)
+);
 export const EventInput = ({
   input,
   name,
@@ -54,14 +61,15 @@ export const EventInput = ({
         autoFocus={autoFocus}
         {...input}
       />
-      {noWaring ||
+      {noWaring || (
         <p>
           {touched && error && (
             <span className="text-xs text-red-600 dark:text-red-500">
               {error}
             </span>
           )}
-        </p>}
+        </p>
+      )}
     </div>
   );
 };
@@ -73,6 +81,7 @@ export const EventTextArea = ({
   type,
   rows,
   className,
+  placeholder,
   meta: { touched, error },
 }) => {
   return (
@@ -87,7 +96,7 @@ export const EventTextArea = ({
         name={name}
         rows={rows || 4}
         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder="Description"
+        placeholder={placeholder}
         {...input}
       ></textarea>
     </div>
@@ -115,62 +124,73 @@ export const FieldDatePicker = ({
     "November",
     "December",
   ];
-  const customHeader = useCallback(({
-    date,
-    changeYear,
-    changeMonth,
-    decreaseMonth,
-    increaseMonth,
-    prevMonthButtonDisabled,
-    nextMonthButtonDisabled
-  }) => (
-    <div
-      className="flex justify-between items-center p-2"
-    >
-      <button
-        className="btn btn-sm btn-circle bg-white text-black border-0  hover:bg-gray-200"
-        onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
-        <MdOutlineNavigateBefore className="w-6 h-6 text-[#25396f]" />
-      </button>
-      <select
-        className="select select-sm	text-sm w-18 h-9 scale-90"
-        value={date.getFullYear()}
-        onChange={({ target: { value } }) => changeYear(value)}
-      >
-        {years.map(option => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+  const customHeader = useCallback(
+    ({
+      date,
+      changeYear,
+      changeMonth,
+      decreaseMonth,
+      increaseMonth,
+      prevMonthButtonDisabled,
+      nextMonthButtonDisabled,
+    }) => (
+      <div className="flex justify-between items-center p-2">
+        <button
+          className="btn btn-sm btn-circle bg-white text-black border-0  hover:bg-gray-200"
+          onClick={decreaseMonth}
+          disabled={prevMonthButtonDisabled}
+        >
+          <MdOutlineNavigateBefore className="w-6 h-6 text-[#25396f]" />
+        </button>
+        <select
+          className="select select-sm	text-sm w-18 h-9 scale-90"
+          value={date.getFullYear()}
+          onChange={({ target: { value } }) => changeYear(value)}
+        >
+          {years.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
 
-      <select
-        className="select select-sm text-sm w-18 h-9 scale-90"
-        value={months[date.getMonth()]}
-        onChange={({ target: { value } }) =>
-          changeMonth(months.indexOf(value))
-        }
-      >
-        {months.map(option => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+        <select
+          className="select select-sm text-sm w-18 h-9 scale-90"
+          value={months[date.getMonth()]}
+          onChange={({ target: { value } }) =>
+            changeMonth(months.indexOf(value))
+          }
+        >
+          {months.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
 
-      <button
-        className="btn btn-sm btn-circle bg-white text-black border-0 hover:bg-gray-200"
-        onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
-        <MdOutlineNavigateNext className="w-6 h-6 text-[#25396f]" />
-      </button>
-    </div>
-  ), [])
+        <button
+          className="btn btn-sm btn-circle bg-white text-black border-0 hover:bg-gray-200"
+          onClick={increaseMonth}
+          disabled={nextMonthButtonDisabled}
+        >
+          <MdOutlineNavigateNext className="w-6 h-6 text-[#25396f]" />
+        </button>
+      </div>
+    ),
+    []
+  );
   return (
     <>
-      <label htmlFor={input.name} className="relative flex items-center text-sm font-medium text-gray-900 dark:text-gray-400 mr-2">
+      <label
+        htmlFor={input.name}
+        className="relative flex items-center text-sm font-medium text-gray-900 dark:text-gray-400 mr-2"
+      >
         {label}
         {touched && error && (
-          <span htmlFor={input.name} className="z-20 absolute -right-20 text-xs  text-red-500 dark:text-red-500">
+          <span
+            htmlFor={input.name}
+            className="z-20 absolute -right-20 text-xs  text-red-500 dark:text-red-500"
+          >
             {error}
           </span>
         )}
@@ -219,7 +239,7 @@ export const SubmitButton = ({ label, disabled, type, ...props }) => {
           />
         </svg>
       )}
-      {label || 'Submit'}
+      {label || "Submit"}
     </button>
   );
 };
@@ -228,13 +248,11 @@ export const ColorEventInput = ({ input, label, type, color, ...props }) => {
   return (
     <>
       <input
-        className={
-          `mx-4 border-transparent shadow-sm border-2 transition duration-300 checked:border-4 checked:border-[${color}50]  
+        className={`mx-4 border-transparent shadow-sm border-2 transition duration-300 checked:border-4 checked:border-[${color}50]  
           checked:ring-1 checked:ring-[${color}]
           focus:outline-none 
           checked:scale-110
-          `
-        }
+          `}
         type="radio"
         {...props}
         {...input}
@@ -252,15 +270,15 @@ const COLORPICKER = ({ input: { value, onChange } }) => (
   <div>
     <button
       type="button"
-      className={value === 'male' ? 'orangeTextButton' : ''}
-      onClick={() => onChange('male')}
+      className={value === "male" ? "orangeTextButton" : ""}
+      onClick={() => onChange("male")}
     >
       Male
     </button>
     <button
       type="button"
-      className={value === 'female' ? 'orangeTextButton' : ''}
-      onClick={() => onChange('female')}
+      className={value === "female" ? "orangeTextButton" : ""}
+      onClick={() => onChange("female")}
     >
       Female
     </button>

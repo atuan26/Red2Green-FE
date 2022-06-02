@@ -2,9 +2,7 @@
 import { toast } from "react-toastify";
 import { SubmissionError } from "redux-form";
 import api from "./index";
-// axios.defaults.baseURL = "http://127.0.0.1:8000/api";
-// // axios.defaults.headers.common["Authorization"] = AUTH_TOKEN;
-// axios.defaults.headers.post["Content-Type"] = "application/json";
+import { CgHello } from "react-icons/cg";
 
 export const authConstants = {
   REGISTER_REQUEST: "REGISTER_REQUEST",
@@ -27,7 +25,9 @@ export const login = (values, dispatch) => {
   return api
     .post("/auth/login/", values)
     .then((res) => {
-      toast.success("Login successfully!");
+      toast(`Hello, ${res.data.user.username} !`, {
+        icon: <CgHello className="w-6 h-6 text-lime-600" />,
+      });
       localStorage.setItem("user", JSON.stringify(res.data));
       dispatch(success(res.data));
     })

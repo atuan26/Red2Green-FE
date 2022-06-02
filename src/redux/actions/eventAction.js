@@ -18,11 +18,11 @@ export const loadEvent = () => {
       .get("/events/")
       .then((res) => {
         dispatch(loadEventSuccess(res.data));
-        toast.success("Event loaded!");
+        // toast.success("Event loaded!");
       })
       .catch((err) => {
         console.log(err);
-        toast.error("Error when loading events.");
+        // toast.error("Error when loading events.");
       });
   };
 };

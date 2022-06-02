@@ -5,10 +5,12 @@ import eventReducer from "./eventReducer";
 import taskReducer from "./taskRuducer";
 import signalReducer from "./signalReducer";
 import notiReducer from "./notiReducer";
+import airdropReducer from "./airdropReducer";
 
 const appReducer = combineReducers({
   form: reduxFormReducer,
   auth: authReducer,
+  airdrop: airdropReducer,
   event: eventReducer,
   task: taskReducer,
   signal: signalReducer,

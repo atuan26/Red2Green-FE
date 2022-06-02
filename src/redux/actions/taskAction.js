@@ -16,7 +16,7 @@ export const loadTask = () => {
       .get("/todos/")
       .then((res) => {
         dispatch({ type: taskConstants.LOAD_TASK, payload: res.data });
-        toast.success("Task loaded!");
+        // toast.success("Task loaded!");
       })
       .catch((err) => {
         console.log(err);

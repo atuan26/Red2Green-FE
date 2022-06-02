@@ -7,8 +7,7 @@ import { FiClock } from "react-icons/fi";
 import { CgDetailsMore } from "react-icons/cg";
 import { GoLocation } from "react-icons/go";
 import moment from "moment";
-import { connect } from "react-redux";
-import { notiConstants } from "../../../redux/actions/notiAction";
+import { showComfirmModal } from "../../../redux/actions/notiAction";
 
 const EventDetailPopup = ({
   data: {
@@ -18,8 +17,6 @@ const EventDetailPopup = ({
     deleteEvent,
     close,
   },
-  showComfirmModal,
-  cancelModal,
   ...props
 }) => {
   const [star, setStar] = useState(false);
@@ -156,9 +153,4 @@ const EventDetailPopup = ({
   );
 };
 
-const mapDispatchtoProps = (dispatch) => ({
-  showComfirmModal: (payload) =>
-    dispatch({ type: notiConstants.SHOW_COMFIRM_MODAL, payload }),
-});
-
-export default connect(null, mapDispatchtoProps)(EventDetailPopup);
+export default EventDetailPopup;

@@ -53,6 +53,7 @@ export const addAirdrop = (payload, dispatch) => {
       console.log(res.data);
       toast.success("New airdrop added");
       dispatch(reset("airdropForm"));
+      dispatch({ type: airdropConstants.CLOSE_MODAL });
       dispatch(loadAirdrop());
     })
     .catch((err) => {

@@ -11,12 +11,14 @@ import {
   airdropConstants,
   loadAirdrop,
 } from "../../../redux/actions/airdropAction";
+import AirdropDetailModal from "./AirdropDetailModal";
 
 const AirdropPage = ({
   isAuthenticated,
   loadAirdrop,
   airdropList,
   showAirdropFormModal,
+  showAirdropDetailModal,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -37,6 +39,14 @@ const AirdropPage = ({
       {
         Header: "Name",
         accessor: "name",
+        Cell: ({ value, row }) => (
+          <span
+            onClick={() => showAirdropDetailModal(row.original)}
+            className="hover:text-blue-600 cursor-pointer"
+          >
+            {value}
+          </span>
+        ),
       },
       {
         Header: "Requirement",
@@ -132,6 +142,7 @@ const AirdropPage = ({
   );
   return (
     <div className="grid grid-cols-4 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6 ">
+      <AirdropDetailModal />
       <div className="col-span-4 z-base xl:col-span-3 ">
         <div className="w-full shadow-lg rounded-lg bg-white mb-4 ">
           <Table
@@ -154,6 +165,11 @@ const mapStateToProps = (state) => ({
 const mapDispatchtoProps = (dispatch) => ({
   loadAirdrop: () => dispatch(loadAirdrop()),
   showAirdropFormModal: (payload) =>
+    dispatch({
+      type: airdropConstants.SHOW_AIRDROP_FORM_MODAL,
+      payload: payload,
+    }),
+  showAirdropDetailModal: (payload) =>
     dispatch({
       type: airdropConstants.SHOW_AIRDROP_DETAIL_MODAL,
       payload: payload,

@@ -139,9 +139,9 @@ const SignalPage = ({
       },
     ];
   }, []);
-  // useEffect(() => {
-  // loadSignal("");
-  // }, [isAuthenticated]);
+  useEffect(() => {
+    loadSignal("");
+  }, [isAuthenticated]);
   return (
     <div className="grid grid-cols-4 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6 ">
       <div className="col-span-4 z-base md:col-span-2 lg:col-span-3">

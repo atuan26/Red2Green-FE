@@ -68,7 +68,7 @@ const EventDetailPopup = ({
       </div>
 
       {/* Content */}
-      <div className="mx-4 my-2">
+      <div className="mx-4 mb-2">
         {/* Title */}
         <div className="flex items-center gap-2 justify-between mx-1 my-2">
           <div className="flex items-center gap-2 ">

@@ -125,7 +125,6 @@ const StepForm = ({ currentPage, pageList, setCurrentPage }) => {
             <>
               <StepCom
                 name={page.name}
-                key={i}
                 icon={page.icon}
                 position={pt}
                 onClick={() => currentPage > i && setCurrentPage(i + 1)}

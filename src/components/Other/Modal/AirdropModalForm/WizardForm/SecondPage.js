@@ -131,7 +131,7 @@ export default reduxForm({
   //   start: new Date(),
   //   task_list: [{ task: "Describe the required task" }],
   // },
-  destroyOnUnmount: true,
+  destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   validate,
 })(WizardFormSecondPage);

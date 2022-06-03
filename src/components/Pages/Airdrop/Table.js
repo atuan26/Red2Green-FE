@@ -1,5 +1,5 @@
 // import { matchSorter } from "match-sorter";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import Skeleton from "react-loading-skeleton";
 import { GrStackOverflow } from "react-icons/gr";
@@ -37,6 +37,16 @@ const Table = ({
     }),
     []
   );
+  const sleep = useCallback(
+    (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+    []
+  );
+  const aysncFilter = useCallback(async (query) => {
+    setAirdropLoading(true);
+    await sleep(300);
+    setAirdropLoading(false);
+    setAllFilters(query);
+  }, []);
   const tableData = useMemo(
     () => (airdropLoading ? Array(50).fill({}) : data.results),
     [airdropLoading, data.results]
@@ -100,28 +110,39 @@ const Table = ({
           New airdrop
         </div>
         <button
-          onClick={() => setAllFilters([])}
+          onClick={async () => {
+            aysncFilter([]);
+          }}
           className="flex items-center  px-4 py-2 text-white rounded-full bg-gray-700 hover:bg-gray-600"
         >
           <GrStackOverflow className="w-5 h-5 text-white inline mr-2" />
           All Airdrops
         </button>
         <button
-          onClick={() => setAllFilters([{ id: "status", value: 1 }])}
+          onClick={() => {
+            // setAllFilters([{ id: "status", value: 1 }]);
+            aysncFilter([{ id: "status", value: 1 }]);
+          }}
           className="flex items-center  px-4 py-2 text-gray-600 rounded-full bg-gray-100 hover:bg-gray-200"
         >
           <GiBoxUnpacking className="w-5 h-5 text-yellow-400 inline mr-2" />
           Ongoing
         </button>
         <button
-          onClick={() => setAllFilters([{ id: "status", value: 2 }])}
+          onClick={() => {
+            // setAllFilters([{ id: "status", value: "2" }]);
+            aysncFilter([{ id: "status", value: "2" }]);
+          }}
           className="flex items-center px-4 py-2 text-gray-600 rounded-full bg-gray-100 hover:bg-gray-200"
         >
           <BiBox className="w-5 h-5 text-red-400 inline mr-2" />
           Ended
         </button>
         <button
-          onClick={() => setAllFilters([{ id: "is_distributed", value: true }])}
+          onClick={() => {
+            setAllFilters([{ id: "is_distributed", value: true }]);
+            aysncFilter([{ id: "is_distributed", value: true }]);
+          }}
           className="flex items-center px-4 py-2 text-gray-600 rounded-full bg-gray-100 hover:bg-gray-200"
         >
           <HiOutlineGift className="w-5 h-5 text-green-400 inline mr-2" />

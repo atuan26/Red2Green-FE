@@ -58,7 +58,7 @@ const WizardFormFirstPage = (props) => {
 
 export default reduxForm({
   form: "airdropForm", // <------ same form name
-  destroyOnUnmount: true,
+  destroyOnUnmount: false,
   initialValues: {
     start: new Date(),
     task_list: [{ task: " " }],

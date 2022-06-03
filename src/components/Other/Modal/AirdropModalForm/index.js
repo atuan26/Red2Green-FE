@@ -47,7 +47,7 @@ const AirdropModalForm = ({ closeModal, modalForm, initialValue }) => {
 
 const mapStateToProps = (state) => ({
   modalForm: state.airdrop.showFormModal,
-  initialValue: state.airdrop.formModal.data,
+  initialValue: state.airdrop.formModal,
 });
 const mapDispatchtoProps = (dispatch) => ({
   closeModal: () => dispatch({ type: airdropConstants.CLOSE_MODAL }),

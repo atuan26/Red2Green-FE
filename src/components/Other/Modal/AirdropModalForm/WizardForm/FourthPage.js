@@ -7,54 +7,11 @@ import {
   SubmitButton,
 } from "../../EventModal/EventInput";
 import validate from "../validate";
-import { MdOutlineContactMail, MdOutlineEmail } from "react-icons/md";
-import { ImPhone } from "react-icons/im";
-import {
-  FaFacebookSquare,
-  FaTelegramPlane,
-  FaTwitterSquare,
-  FaDiscord,
-} from "react-icons/fa";
+import { socialList } from "../../../../../redux/actions/airdropAction";
 
 const WizardFormThirdPage = (props) => {
   const { handleSubmit, pristine, previousPage, submitting } = props;
-  const options = useMemo(() => [
-    {
-      value: "kyc",
-      icon: <MdOutlineContactMail className="inline w-4 h-4 mr-2 mb-1" />,
-      label: "KYC",
-    },
-    {
-      value: "phoneNumber",
-      icon: <ImPhone className="inline w-4 h-4 mr-2 mb-1" />,
-      label: "Phone Number",
-    },
-    {
-      value: "email",
-      icon: <MdOutlineEmail className="inline w-4 h-4 mr-2 mb-1" />,
-      label: "Email",
-    },
-    {
-      value: "telegram",
-      icon: <FaTelegramPlane className="inline w-4 h-4 mr-2 mb-1" />,
-      label: "Telegram",
-    },
-    {
-      value: "twitter",
-      icon: <FaTwitterSquare className="inline w-4 h-4 mr-2 mb-1" />,
-      label: "Twitter",
-    },
-    {
-      value: "facebook",
-      icon: <FaFacebookSquare className="inline w-4 h-4 mr-2 mb-1" />,
-      label: "Facebook",
-    },
-    {
-      value: "discord",
-      icon: <FaDiscord className="inline w-4 h-4 mr-2 mb-1" />,
-      label: "Discord",
-    },
-  ]);
+  const options = useMemo(() => socialList, []);
   return (
     <form className="flex justify-between flex-col rounded-lg px-6 overflow-y-scroll max-h-[80vh] min-h-[60vh] pb-6 ">
       <div className="mt-4 px-4">

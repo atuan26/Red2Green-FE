@@ -1,6 +1,10 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-import { EventInput, SubmitButton } from "../../EventModal/EventInput";
+import {
+  EventInput,
+  EventTextArea,
+  SubmitButton,
+} from "../../EventModal/EventInput";
 import validate from "../validate";
 import renderField from "./renderField";
 
@@ -41,6 +45,13 @@ const WizardFormFirstPage = (props) => {
           component={EventInput}
           label="Winner"
           className="mb-2"
+        />
+        <Field
+          name="description"
+          type="text"
+          component={EventTextArea}
+          label="Airdrop description"
+          rows={3}
         />
       </div>
       <div className="flex gap-4">

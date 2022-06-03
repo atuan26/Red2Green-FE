@@ -47,6 +47,7 @@ const AirdropPage = ({
             {value}
           </span>
         ),
+        className: "font-semibold",
       },
       {
         Header: "Requirement",

@@ -28,12 +28,23 @@ const Countdown = ({ label, time }) => {
   return (
     <>
       {Object.keys(countDown).length !== 0 && (
-        <div className="flex gap-2">
+        <div className="flex gap-1 items-center text-blue-500">
           {label}
-          <span className="animate-bounce">{countDown.d}</span>:
-          <span className="animate-bounce">{countDown.h}</span>:
-          <span className="animate-bounce">{countDown.m}</span>:
-          <span className="animate-bounce">{countDown.s}</span>
+          <span className="rounded-md shadow-md px-2 py-1 bg-blue-500 text-white font-semibold">
+            {countDown.d}
+          </span>
+          :
+          <span className="rounded-md shadow-md px-2 py-1 bg-blue-500 text-white font-semibold">
+            {countDown.h}
+          </span>
+          :
+          <span className="rounded-md shadow-md px-2 py-1 bg-blue-500 text-white font-semibold">
+            {countDown.m}
+          </span>
+          :
+          <span className="rounded-md shadow-md px-2 py-1 bg-blue-500 text-white font-semibold">
+            {countDown.s}
+          </span>
         </div>
       )}
     </>

@@ -76,7 +76,6 @@ const EventItem = ({
   onGoing,
   event: { title, start, end, allDay, color, description },
 }) => {
-  console.log("### rerender2 :");
   const [relativeTime, setRelativeTime] = useState(
     onGoing ? (
       <>

@@ -3,8 +3,12 @@ import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { BiPencil } from "react-icons/bi";
 import { BsThreeDotsVertical, BsTrash } from "react-icons/bs";
 import { IoCloseSharp } from "react-icons/io5";
+import { IoMdArrowDropdownCircle } from "react-icons/io";
 import { connect } from "react-redux";
-import { airdropConstants } from "../../../redux/actions/airdropAction";
+import {
+  airdropConstants,
+  socialList,
+} from "../../../redux/actions/airdropAction";
 import Countdown from "./../../Other/Countdown";
 
 const AirdropDetailModal = ({ showDetailModal, airdropData, close }) => {
@@ -13,7 +17,7 @@ const AirdropDetailModal = ({ showDetailModal, airdropData, close }) => {
       {showDetailModal && (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-full my-6 mx-auto sm:max-w-sm md:max-w-md">
+            <div className="relative w-full my-6 mx-auto sm:max-w-sm md:max-w-lg lg:max-w-2xl xl:max-w-3xl">
               <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 p-2">
                 <div className="w-full flex justify-end gap-2 ">
                   <button
@@ -80,50 +84,93 @@ const ModalContent = ({
   const startMemo = useMemo(() => start, []);
   const endMemo = useMemo(() => end, []);
   return (
-    <div className="mx-4 mb-4">
-      <div className="flex justify-between items-center">
-        <div className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+    <div className="mx-4 mb-4 mt-1">
+      <div className="flex justify-between items-center  mb-3">
+        <div className="text-lg font-semibold text-green-500">
           {star ? (
             <AiFillStar
-              onClick={(e) => setStar((star) => !star)}
-              className="w-5 h-5 text-yellow-300 cursor-pointer"
+              onClick={() => setStar((star) => !star)}
+              className="inline mb-2 mr-2 w-5 h-5 text-yellow-300 cursor-pointer"
             />
           ) : (
             <AiOutlineStar
-              onClick={(e) => setStar((star) => !star)}
-              className="w-5 h-5 text-yellow-300 cursor-pointer"
+              onClick={() => setStar((star) => !star)}
+              className="inline mb-2 mr-2 w-5 h-5 text-yellow-300 cursor-pointer"
             />
           )}
           {name}
         </div>
-        {status == 1 && (
+        {status === 1 && (
           <span className="">
             <Countdown time={endMemo} label="end in" />
           </span>
         )}
-        {status == 0 && (
+        {status === 0 && (
           <span className="">
             <Countdown time={startMemo} label="start in" />
           </span>
         )}
       </div>
-      <div className="flex gap-2">
-        Requirement:
-        <p>
-          {information?.requirement?.map((r) => r.label?.trim()).join(", ")}
-        </p>
+      <div className="text-lg mb-3">
+        {description && (
+          <>
+            Airdrop Description
+            <p className="text-base text-gray-600">{description}</p>
+          </>
+        )}
+        {information?.reward && (
+          <p className="text-base text-gray-600">
+            Reward:{" "}
+            <span className="ml-2 text-gray-800">{information?.reward}</span>
+          </p>
+        )}
+        {information?.winner && (
+          <p className="text-base text-gray-600">
+            Winner:{" "}
+            <span className="ml-2 text-gray-800">{information?.winner}</span>
+          </p>
+        )}
       </div>
-      <div>{description}</div>
-      <div>
+      <div className="text-lg mb-3">
+        Requirements:
+        <div className="mx-2 text-base text-gray-600">
+          {information?.requirement?.map((r, i) => {
+            const icon = socialList.filter((obj) => {
+              return obj.value === r.value;
+            });
+            return (
+              <div key={i} className="m-2">
+                {icon[0]?.icon}
+                {r.label}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div className="text-lg mb-3">
         How to participate?
-        <ul>
+        <ul className="px-5 ml-2 max-h-[300px] ">
           {task_list.constructor.name == "Array" &&
             task_list?.map((task) => {
-              return <li className="pl-2">{task?.task}</li>;
+              return <TaskItem content={task?.task} />;
             })}
         </ul>
       </div>
-      {/* <div>{link}</div> */}
+    </div>
+  );
+};
+
+const TaskItem = ({ content }) => {
+  return (
+    <div className="relative border-l border-gray-200 dark:border-gray-700 ">
+      <span
+        className={`flex absolute -left-3  justify-center items-center w-6 h-6 bg-blue-100 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900 text-blue-500`}
+      >
+        <IoMdArrowDropdownCircle />
+      </span>
+      <p className=" ml-5 text-base font-normal text-gray-500 dark:text-gray-400 pb-2">
+        {content}
+      </p>
     </div>
   );
 };

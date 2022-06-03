@@ -1,6 +1,19 @@
 import { toast } from "react-toastify";
 import { reset, SubmissionError } from "redux-form";
 import api from ".";
+import { MdOutlineContactMail, MdOutlineEmail } from "react-icons/md";
+import { ImPhone } from "react-icons/im";
+// import CoinmarketCap from "./coinmarketcap-1.svg";
+import { ReactComponent as CoinmarketCap } from "./coinmarketcap-1.svg";
+
+import {
+  FaFacebookSquare,
+  FaTelegramPlane,
+  FaTwitterSquare,
+  FaDiscord,
+  FaInstagram,
+} from "react-icons/fa";
+import { BsMedium } from "react-icons/bs";
 
 export const airdropConstants = {
   LOAD_AIRDROP: "LOAD_AIRDROP",
@@ -15,6 +28,69 @@ export const airdropConstants = {
   SHOW_AIRDROP_FORM_MODAL: "SHOW_AIRDROP_FORM_MODAL",
   CLOSE_MODAL: "CLOSE_MODAL",
 };
+
+export const socialList = [
+  {
+    value: "kyc",
+    icon: (
+      <MdOutlineContactMail className="text-indigo-500 inline w-5 h-5 mr-2 mb-1" />
+    ),
+    label: "KYC",
+  },
+  {
+    value: "phone",
+    icon: <ImPhone className="text-yellow-400 inline w-5 h-5 mr-2 mb-1" />,
+    label: "Phone Number",
+  },
+  {
+    value: "email",
+    icon: (
+      <MdOutlineEmail className="text-[#f04235] inline w-5 h-5 mr-2 mb-1" />
+    ),
+    label: "Email",
+  },
+  {
+    value: "tg",
+    icon: (
+      <FaTelegramPlane className="text-[#26a5e4] inline w-5 h-5 mr-2 mb-1" />
+    ),
+    label: "Telegram",
+  },
+  {
+    value: "tw",
+    icon: (
+      <FaTwitterSquare className="text-[#1d9cf0] inline w-5 h-5 mr-2 mb-1" />
+    ),
+    label: "Twitter",
+  },
+  {
+    value: "fb",
+    icon: (
+      <FaFacebookSquare className="text-[#4867aa] inline w-5 h-5 mr-2 mb-1" />
+    ),
+    label: "Facebook",
+  },
+  {
+    value: "disc",
+    icon: <FaDiscord className="text-[#6274c6] inline w-5 h-5 mr-2 mb-1" />,
+    label: "Discord",
+  },
+  {
+    value: "md",
+    icon: <BsMedium className="text-[#000] inline w-5 h-5 mr-2 mb-1" />,
+    label: "Medium",
+  },
+  {
+    value: "ins",
+    icon: <FaInstagram className="text-[#a13590] inline w-5 h-5 mr-2 mb-1" />,
+    label: "Instagram",
+  },
+  {
+    value: "cmc",
+    icon: <CoinmarketCap className=" inline w-5 h-5 mr-2 mb-1" />,
+    label: "CoinMarketCap",
+  },
+];
 
 export const loadAirdrop = () => {
   const loadAirdropSuccess = (payload) => {

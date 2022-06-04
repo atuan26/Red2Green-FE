@@ -10,6 +10,9 @@ import {
   socialList,
 } from "../../../redux/actions/airdropAction";
 import Countdown from "./../../Other/Countdown";
+import { MdCheck, MdOutlineContentCopy } from "react-icons/md";
+import { toast } from "react-toastify";
+import { SharingButton } from "../../Other/TelegramWidget";
 
 const AirdropDetailModal = ({ showDetailModal, airdropData, close }) => {
   return (
@@ -17,7 +20,7 @@ const AirdropDetailModal = ({ showDetailModal, airdropData, close }) => {
       {showDetailModal && (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-full my-6 mx-auto sm:max-w-sm md:max-w-lg lg:max-w-2xl xl:max-w-3xl">
+            <div className="relative w-full my-6 mx-auto sm:max-w-sm md:max-w-lg lg:max-w-xl xl:max-w-2xl max-h-[90vh]">
               <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 p-2">
                 <div className="w-full flex justify-end gap-2 ">
                   <button
@@ -77,74 +80,129 @@ const ModalContent = ({
     social,
     task_list,
     is_distributed,
+    is_joined,
     description,
   },
 }) => {
   const [star, setStar] = useState(false);
+  const [copy, setCopy] = useState(false);
   const startMemo = useMemo(() => start, []);
   const endMemo = useMemo(() => end, []);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(link);
+    setCopy(true);
+    toast.success("Copied to clipboard!");
+  };
   return (
-    <div className="mx-4 mb-4 mt-1">
-      <div className="flex justify-between items-center  mb-3">
-        <div className="text-lg font-semibold text-green-500">
-          {star ? (
-            <AiFillStar
-              onClick={() => setStar((star) => !star)}
-              className="inline mb-2 mr-2 w-5 h-5 text-yellow-300 cursor-pointer"
-            />
-          ) : (
-            <AiOutlineStar
-              onClick={() => setStar((star) => !star)}
-              className="inline mb-2 mr-2 w-5 h-5 text-yellow-300 cursor-pointer"
-            />
-          )}
-          {name}
+    <div className="mx-4 mb-4 mt-1  overflow-auto h-full">
+      <div className="flex items-center  mb-3 text-lg font-semibold text-green-500">
+        {star ? (
+          <AiFillStar
+            onClick={() => setStar((star) => !star)}
+            className=" mr-2 w-5 h-5 text-yellow-300 cursor-pointer"
+          />
+        ) : (
+          <AiOutlineStar
+            onClick={() => setStar((star) => !star)}
+            className=" mr-2 w-5 h-5 text-yellow-300 cursor-pointer"
+          />
+        )}
+        {name}
+      </div>
+      <div className="flex justify-between gap-2">
+        <div>
+          <div className="text-lg mb-3">
+            {description && (
+              <>
+                Airdrop Description
+                <p className="text-base text-gray-600">{description}</p>
+              </>
+            )}
+            {information?.reward && (
+              <p className="text-base text-gray-600 my-2">
+                -Reward:{" "}
+                <span className="ml-2 text-gray-800">
+                  {information?.reward}
+                </span>
+              </p>
+            )}
+            {information?.winner && (
+              <p className="text-base text-gray-600 my-2">
+                -Winner:{" "}
+                <span className="ml-2 text-gray-800">
+                  {information?.winner}
+                </span>
+              </p>
+            )}
+          </div>
+          <div className="text-lg mb-3">
+            Requirements:
+            <div className="mx-2 text-base text-gray-600">
+              {information?.requirement?.map((r, i) => {
+                const icon = socialList.filter((obj) => {
+                  return obj.value === r.value;
+                });
+                return (
+                  <div key={i} className="m-2">
+                    {icon[0]?.icon}
+                    {r.label}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
-        {status === 1 && (
-          <span className="">
-            <Countdown time={endMemo} label="end in" />
-          </span>
-        )}
-        {status === 0 && (
-          <span className="">
-            <Countdown time={startMemo} label="start in" />
-          </span>
-        )}
-      </div>
-      <div className="text-lg mb-3">
-        {description && (
-          <>
-            Airdrop Description
-            <p className="text-base text-gray-600">{description}</p>
-          </>
-        )}
-        {information?.reward && (
-          <p className="text-base text-gray-600">
-            Reward:{" "}
-            <span className="ml-2 text-gray-800">{information?.reward}</span>
-          </p>
-        )}
-        {information?.winner && (
-          <p className="text-base text-gray-600">
-            Winner:{" "}
-            <span className="ml-2 text-gray-800">{information?.winner}</span>
-          </p>
-        )}
-      </div>
-      <div className="text-lg mb-3">
-        Requirements:
-        <div className="mx-2 text-base text-gray-600">
-          {information?.requirement?.map((r, i) => {
-            const icon = socialList.filter((obj) => {
-              return obj.value === r.value;
-            });
-            return (
-              <div key={i} className="m-2">
-                {icon[0]?.icon}
-                {r.label}
+        <div className="w-1/2">
+          <div className="p-4 w-full rounded-md min-h-16 bg-gray-100 shadow-md">
+            {status === 1 && (
+              <span className="w-full flex justify-end pb-4">
+                <Countdown time={endMemo} label="ends in: " />
+              </span>
+            )}
+            <div className="flex justify-between pb-4">
+              <a
+                onClick={() =>
+                  window.open(
+                    link,
+                    "_blank",
+                    "location=yes,height=768,width=1280,scrollbars=yes,status=yes"
+                  )
+                }
+                className="link link-primary"
+              >
+                JOIN NOW!
+              </a>
+              <SharingButton url={link} />
+            </div>
+            <div className="relative text-gray-600 bg-gray-300 w-full overflow-hidden shadow-sm rounded-md p-1 px-2 whitespace-nowrap">
+              {link}
+              <div
+                onClick={handleCopy}
+                className="absolute p-2 right-0 top-0 bg-white cursor-pointer hover:bg-gray-50"
+              >
+                {!copy ? (
+                  <MdOutlineContentCopy className="w-4 h-4 text-orange-400" />
+                ) : (
+                  <MdCheck className="w-4 h-4 text-green-500" />
+                )}
               </div>
-            );
-          })}
+            </div>
+            {is_joined ? (
+              <>
+                <div className="flex items-center gap-2 py-1 m-2 text-green-500">
+                  <MdCheck className="text-green-500 h-5 w-5" />
+                  You've joined this airdrop.
+                </div>
+                <div className="w-full capitalize btn btn-sm  bg-white  text-red-400 border-red-500 hover:text-white  hover:border-0 hover:bg-blue-400">
+                  Mark as unjoin
+                </div>
+              </>
+            ) : (
+              <div className="w-full capitalize btn btn-sm mt-4 bg-blue-500 border-0 hover:bg-blue-400">
+                Mark as join
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <div className="text-lg mb-3">

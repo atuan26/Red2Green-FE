@@ -66,12 +66,12 @@ input:-webkit-autofill:active {
 	z-index: 1;
 	touch-action: none;
 }
-
+/* 
 table td:first-child,
 th:first-child {
 	position: sticky !important;
 	left: 0;
-}
+} */
 
 .react-datepicker-popper {
 	z-index: 9999 !important;

@@ -151,8 +151,11 @@ const Table = ({
       </div>
       <div className="w-full rounded-lg p-6">
         <div className="overflow-auto w-full">
-          <table className="table bg-white shadow w-full" {...getTableProps()}>
-            <thead>
+          <table
+            className="w-full text-sm text-left text-gray-700 dark:text-gray-400"
+            {...getTableProps()}
+          >
+            <thead className="text-xs text-gray-900 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (
@@ -189,17 +192,13 @@ const Table = ({
               {page.map((row, i) => {
                 prepareRow(row);
                 return (
-                  <tr
-                    className="text-gray-700 hover:!bg-gray-500 dark:hover:!bg-gray-700"
-                    {...row.getRowProps()}
-                  >
+                  <tr {...row.getRowProps(getRowProps(row))}>
                     {row.cells.map((cell) => {
                       return (
                         <td
-                          className="border p-4 dark:border-dark-5 overflow-hidden"
                           {...cell.getCellProps([
                             {
-                              className: cell.column.className,
+                              className: "px-6 py-4 " + cell.column.className,
                               style: cell.column.style,
                             },
                             getCellProps(cell),

@@ -6,7 +6,6 @@ import {
   SubmitButton,
 } from "../../EventModal/EventInput";
 import validate from "../validate";
-import renderField from "./renderField";
 
 const WizardFormFirstPage = (props) => {
   const { error, handleSubmit, reset, submitting } = props;

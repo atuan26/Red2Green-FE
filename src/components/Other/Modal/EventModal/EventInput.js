@@ -135,13 +135,13 @@ export const FieldDatePicker = ({
       nextMonthButtonDisabled,
     }) => (
       <div className="flex justify-between items-center p-2">
-        <button
+        <div
           className="btn btn-sm btn-circle bg-white text-black border-0  hover:bg-gray-200"
           onClick={decreaseMonth}
           disabled={prevMonthButtonDisabled}
         >
           <MdOutlineNavigateBefore className="w-6 h-6 text-[#25396f]" />
-        </button>
+        </div>
         <select
           className="select select-sm	text-sm w-18 h-9 scale-90"
           value={date.getFullYear()}
@@ -168,13 +168,13 @@ export const FieldDatePicker = ({
           ))}
         </select>
 
-        <button
+        <div
           className="btn btn-sm btn-circle bg-white text-black border-0 hover:bg-gray-200"
           onClick={increaseMonth}
           disabled={nextMonthButtonDisabled}
         >
           <MdOutlineNavigateNext className="w-6 h-6 text-[#25396f]" />
-        </button>
+        </div>
       </div>
     ),
     []

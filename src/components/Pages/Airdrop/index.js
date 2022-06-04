@@ -151,6 +151,14 @@ const AirdropPage = ({
             data={airdropList}
             airdropLoading={[loading, setLoading]}
             showAirdropFormModal={showAirdropFormModal}
+            getRowProps={(row) => ({
+              // onClick: () => alert(JSON.stringify(row.values)),
+              className:
+                "border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700 ",
+              style: {
+                backgroundColor: row.original.is_joined ? "#31c48d44" : " ",
+              },
+            })}
           />
         </div>
       </div>

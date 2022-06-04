@@ -1,5 +1,4 @@
-import React from 'react'
-
+import React from "react";
 
 export class TelegramPost extends React.Component {
   // constructor(props) {
@@ -15,10 +14,8 @@ export class TelegramPost extends React.Component {
     script.src = "https://telegram.org/js/telegram-widget.js?18";
     script.setAttribute("data-telegram-post", `${channel}/${postID}`);
     script.setAttribute("data-width", width);
-    if (userPic)
-      script.setAttribute("data-userpic", 'true');
-    if (dark)
-      script.setAttribute("data-dark", '1');
+    if (userPic) script.setAttribute("data-userpic", "true");
+    if (dark) script.setAttribute("data-dark", "1");
     script.async = true;
     this.instance.appendChild(script);
   }
@@ -37,7 +34,6 @@ export class TelegramPost extends React.Component {
   }
 }
 
-
 export class Discussion extends React.Component {
   // constructor(props) {
   //   super(props);
@@ -53,8 +49,39 @@ export class Discussion extends React.Component {
     script.setAttribute("data-telegram-discussion", `${channel}/${postID}`);
     script.setAttribute("data-width", width);
     script.setAttribute("data-comment-limit", commentLimit || 10);
-    if (dark)
-      script.setAttribute("data-dark", '1');
+    if (dark) script.setAttribute("data-dark", "1");
+    script.async = true;
+    this.instance.appendChild(script);
+  }
+
+  render() {
+    return (
+      <div
+        className={this.props.className}
+        ref={(component) => {
+          this.instance = component;
+        }}
+      >
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+export class SharingButton extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  // }
+  componentDidMount() {
+    const { url, comment, size, noText } = this.props;
+    const script = document.createElement("script");
+    script.src = "https://telegram.org/js/telegram-widget.js?19";
+    script.setAttribute(
+      "data-telegram-share-url",
+      url || "https://web.telegram.org/"
+    );
+    script.setAttribute("data-size", size || "large");
+    if (noText) script.setAttribute("data-text", "notext");
     script.async = true;
     this.instance.appendChild(script);
   }

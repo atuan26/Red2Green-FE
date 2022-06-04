@@ -7,10 +7,6 @@ import {
   SubmitButton,
 } from "../../EventModal/EventInput";
 import validate from "../validate";
-import renderField from "./renderField";
-
-const renderError = ({ meta: { touched, error } }) =>
-  touched && error ? <span>{error}</span> : false;
 
 const WizardFormSecondPage = (props) => {
   const { handleSubmit, previousPage } = props;
@@ -20,8 +16,8 @@ const WizardFormSecondPage = (props) => {
       className="flex justify-between flex-col rounded-lg px-6 overflow-y-scroll max-h-[80vh] min-h-[60vh] pb-6 "
     >
       <div className="mt-4 px-4">
-        <EditableLabelDateField label="Start" name="start" className="mb-4" />
-        <EditableLabelDateField label="End" name="end" className="mb-4" />
+        <LabelDateField label="Start" name="start" className="mb-4" />
+        <LabelDateField label="End" name="end" className="mb-4" />
         <div className="divider" />
         {/* <FieldArray name='time' component={renderDateInput2} /> */}
       </div>
@@ -53,7 +49,7 @@ const renderDateInput = ({ fields, meta: { touched, error } }) => (
     </li>
     {fields.map((event, index) => (
       <li key={index} className="flex items-center justify-between  mb-4">
-        <EditableLabelDateField
+        <LabelDateField
           label={fields.name + `[${index}]`}
           name={fields.name + `[${index}]`}
           editable={true}
@@ -67,7 +63,7 @@ const renderDateInput = ({ fields, meta: { touched, error } }) => (
   </ul>
 );
 
-const EditableLabelDateField = ({ label, name, editable, className }) => {
+const LabelDateField = ({ label, name, editable, className }) => {
   const [labelEditable, setLabelEditable] = useState(label || "Event");
   const value = useRef(labelEditable);
   const handleChange = (e) => {
@@ -96,41 +92,8 @@ const EditableLabelDateField = ({ label, name, editable, className }) => {
   );
 };
 
-const renderDateInput2 = ({ fields, meta: { touched, error } }) => (
-  <ul>
-    <li className="flex justify-center mt-2">
-      <button
-        type="button"
-        className="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
-        onClick={() => fields.push({})}
-      >
-        <CgPlayListAdd className="inline w-4 h-4 mr-2" />
-        Add task
-      </button>
-      {touched && error && <span>{error}</span>}
-    </li>
-    {fields.map((task, index) => (
-      <li key={index} className="flex items-center justify-between  mb-4">
-        {console.log(task)}
-        <EditableLabelDateField
-          label={`${task} #${index + 1}`}
-          name={`${task}.task`}
-          editable={true}
-        />
-        <CgClose
-          onClick={() => fields.remove(index)}
-          className="inline w-4 h-4 text-red-400 hover:text-white hover:bg-red-500 p-2 border-2 border-red-500 rounded-md box-content"
-        />
-      </li>
-    ))}
-  </ul>
-);
 export default reduxForm({
   form: "airdropForm",
-  // initialValues: {
-  //   start: new Date(),
-  //   task_list: [{ task: "Describe the required task" }],
-  // },
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   validate,

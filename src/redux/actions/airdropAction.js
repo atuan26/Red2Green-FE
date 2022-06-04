@@ -3,7 +3,6 @@ import { reset, SubmissionError } from "redux-form";
 import api from ".";
 import { MdOutlineContactMail, MdOutlineEmail } from "react-icons/md";
 import { ImPhone } from "react-icons/im";
-// import CoinmarketCap from "./coinmarketcap-1.svg";
 import { ReactComponent as CoinmarketCap } from "./coinmarketcap-1.svg";
 
 import {
@@ -12,13 +11,14 @@ import {
   FaTwitterSquare,
   FaDiscord,
   FaInstagram,
+  FaLinkedin,
 } from "react-icons/fa";
 import { BsMedium } from "react-icons/bs";
 
 export const airdropConstants = {
   LOAD_AIRDROP: "LOAD_AIRDROP",
-  ADD_AIRDROP: "ADD_AIRDROP",
-  EDIT_AIRDROP: "EDIT_AIRDROP",
+  JOIN_AIRDROP: "JOIN_AIRDROP",
+  UNJOIN_AIRDROP: "EDIT_AIRDROP",
   DELETE_AIRDROP: "DELETE_AIRDROP",
 
   SET_LOADING_AIRDROP: "SET_LOADING_AIRDROP",
@@ -50,45 +50,50 @@ export const socialList = [
     label: "Email",
   },
   {
-    value: "tg",
+    value: "telegram",
     icon: (
       <FaTelegramPlane className="text-[#26a5e4] inline w-5 h-5 mr-2 mb-1" />
     ),
     label: "Telegram",
   },
   {
-    value: "tw",
+    value: "twitter",
     icon: (
       <FaTwitterSquare className="text-[#1d9cf0] inline w-5 h-5 mr-2 mb-1" />
     ),
     label: "Twitter",
   },
   {
-    value: "fb",
+    value: "facebook",
     icon: (
       <FaFacebookSquare className="text-[#4867aa] inline w-5 h-5 mr-2 mb-1" />
     ),
     label: "Facebook",
   },
   {
-    value: "disc",
+    value: "discord",
     icon: <FaDiscord className="text-[#6274c6] inline w-5 h-5 mr-2 mb-1" />,
     label: "Discord",
   },
   {
-    value: "md",
+    value: "medium",
     icon: <BsMedium className="text-[#000] inline w-5 h-5 mr-2 mb-1" />,
     label: "Medium",
   },
   {
-    value: "ins",
+    value: "instagram",
     icon: <FaInstagram className="text-[#a13590] inline w-5 h-5 mr-2 mb-1" />,
     label: "Instagram",
   },
   {
-    value: "cmc",
+    value: "coinmarketcap",
     icon: <CoinmarketCap className=" inline w-5 h-5 mr-2 mb-1" />,
     label: "CoinMarketCap",
+  },
+  {
+    value: "linkedin",
+    icon: <FaLinkedin className="text-[#0a66c2] inline w-5 h-5 mr-2 mb-1" />,
+    label: "Linkedin",
   },
 ];
 

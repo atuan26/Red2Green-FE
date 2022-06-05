@@ -9,20 +9,20 @@ import { BiUser } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { useComponentVisible } from "../../../ultils/hooks";
 
-const HeaderAvatar = ({ username, logout }) => {
+const HeaderAvatar = ({ user, logout }) => {
   const classNameIcon = "w-5 h-5 mx-1";
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible(false);
 
   return (
     <>
-      <NotifyIcon />
+      <NotifyIcon user={user} />
       <div className="relative inline-block ml-4 " ref={ref}>
         <button
           onClick={() => setIsComponentVisible(!isComponentVisible)}
           className="relative z-10 flex items-center p-2 text-sm text-gray-600 bg-white border border-transparent rounded-md focus:border-blue-500 focus:ring-opacity-40 dark:focus:ring-opacity-40 focus:ring-blue-300 dark:focus:ring-blue-400 focus:ring dark:text-white dark:bg-gray-800 focus:outline-none hover:bg-gray-50"
         >
-          <span className="mx-1">Jane Doe</span>
+          <span className="mx-1">{user.username}</span>
           <svg
             className="w-5 h-5 mx-1"
             viewBox="0 0 24 24"
@@ -48,10 +48,10 @@ const HeaderAvatar = ({ username, logout }) => {
               />
               <div className="mx-1">
                 <h1 className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                  Jane Doe
+                  {user.username}
                 </h1>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  janedoe@exampl.com
+                  {user.email}
                 </p>
               </div>
             </a>
@@ -111,7 +111,7 @@ const HeaderAvatarItem = ({ label, link, icon, ...props }) => {
   );
 };
 
-const NotifyIcon = () => {
+const NotifyIcon = ({ username }) => {
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible(false);
   return (
@@ -184,7 +184,7 @@ const NotifyIcon = () => {
                   />
                   <p className="mx-2 text-sm text-gray-600 dark:text-white">
                     <span className="font-bold" href="# ">
-                      Jane Doe
+                      {username}
                     </span>{" "}
                     Like Your reply on{" "}
                     <span className="font-bold text-blue-500" href="# ">

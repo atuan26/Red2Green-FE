@@ -4,16 +4,15 @@ import { connect } from "react-redux";
 import { authConstants, logout } from "../../../redux/actions/authAction";
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  username:
-    state.auth && state.auth.user ? state.auth.user.user.username : null,
+  isAuthenticated: state?.auth?.isAuthenticated,
+  user: state?.auth?.user?.user,
 });
 
 const mapDispatchtoProps = (dispatch) => ({
   logout: () => dispatch(logout()),
 });
 
-const Header = ({ isAuthenticated, username, logout }) => {
+const Header = ({ isAuthenticated, user, logout }) => {
   return (
     <header className="w-full shadow-lg bg-white dark:bg-gray-700 items-center h-16 rounded-xl z-40">
       <div className="relative z-20 flex flex-col justify-center h-full px-3 mx-auto flex-center">
@@ -52,7 +51,7 @@ const Header = ({ isAuthenticated, username, logout }) => {
           </div>
           <div className="relative p-1 flex items-center justify-end w-1/4 sm:mr-0 sm:right-auto">
             {isAuthenticated ? (
-              <HeaderAvatar username={username} logout={logout} />
+              <HeaderAvatar user={user} logout={logout} />
             ) : (
               <AuthModal />
             )}

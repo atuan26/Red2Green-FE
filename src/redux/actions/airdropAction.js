@@ -45,7 +45,7 @@ export const socialList = [
   {
     value: "email",
     icon: (
-      <MdOutlineEmail className="text-[#f04235] inline w-5 h-5 mr-2 mb-1" />
+      <MdOutlineEmail className="text-orange-500 inline w-5 h-5 mr-2 mb-1" />
     ),
     label: "Email",
   },
@@ -111,6 +111,38 @@ export const loadAirdrop = () => {
       .catch((err) => {
         console.log(err);
         toast.error("Error when loading airdrops.");
+      });
+  };
+};
+
+export const joinAirdrop = (id) => {
+  return (dispatch) => {
+    api
+      .post(`/airdrops/${id}/join/`)
+      .then((res) => {
+        toast.success("Successfully!");
+        dispatch(loadAirdrop());
+        // dispatch({ type: airdropConstants.CLOSE_MODAL });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Error when joining airdrops.");
+      });
+  };
+};
+
+export const unJoinAirdrop = (id) => {
+  return (dispatch) => {
+    api
+      .post(`/airdrops/${id}/unjoin/`)
+      .then((res) => {
+        toast.success("Successfully!");
+        dispatch(loadAirdrop());
+        // dispatch({ type: airdropConstants.CLOSE_MODAL });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Error when unjoining airdrops.");
       });
   };
 };

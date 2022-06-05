@@ -84,7 +84,7 @@ const renderTasks = ({ fields, meta: { touched, error } }) => (
 );
 export default reduxForm({
   form: "airdropForm",
-  destroyOnUnmount: true,
+  destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   validate,
 })(WizardFormThirdPage);

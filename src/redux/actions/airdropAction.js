@@ -18,11 +18,10 @@ import { BsMedium } from "react-icons/bs";
 export const airdropConstants = {
   LOAD_AIRDROP: "LOAD_AIRDROP",
   JOIN_AIRDROP: "JOIN_AIRDROP",
-  UNJOIN_AIRDROP: "EDIT_AIRDROP",
+  UNJOIN_AIRDROP: "UNJOIN_AIRDROP",
   DELETE_AIRDROP: "DELETE_AIRDROP",
 
-  SET_LOADING_AIRDROP: "SET_LOADING_AIRDROP",
-  SET_LOADING_FORM: "SET_LOADING_FORM",
+  SET_LOADING: "SET_LOADING",
 
   SHOW_AIRDROP_DETAIL_MODAL: "SHOW_AIRDROP_DETAIL_MODAL",
   SHOW_AIRDROP_FORM_MODAL: "SHOW_AIRDROP_FORM_MODAL",
@@ -121,12 +120,16 @@ export const joinAirdrop = (id) => {
       .post(`/airdrops/${id}/join/`)
       .then((res) => {
         toast.success("Successfully!");
+        dispatch({ type: airdropConstants.SET_LOADING, payload: true });
+        dispatch({ type: airdropConstants.JOIN_AIRDROP, payload: id });
+        dispatch({ type: airdropConstants.SET_LOADING, payload: false });
         dispatch(loadAirdrop());
-        // dispatch({ type: airdropConstants.CLOSE_MODAL });
+        return res.data;
       })
       .catch((err) => {
         console.log(err);
         toast.error("Error when joining airdrops.");
+        return err;
       });
   };
 };
@@ -137,12 +140,13 @@ export const unJoinAirdrop = (id) => {
       .post(`/airdrops/${id}/unjoin/`)
       .then((res) => {
         toast.success("Successfully!");
+        dispatch({ type: airdropConstants.SET_LOADING, payload: true });
+        dispatch({ type: airdropConstants.UNJOIN_AIRDROP, payload: id });
+        dispatch({ type: airdropConstants.SET_LOADING, payload: false });
         dispatch(loadAirdrop());
-        // dispatch({ type: airdropConstants.CLOSE_MODAL });
       })
       .catch((err) => {
         console.log(err);
-        toast.error("Error when unjoining airdrops.");
       });
   };
 };

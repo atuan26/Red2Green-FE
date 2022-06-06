@@ -26,7 +26,7 @@ const AirdropPage = ({
     setLoading(true);
     loadAirdrop();
     setLoading(false);
-  }, []);
+  }, [isAuthenticated]);
 
   const columns = useMemo(
     () => [

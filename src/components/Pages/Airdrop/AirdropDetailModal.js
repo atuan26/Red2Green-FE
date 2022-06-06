@@ -100,7 +100,6 @@ const ModalContent = ({
   joinAirdrop,
   unJoinAirdrop,
 }) => {
-  const [joined, setJoin] = useState(is_joined);
   const [star, setStar] = useState(false);
   const [copy, setCopy] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -217,19 +216,14 @@ const ModalContent = ({
                   )}
                 </div>
               </div>
-              {joined ? (
+              {is_joined ? (
                 <>
                   <div className="flex items-center gap-2 py-1 m-2 text-green-500">
                     <MdCheck className="text-green-500 h-5 w-5" />
                     You've joined this airdrop.
                   </div>
                   <div
-                    onClick={() => {
-                      setLoading(true);
-                      unJoinAirdrop(id);
-                      setJoin(!joined);
-                      setLoading(false);
-                    }}
+                    onClick={() => unJoinAirdrop(id)}
                     className="w-full capitalize btn btn-sm  bg-white  text-red-400 border-red-500 hover:text-white  hover:border-0 hover:bg-red-400"
                   >
                     {loading && (
@@ -255,12 +249,7 @@ const ModalContent = ({
                 </>
               ) : (
                 <div
-                  onClick={() => {
-                    setLoading(true);
-                    joinAirdrop(id);
-                    setJoin(!joined);
-                    setLoading(false);
-                  }}
+                  onClick={() => joinAirdrop(id)}
                   className="w-full capitalize btn btn-sm mt-4 bg-blue-500 border-0 hover:bg-blue-400"
                 >
                   {loading && (

@@ -21,7 +21,7 @@ api.interceptors.response.use(
   },
   async function (error) {
     if (error.response?.status === 401) {
-      toast("Please login first.");
+      toast.error("Please login first.");
       store.dispatch({ type: "LOGOUT" });
       localStorage.removeItem("user");
     }

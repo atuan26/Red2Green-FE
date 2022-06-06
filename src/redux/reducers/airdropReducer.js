@@ -6,6 +6,7 @@ const initialState = {
 
   showDetailModal: false,
   detailModal: null,
+  loading: false,
   // loadingAirdrop: false,
   // loadingForm: false,
   airdropList: { count: 0, results: [] },
@@ -38,7 +39,27 @@ const airdropReducer = (state = initialState, action) => {
         showDetailModal: false,
         detailModal: initialState.detailModal,
       };
-
+    case airdropConstants.JOIN_AIRDROP:
+      return {
+        ...state,
+        detailModal: {
+          ...state.detailModal,
+          is_joined: true,
+        },
+      };
+    case airdropConstants.UNJOIN_AIRDROP:
+      return {
+        ...state,
+        detailModal: {
+          ...state.detailModal,
+          is_joined: false,
+        },
+      };
+    case airdropConstants.SET_LOADING:
+      return {
+        ...state,
+        loading: action.payload,
+      };
     default:
       return state;
   }

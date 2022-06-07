@@ -28,6 +28,7 @@
     "react-scripts": "5.0.0",
     "react-select": "^5.2.2",
     "react-stockcharts": "^0.7.8",
+    "react-switch": "^6.0.0",
     "react-table": "^7.7.0",
     "react-toastify": "^9.0.3",
     "redux": "^4.1.2",

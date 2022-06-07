@@ -10,12 +10,15 @@ const initialState = {
   // loadingAirdrop: false,
   // loadingForm: false,
   airdropList: { count: 0, results: [] },
+  personalAirdropList: { count: 0, results: [] },
 };
 
 const airdropReducer = (state = initialState, action) => {
   switch (action.type) {
     case airdropConstants.LOAD_AIRDROP:
       return { ...state, airdropList: action.payload };
+    case airdropConstants.LOAD_PERSONAL_AIRDROP:
+      return { ...state, personalAirdropList: action.payload };
 
     case airdropConstants.SHOW_AIRDROP_DETAIL_MODAL:
       return {

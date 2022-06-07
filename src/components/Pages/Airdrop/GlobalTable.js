@@ -1,21 +1,20 @@
-// import { matchSorter } from "match-sorter";
 import { useCallback, useMemo, useState } from "react";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import Skeleton from "react-loading-skeleton";
 import { GrStackOverflow } from "react-icons/gr";
-import { CgAdd } from "react-icons/cg";
 import { GiBoxUnpacking } from "react-icons/gi";
 import { HiOutlineGift } from "react-icons/hi";
 import { BiBox } from "react-icons/bi";
 import {
+  useAsyncDebounce,
   useFilters,
   useFlexLayout,
+  useGlobalFilter,
   usePagination,
   useResizeColumns,
   useSortBy,
   useTable,
 } from "react-table";
-import AirdropModalForm from "../../Other/Modal/AirdropModalForm";
 
 const defaultPropGetter = () => ({});
 
@@ -27,16 +26,15 @@ const Table = ({
   getRowProps = defaultPropGetter,
   getCellProps = defaultPropGetter,
   airdropLoading: [airdropLoading, setAirdropLoading],
-  showAirdropFormModal,
 }) => {
   const defaultColumn = useMemo(
     () => ({
       minWidth: 30,
-      // width: 200,
       maxWidth: 400,
     }),
     []
   );
+  const [activeFilterButton, setActiveFilterButton] = useState(0);
   const sleep = useCallback(
     (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
     []
@@ -78,6 +76,10 @@ const Table = ({
     nextPage,
     previousPage,
     setPageSize,
+    state,
+    // visibleColumns,
+    preGlobalFilteredRows,
+    setGlobalFilter,
     state: { pageIndex, pageSize },
   } = useTable(
     {
@@ -88,8 +90,8 @@ const Table = ({
       defaultColumn,
       // filterTypes,
       autoResetSortBy: false,
-      // initialState: { pageIndex: 0 },
     },
+    useGlobalFilter,
     useFilters,
     useSortBy,
     useResizeColumns,
@@ -98,58 +100,50 @@ const Table = ({
   );
   return (
     <>
-      <AirdropModalForm />
-      <div className="flex p-6 pb-0 gap-4 items-start w-full">
-        <div
-          onClick={() => {
-            showAirdropFormModal(true);
-          }}
-          className="flex items-center  text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 cursor-pointer"
-        >
-          <CgAdd className="inline h-5 w-5 mr-1" />
-          New airdrop
+      <div className=" py-4 gap-4  w-full">
+        <div className="flex">
+          <div className="flex items-start w-full gap-4  flex-wrap">
+            <FilterButton
+              index={0}
+              onFilter={() => {
+                setActiveFilterButton(0);
+                aysncFilter([]);
+              }}
+              isActive={activeFilterButton === 0}
+            />
+            <FilterButton
+              index={1}
+              onFilter={() => {
+                setActiveFilterButton(1);
+                aysncFilter([{ id: "status", value: 1 }]);
+              }}
+              isActive={activeFilterButton === 1}
+            />
+            <FilterButton
+              index={2}
+              onFilter={() => {
+                setActiveFilterButton(2);
+                aysncFilter([{ id: "status", value: "2" }]);
+              }}
+              isActive={activeFilterButton === 2}
+            />
+            <FilterButton
+              index={3}
+              onFilter={() => {
+                setActiveFilterButton(3);
+                aysncFilter([{ id: "is_distributed", value: true }]);
+              }}
+              isActive={activeFilterButton === 3}
+            />
+          </div>
+          <GlobalFilter
+            preGlobalFilteredRows={preGlobalFilteredRows}
+            globalFilter={state.globalFilter}
+            setGlobalFilter={setGlobalFilter}
+          />
         </div>
-        <button
-          onClick={async () => {
-            aysncFilter([]);
-          }}
-          className="flex items-center  px-4 py-2 text-white rounded-full bg-gray-700 hover:bg-gray-600"
-        >
-          <GrStackOverflow className="w-5 h-5 text-white inline mr-2" />
-          All Airdrops
-        </button>
-        <button
-          onClick={() => {
-            // setAllFilters([{ id: "status", value: 1 }]);
-            aysncFilter([{ id: "status", value: 1 }]);
-          }}
-          className="flex items-center  px-4 py-2 text-gray-600 rounded-full bg-gray-100 hover:bg-gray-200"
-        >
-          <GiBoxUnpacking className="w-5 h-5 text-yellow-400 inline mr-2" />
-          Ongoing
-        </button>
-        <button
-          onClick={() => {
-            // setAllFilters([{ id: "status", value: "2" }]);
-            aysncFilter([{ id: "status", value: "2" }]);
-          }}
-          className="flex items-center px-4 py-2 text-gray-600 rounded-full bg-gray-100 hover:bg-gray-200"
-        >
-          <BiBox className="w-5 h-5 text-red-400 inline mr-2" />
-          Ended
-        </button>
-        <button
-          onClick={() => {
-            setAllFilters([{ id: "is_distributed", value: true }]);
-            aysncFilter([{ id: "is_distributed", value: true }]);
-          }}
-          className="flex items-center px-4 py-2 text-gray-600 rounded-full bg-gray-100 hover:bg-gray-200"
-        >
-          <HiOutlineGift className="w-5 h-5 text-green-400 inline mr-2" />
-          Distributed
-        </button>
       </div>
-      <div className="w-full rounded-lg p-6">
+      <div className="w-full rounded-lg py-2">
         <div className="overflow-auto w-full">
           <table
             className="w-full text-sm text-left text-gray-700 dark:text-gray-400"
@@ -270,6 +264,82 @@ const Table = ({
         </div>
       </div>
     </>
+  );
+};
+
+const FilterButton = ({ index, onFilter, isActive }) => {
+  const buttonIndex = useMemo(
+    () => [
+      {
+        label: "All Airdrops",
+        icon: <GrStackOverflow className="w-5 h-5 text-blue-400 inline mr-2" />,
+      },
+      {
+        icon: (
+          <GiBoxUnpacking className="w-5 h-5 text-yellow-400 inline mr-2" />
+        ),
+        label: "Ongoing",
+      },
+      {
+        icon: <BiBox className="w-5 h-5 text-red-400 inline mr-2" />,
+        label: "Ended",
+      },
+      {
+        icon: <HiOutlineGift className="w-5 h-5 text-green-400 inline mr-2" />,
+        label: "Distributed",
+      },
+    ],
+    []
+  );
+  return (
+    <>
+      <button
+        onClick={onFilter}
+        className={
+          isActive
+            ? "flex items-center  px-4 py-2 text-white rounded-full bg-gray-700 hover:bg-gray-600"
+            : "flex items-center px-4 py-2 text-gray-600 rounded-full bg-gray-100 hover:bg-gray-200"
+        }
+      >
+        {buttonIndex[index].icon}
+        {buttonIndex[index].label}
+      </button>
+    </>
+  );
+};
+
+export const GlobalFilter = (props) => {
+  const { preGlobalFilteredRows, globalFilter, setGlobalFilter } = props;
+  console.log("### props :", props);
+  const count = preGlobalFilteredRows?.length || 0;
+  const [value, setValue] = useState(globalFilter);
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  return (
+    <div className="relative">
+      <div className="absolute flex items-center ml-4 h-full">
+        <svg
+          className="w-4 h-4 fill-current text-primary-gray-dark"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M15.8898 15.0493L11.8588 11.0182C11.7869 10.9463 11.6932 10.9088 11.5932 10.9088H11.2713C12.3431 9.74952 12.9994 8.20272 12.9994 6.49968C12.9994 2.90923 10.0901 0 6.49968 0C2.90923 0 0 2.90923 0 6.49968C0 10.0901 2.90923 12.9994 6.49968 12.9994C8.20272 12.9994 9.74952 12.3431 10.9088 11.2744V11.5932C10.9088 11.6932 10.9495 11.7869 11.0182 11.8588L15.0493 15.8898C15.1961 16.0367 15.4336 16.0367 15.5805 15.8898L15.8898 15.5805C16.0367 15.4336 16.0367 15.1961 15.8898 15.0493ZM6.49968 11.9994C3.45921 11.9994 0.999951 9.54016 0.999951 6.49968C0.999951 3.45921 3.45921 0.999951 6.49968 0.999951C9.54016 0.999951 11.9994 3.45921 11.9994 6.49968C11.9994 9.54016 9.54016 11.9994 6.49968 11.9994Z"></path>
+        </svg>
+      </div>
+
+      <input
+        value={value || ""}
+        onChange={(e) => {
+          setValue(e.target.value);
+          onChange(e.target.value);
+        }}
+        placeholder={`Search ${count} records...`}
+        className="pl-10 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"
+      />
+    </div>
   );
 };
 export default Table;

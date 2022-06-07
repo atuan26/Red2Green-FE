@@ -26,6 +26,8 @@ export const airdropConstants = {
   SHOW_AIRDROP_DETAIL_MODAL: "SHOW_AIRDROP_DETAIL_MODAL",
   SHOW_AIRDROP_FORM_MODAL: "SHOW_AIRDROP_FORM_MODAL",
   CLOSE_MODAL: "CLOSE_MODAL",
+
+  LOAD_PERSONAL_AIRDROP: "LOAD_PERSONAL_AIRDROP",
 };
 
 export const socialList = [
@@ -103,6 +105,23 @@ export const loadAirdrop = () => {
   return (dispatch) => {
     api
       .get("/airdrops/")
+      .then((res) => {
+        dispatch(loadAirdropSuccess(res.data));
+        // toast.success("Airdrop loaded!");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Error when loading airdrops.");
+      });
+  };
+};
+export const loadPersonalAirdrop = () => {
+  const loadAirdropSuccess = (payload) => {
+    return { type: airdropConstants.LOAD_PERSONAL_AIRDROP, payload };
+  };
+  return (dispatch) => {
+    api
+      .get("/airdrops/personal_airdrop/")
       .then((res) => {
         dispatch(loadAirdropSuccess(res.data));
         // toast.success("Airdrop loaded!");

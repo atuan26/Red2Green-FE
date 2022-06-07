@@ -128,8 +128,8 @@ const ModalContent = ({
       </div>
 
       <div className="overflow-auto h-full">
-        <div className="flex justify-between gap-2">
-          <div>
+        <div className="grid grid-cols-8 gap-2">
+          <div className="col-span-4">
             <div className="text-lg mb-3">
               {description && (
                 <>
@@ -171,7 +171,7 @@ const ModalContent = ({
               </div>
             </div>
           </div>
-          <div className="w-1/2">
+          <div className="col-span-4">
             <div className="p-4 w-full rounded-md min-h-16 bg-gray-100 shadow-md">
               <span className="w-full flex justify-end pb-4">
                 {status === 1 && <Countdown time={endMemo} label="ends in: " />}

@@ -29,8 +29,8 @@ const PersonalTable = ({
 }) => {
   const defaultColumn = useMemo(
     () => ({
-      minWidth: 30,
-      maxWidth: 400,
+      minWidth: 10,
+      maxWidth: 300,
     }),
     []
   );
@@ -185,7 +185,6 @@ const PersonalTable = ({
             </thead>
             <tbody {...getTableBodyProps()}>
               {page.map((row, i) => {
-                console.log("### row :", row);
                 prepareRow(row);
                 return (
                   <tr {...row.getRowProps(getRowProps(row))}>
@@ -194,7 +193,7 @@ const PersonalTable = ({
                         <td
                           {...cell.getCellProps([
                             {
-                              className: "px-6 py-4 " + cell.column.className,
+                              className: "px-6 py-3 " + cell.column.className,
                               style: cell.column.style,
                             },
                             getCellProps(cell),

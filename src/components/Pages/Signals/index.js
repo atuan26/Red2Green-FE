@@ -6,6 +6,7 @@ import { timeFormat } from "d3-time-format";
 import { Modal } from "../../Other/Modal";
 import SignalDetailModal from "./SignalDetailModal";
 import { loadSignal } from "../../../redux/actions/signalAction";
+import moment from "moment";
 
 const SignalPage = ({
   signalData,
@@ -130,7 +131,7 @@ const SignalPage = ({
       {
         Header: "Date",
         accessor: "signals.post_date",
-        Cell: (props) => timeFormat("%d-%b-%Y %H:%M")(new Date(props.value)),
+        Cell: (props) => moment(props.value).format("lll"),
       },
       {
         Header: "Signals Channel",

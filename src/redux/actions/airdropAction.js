@@ -19,6 +19,8 @@ export const airdropConstants = {
   LOAD_AIRDROP: "LOAD_AIRDROP",
   JOIN_AIRDROP: "JOIN_AIRDROP",
   UNJOIN_AIRDROP: "UNJOIN_AIRDROP",
+  APPROVE_AIRDROP: "APPROVE_AIRDROP",
+  DECLINE_AIRDROP: "DECLINE_AIRDROP",
   DELETE_AIRDROP: "DELETE_AIRDROP",
 
   SET_LOADING: "SET_LOADING",
@@ -169,6 +171,38 @@ export const unJoinAirdrop = (id) => {
       });
   };
 };
+export const approveAirdrop = (id) => {
+  return (dispatch) => {
+    api
+      .post(`/airdrops/${id}/approve_airdrop/`)
+      .then((res) => {
+        toast.success("Successfully!");
+        dispatch({ type: airdropConstants.SET_LOADING, payload: true });
+        dispatch(loadPersonalAirdrop());
+        // dispatch({ type: airdropConstants.UNJOIN_AIRDROP, payload: id });
+        dispatch({ type: airdropConstants.SET_LOADING, payload: false });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+export const declineAirdrop = (id) => {
+  return (dispatch) => {
+    api
+      .post(`/airdrops/${id}/decline_airdrop/`)
+      .then((res) => {
+        toast.success("Successfully!");
+        dispatch({ type: airdropConstants.SET_LOADING, payload: true });
+        // dispatch({ type: airdropConstants.UNJOIN_AIRDROP, payload: id });
+        dispatch(loadPersonalAirdrop());
+        dispatch({ type: airdropConstants.SET_LOADING, payload: false });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
 
 export const addAirdrop = (payload, dispatch) => {
   console.log("payload", payload);
@@ -182,7 +216,6 @@ export const addAirdrop = (payload, dispatch) => {
       })),
     },
   };
-  console.log("values", values);
   return api
     .post("/airdrops/", values)
     .then((res) => {
@@ -190,7 +223,7 @@ export const addAirdrop = (payload, dispatch) => {
       toast.success("New airdrop added");
       dispatch(reset("airdropForm"));
       dispatch({ type: airdropConstants.CLOSE_MODAL });
-      dispatch(loadAirdrop());
+      dispatch(loadPersonalAirdrop());
     })
     .catch((err) => {
       console.log(err);

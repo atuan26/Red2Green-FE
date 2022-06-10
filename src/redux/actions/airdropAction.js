@@ -25,6 +25,7 @@ export const airdropConstants = {
 
   SET_LOADING: "SET_LOADING",
 
+  LOAD_INITIALVALUES: "LOAD_INITIALVALUES",
   SHOW_AIRDROP_DETAIL_MODAL: "SHOW_AIRDROP_DETAIL_MODAL",
   SHOW_AIRDROP_FORM_MODAL: "SHOW_AIRDROP_FORM_MODAL",
   CLOSE_MODAL: "CLOSE_MODAL",
@@ -114,6 +115,7 @@ export const loadAirdrop = () => {
       .catch((err) => {
         console.log(err);
         toast.error("Error when loading airdrops.");
+        dispatch(loadAirdropSuccess({ count: 0, results: [] }));
       });
   };
 };
@@ -131,6 +133,7 @@ export const loadPersonalAirdrop = () => {
       .catch((err) => {
         console.log(err);
         toast.error("Error when loading airdrops.");
+        dispatch(loadAirdropSuccess({ count: 0, results: [] }));
       });
   };
 };
@@ -215,6 +218,9 @@ export const addAirdrop = (payload, dispatch) => {
         label: r.label,
       })),
     },
+    task_list: payload?.task_list?.filter(
+      (task) => Object.keys(task).length > 0
+    ),
   };
   return api
     .post("/airdrops/", values)
@@ -235,12 +241,28 @@ export const addAirdrop = (payload, dispatch) => {
 };
 
 export const editAirdrop = (payload, dispatch) => {
+  console.log("payload", payload);
+  let values = {
+    ...payload,
+    information: {
+      ...payload.information,
+      requirement: payload?.information?.requirement?.map((r) => ({
+        value: r.value,
+        label: r.label,
+      })),
+    },
+    task_list: payload?.task_list?.filter(
+      (task) => Object.keys(task).length > 0
+    ),
+  };
   return api
-    .put(`/airdrops/${payload.id}/`, payload)
+    .put(`/airdrops/${payload.id}/`, values)
     .then((res) => {
       console.log(res.data);
       toast.success("Airdrop is edited");
-      dispatch({ type: airdropConstants.EDIT_AIRDROP, payload: res.data });
+      dispatch(reset("airdropForm"));
+      dispatch({ type: airdropConstants.CLOSE_MODAL });
+      dispatch(loadPersonalAirdrop());
     })
     .catch((err) => {
       console.log(err);
@@ -254,15 +276,26 @@ export const editAirdrop = (payload, dispatch) => {
 export const deleteAirdrop = (payload) => {
   return (dispatch) => {
     api
-      .delete("/airdrops/" + payload.id)
+      .delete(`/airdrops/${payload.id}/`)
       .then((res) => {
         console.log(res.data);
-        toast.success(payload.title + " is deleted.");
-        dispatch({ type: airdropConstants.DELETE_AIRDROP, payload });
+        toast.success(payload.name + " is deleted.");
+        dispatch(loadPersonalAirdrop());
       })
       .catch((err) => {
         console.log(err);
         toast.error("Error when deleting airdrops.");
       });
+  };
+};
+
+export const loadInitialValuesForm = (payload) => ({
+  type: airdropConstants.LOAD_INITIALVALUES,
+  payload,
+});
+
+export const destroyAirdropForm = () => {
+  return (dispatch) => {
+    dispatch(reset("airdropForm"));
   };
 };

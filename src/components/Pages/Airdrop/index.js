@@ -25,6 +25,7 @@ import {
   approveAirdrop,
   declineAirdrop,
   loadAirdrop,
+  loadInitialValuesForm,
   loadPersonalAirdrop,
 } from "../../../redux/actions/airdropAction";
 import AirdropModalForm from "../../Other/Modal/AirdropModalForm";
@@ -43,6 +44,7 @@ const AirdropPage = ({
   user,
   approveAirdrop,
   declineAirdrop,
+  loadInitialValuesForm,
 }) => {
   const [loading, setLoading] = useState(false);
   const [table, setTable] = useState(true);
@@ -233,7 +235,7 @@ const AirdropPage = ({
             case true:
               return "approved";
             case false:
-              return "decline";
+              return "declined";
 
             default:
               return;
@@ -254,7 +256,7 @@ const AirdropPage = ({
               styleButtonClassname += "badge-success p-4";
               icon = <MdCheckCircle />;
               break;
-            case "decline":
+            case "declined":
               label = "Declined";
               styleButtonClassname += "badge-error p-4";
               icon = <MdCancel />;
@@ -332,7 +334,10 @@ const AirdropPage = ({
               </div>
               <div className="tooltip" data-tip="Edit">
                 <div
-                  onClick={() => {}}
+                  onClick={() => {
+                    loadInitialValuesForm(row.row.original);
+                    showAirdropFormModal(true);
+                  }}
                   className="btn btn-sm bg-yellow-400 border-0 hover:bg-yellow-300"
                   disabled={
                     row.row.original.approval_status !== null && !isAdminUser
@@ -353,15 +358,15 @@ const AirdropPage = ({
                 </div>
               </div>
               {isAdminUser && (
-                <div class="dropdown dropdown-end">
+                <div class="dropdown dropdown-end  dropdown-hover">
                   <label
-                    tabindex="0"
+                    tabIndex="0"
                     className="btn btn-sm bg-blue-500 border-0 hover:bg-blue-400"
                   >
                     <MdOutlineMoreHoriz className="w-4 h-4" />
                   </label>
                   <ul
-                    tabindex="0"
+                    tabIndex="0"
                     class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-40 border border-gray-200"
                   >
                     <li>
@@ -394,11 +399,12 @@ const AirdropPage = ({
             </div>
           );
         },
-        className: "text-center",
+        className: "flex justify-center",
       },
     ],
     []
   );
+  console.log("### personalAirdropColumns :", personalAirdropColumns);
   return (
     <div className="grid grid-cols-4 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6 ">
       <AirdropDetailModal />
@@ -481,7 +487,10 @@ const AirdropPage = ({
               }
             />
             <div
-              onClick={() => showAirdropFormModal(true)}
+              onClick={() => {
+                loadInitialValuesForm({});
+                showAirdropFormModal(true);
+              }}
               className="flex items-center  text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 cursor-pointer w-36"
             >
               <CgAdd className="inline h-5 w-5 mr-1" />
@@ -543,6 +552,7 @@ const mapDispatchtoProps = (dispatch) => ({
     }),
   approveAirdrop: (payload) => dispatch(approveAirdrop(payload)),
   declineAirdrop: (payload) => dispatch(declineAirdrop(payload)),
+  loadInitialValuesForm: (payload) => dispatch(loadInitialValuesForm(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchtoProps)(AirdropPage);

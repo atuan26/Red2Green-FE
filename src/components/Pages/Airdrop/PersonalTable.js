@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import Skeleton from "react-loading-skeleton";
 import { GrStackOverflow } from "react-icons/gr";
@@ -15,7 +15,6 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
-
 const defaultPropGetter = () => ({});
 
 const PersonalTable = ({
@@ -99,6 +98,21 @@ const PersonalTable = ({
     useFlexLayout,
     usePagination
   );
+  const filterQuery = useMemo(
+    () => [
+      [],
+      [{ id: "approval_status", value: "pending" }],
+      [{ id: "approval_status", value: "approved" }],
+      [{ id: "approval_status", value: "declined" }],
+    ],
+    []
+  );
+  useEffect(() => {
+    aysncFilter(filterQuery[activeFilterButton]);
+  }, [activeFilterButton]);
+  useEffect(() => {
+    setAllFilters(filterQuery[activeFilterButton]);
+  }, [data]);
   return (
     <>
       <div className=" py-4 gap-4  w-full">
@@ -108,7 +122,7 @@ const PersonalTable = ({
               index={0}
               onFilter={() => {
                 setActiveFilterButton(0);
-                aysncFilter([]);
+                // aysncFilter([]);
               }}
               isActive={activeFilterButton === 0}
             />
@@ -116,7 +130,7 @@ const PersonalTable = ({
               index={1}
               onFilter={() => {
                 setActiveFilterButton(1);
-                aysncFilter([{ id: "approval_status", value: "pending" }]);
+                // aysncFilter([{ id: "approval_status", value: "pending" }]);
               }}
               isActive={activeFilterButton === 1}
             />
@@ -124,7 +138,7 @@ const PersonalTable = ({
               index={2}
               onFilter={() => {
                 setActiveFilterButton(2);
-                aysncFilter([{ id: "approval_status", value: "approved" }]);
+                // aysncFilter([{ id: "approval_status", value: "approved" }]);
               }}
               isActive={activeFilterButton === 2}
             />
@@ -132,7 +146,7 @@ const PersonalTable = ({
               index={3}
               onFilter={() => {
                 setActiveFilterButton(3);
-                aysncFilter([{ id: "approval_status", value: "declined" }]);
+                // aysncFilter([{ id: "approval_status", value: "declined" }]);
               }}
               isActive={activeFilterButton === 3}
             />
@@ -145,71 +159,69 @@ const PersonalTable = ({
         </div>
       </div>
       <div className="w-full rounded-lg py-2">
-        <div className="overflow-auto w-full">
-          <table
-            className="w-full text-sm text-left text-gray-700 dark:text-gray-400"
-            {...getTableProps()}
-          >
-            <thead className="text-xs text-gray-900 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th
-                      className="border p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900"
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
-                    >
-                      {column.render("Header")}
-                      {column.isSorted ? (
-                        column.isSortedDesc ? (
-                          <TiArrowSortedDown className="inline text-gray-400" />
-                        ) : (
-                          <TiArrowSortedUp className="inline text-gray-400" />
-                        )
+        <table
+          className="w-full text-sm text-left text-gray-700 dark:text-gray-400"
+          {...getTableProps()}
+        >
+          <thead className="text-xs text-gray-900 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    className="border p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900"
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                  >
+                    {column.render("Header")}
+                    {column.isSorted ? (
+                      column.isSortedDesc ? (
+                        <TiArrowSortedDown className="inline text-gray-400" />
                       ) : (
-                        ""
-                      )}
-                      <div
-                        {...column.getResizerProps()}
-                        className={`resizer ${
-                          column.isResizing ? "isResizing" : ""
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                        }}
-                      />
-                    </th>
-                  ))}
+                        <TiArrowSortedUp className="inline text-gray-400" />
+                      )
+                    ) : (
+                      ""
+                    )}
+                    <div
+                      {...column.getResizerProps()}
+                      className={`resizer ${
+                        column.isResizing ? "isResizing" : ""
+                      }`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                    />
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map((row, i) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps(getRowProps(row))}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td
+                        {...cell.getCellProps([
+                          {
+                            className: "px-6 py-3 " + cell.column.className,
+                            style: cell.column.style,
+                          },
+                          getCellProps(cell),
+                          getColumnProps(cell),
+                        ])}
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    );
+                  })}
                 </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {page.map((row, i) => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps(getRowProps(row))}>
-                    {row.cells.map((cell) => {
-                      return (
-                        <td
-                          {...cell.getCellProps([
-                            {
-                              className: "px-6 py-3 " + cell.column.className,
-                              style: cell.column.style,
-                            },
-                            getCellProps(cell),
-                            getColumnProps(cell),
-                          ])}
-                        >
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+              );
+            })}
+          </tbody>
+        </table>
         <div className="flex pt-6 justify-between">
           <div className="">
             Show {page.length} results of {data.count} records

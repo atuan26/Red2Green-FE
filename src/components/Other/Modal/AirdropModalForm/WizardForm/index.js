@@ -5,10 +5,17 @@ import WizardFormThirdPage from "./ThirdPage";
 import WizardFormFourthPage from "./FourthPage";
 import { FaRegCalendarAlt, FaSearchDollar, FaTasks } from "react-icons/fa";
 import { AiOutlineProfile } from "react-icons/ai";
-import { addAirdrop } from "../../../../../redux/actions/airdropAction";
+import {
+  addAirdrop,
+  editAirdrop,
+  loadInitialValuesForm,
+} from "../../../../../redux/actions/airdropAction";
+import { connect } from "react-redux";
+import { getFormValues } from "redux-form";
 
-const WizardForm = () => {
+const WizardForm = ({ initialValues, values, loadInitialValuesForm }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  // console.log("### values :", values);
   const pageList = useMemo(
     () => [
       {
@@ -30,6 +37,13 @@ const WizardForm = () => {
     ],
     []
   );
+  const handleNextPage = () => {
+    setCurrentPage((currentPage) => currentPage + 1);
+    // if (!initialValues?.id) loadInitialValuesForm(values);
+  };
+  const handlePreviousPage = () => {
+    setCurrentPage((currentPage) => currentPage - 1);
+  };
   return (
     <div>
       <StepForm
@@ -39,25 +53,28 @@ const WizardForm = () => {
       />
       {currentPage === 1 && (
         <WizardFormFirstPage
-          onSubmit={() => setCurrentPage((currentPage) => currentPage + 1)}
+          initialValues={
+            initialValues?.id ? initialValues : { start: new Date() }
+          }
+          onSubmit={handleNextPage}
         />
       )}
       {currentPage === 2 && (
         <WizardFormSecondPage
-          previousPage={() => setCurrentPage((currentPage) => currentPage - 1)}
-          onSubmit={() => setCurrentPage((currentPage) => currentPage + 1)}
+          previousPage={handlePreviousPage}
+          onSubmit={handleNextPage}
         />
       )}
       {currentPage === 3 && (
         <WizardFormThirdPage
-          previousPage={() => setCurrentPage((currentPage) => currentPage - 1)}
-          onSubmit={() => setCurrentPage((currentPage) => currentPage + 1)}
+          previousPage={handlePreviousPage}
+          onSubmit={handleNextPage}
         />
       )}
       {currentPage === 4 && (
         <WizardFormFourthPage
-          previousPage={() => setCurrentPage((currentPage) => currentPage - 1)}
-          onSubmit={addAirdrop}
+          previousPage={handlePreviousPage}
+          onSubmit={initialValues?.id ? editAirdrop : addAirdrop}
         />
       )}
     </div>
@@ -139,4 +156,13 @@ const StepForm = ({ currentPage, pageList, setCurrentPage }) => {
     </div>
   );
 };
-export default WizardForm;
+
+export default connect(
+  (state) => ({
+    values: getFormValues("airdropForm")(state),
+  }),
+  (dispatch) => ({
+    loadInitialValuesForm: (payload) =>
+      dispatch(loadInitialValuesForm(payload)),
+  })
+)(WizardForm);

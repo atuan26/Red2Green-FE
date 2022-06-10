@@ -22,12 +22,12 @@ const WizardFormSecondPage = (props) => {
         {/* <FieldArray name='time' component={renderDateInput2} /> */}
       </div>
       <div className="flex gap-4">
-        <button
-          className="w-full border border-blue-500 text-blue-700 bg-white hover:bg-blue-200 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        <div
+          className="cursor-pointer w-full border border-blue-500 text-blue-700 bg-white hover:bg-blue-200 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           onClick={previousPage}
         >
           Previous
-        </button>
+        </div>
         <SubmitButton label="Next" />
       </div>
     </form>
@@ -96,5 +96,6 @@ export default reduxForm({
   form: "airdropForm",
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
+  // enableReinitialize: true,
   validate,
 })(WizardFormSecondPage);

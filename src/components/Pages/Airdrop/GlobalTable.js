@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import Skeleton from "react-loading-skeleton";
 import { GrStackOverflow } from "react-icons/gr";
@@ -98,6 +98,21 @@ const Table = ({
     useFlexLayout,
     usePagination
   );
+  const filterQuery = useMemo(
+    () => [
+      [],
+      [{ id: "status", value: 1 }],
+      [{ id: "status", value: 2 }],
+      [{ id: "is_distributed", value: true }],
+    ],
+    []
+  );
+  useEffect(() => {
+    aysncFilter(filterQuery[activeFilterButton]);
+  }, [activeFilterButton]);
+  useEffect(() => {
+    setAllFilters(filterQuery[activeFilterButton]);
+  }, [data]);
   return (
     <>
       <div className=" py-4 gap-4  w-full">
@@ -107,7 +122,6 @@ const Table = ({
               index={0}
               onFilter={() => {
                 setActiveFilterButton(0);
-                aysncFilter([]);
               }}
               isActive={activeFilterButton === 0}
             />
@@ -115,7 +129,6 @@ const Table = ({
               index={1}
               onFilter={() => {
                 setActiveFilterButton(1);
-                aysncFilter([{ id: "status", value: 1 }]);
               }}
               isActive={activeFilterButton === 1}
             />
@@ -123,7 +136,6 @@ const Table = ({
               index={2}
               onFilter={() => {
                 setActiveFilterButton(2);
-                aysncFilter([{ id: "status", value: "2" }]);
               }}
               isActive={activeFilterButton === 2}
             />
@@ -131,7 +143,6 @@ const Table = ({
               index={3}
               onFilter={() => {
                 setActiveFilterButton(3);
-                aysncFilter([{ id: "is_distributed", value: true }]);
               }}
               isActive={activeFilterButton === 3}
             />
@@ -310,7 +321,6 @@ const FilterButton = ({ index, onFilter, isActive }) => {
 
 export const GlobalFilter = (props) => {
   const { preGlobalFilteredRows, globalFilter, setGlobalFilter } = props;
-  console.log("### props :", props);
   const count = preGlobalFilteredRows?.length || 0;
   const [value, setValue] = useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {

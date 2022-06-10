@@ -1,4 +1,6 @@
 import React from "react";
+import { useEffect } from "react";
+import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import {
   EventInput,
@@ -6,9 +8,31 @@ import {
   SubmitButton,
 } from "../../EventModal/EventInput";
 import validate from "../validate";
+import { getFormValues } from "redux-form";
+import { loadInitialValuesForm } from "../../../../../redux/actions/airdropAction";
 
 const WizardFormFirstPage = (props) => {
-  const { error, handleSubmit, reset, submitting } = props;
+  const {
+    error,
+    handleSubmit,
+    reset,
+    initialize,
+    initialValues,
+    values,
+    loadInitialValuesForm,
+  } = props;
+  console.log("### values,  initialValues:", values === initialValues);
+  console.log("### values,  :", values);
+  console.log("### initialValues:", initialValues);
+  useEffect(() => {
+    if (values === initialValues || (!initialValues?.id && values?.id))
+      initialize(initialValues); //for ADD form
+    if (
+      (initialValues?.id && initialValues === values) ||
+      initialValues?.id !== values?.id
+    )
+      initialize(initialValues); //for EDIT form
+  }, []);
   return (
     <form
       onSubmit={handleSubmit}
@@ -54,12 +78,12 @@ const WizardFormFirstPage = (props) => {
         />
       </div>
       <div className="flex gap-4">
-        <button
-          className="w-full border border-blue-500 text-blue-700 bg-white hover:bg-blue-200 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        <div
+          className="w-full border border-blue-500 text-blue-700 bg-white hover:bg-blue-200 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer"
           onClick={reset}
         >
           Clear
-        </button>
+        </div>
         <SubmitButton onClick={handleSubmit} label="Next" />
       </div>
     </form>
@@ -69,10 +93,18 @@ const WizardFormFirstPage = (props) => {
 export default reduxForm({
   form: "airdropForm", // <------ same form name
   destroyOnUnmount: false,
-  initialValues: {
-    start: new Date(),
-    task_list: [{ task: " " }],
-  },
-  forceUnregisterOnUnmount: true, // <------ unregister fields on unmount
+  forceUnregisterOnUnmount: true,
+  // enableReinitialize: true,
+  // keepDirtyOnReinitialize: true,
   validate,
-})(WizardFormFirstPage);
+})(
+  connect(
+    (state) => ({
+      values: getFormValues("airdropForm")(state),
+    }),
+    (dispatch) => ({
+      loadInitialValuesForm: (payload) =>
+        dispatch(loadInitialValuesForm(payload)),
+    })
+  )(WizardFormFirstPage)
+);

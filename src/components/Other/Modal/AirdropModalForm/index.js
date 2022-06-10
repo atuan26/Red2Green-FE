@@ -1,9 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-import { airdropConstants } from "../../../../redux/actions/airdropAction";
+import {
+  airdropConstants,
+  destroyAirdropForm,
+} from "../../../../redux/actions/airdropAction";
 import WizardForm from "./WizardForm";
 
-const AirdropModalForm = ({ closeModal, modalForm, initialValue }) => {
+const AirdropModalForm = ({
+  closeModal,
+  modalForm,
+  initialValues,
+  destroyAirdropForm,
+}) => {
   return (
     <>
       {modalForm && (
@@ -13,12 +21,15 @@ const AirdropModalForm = ({ closeModal, modalForm, initialValue }) => {
               <div className="bg-white rounded-lg shadow dark:bg-gray-700">
                 <div className="flex justify-between p-2">
                   <h3 className="mt-2 pl-6 text-xl font-medium text-gray-900 dark:text-white">
-                    Add new airdop
+                    {initialValues?.id ? "Edit airdrop" : "Add new airdop"}
                   </h3>
                   <button
                     type="button"
                     className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-                    onClick={closeModal}
+                    onClick={() => {
+                      destroyAirdropForm();
+                      closeModal();
+                    }}
                   >
                     <svg
                       className="w-5 h-5"
@@ -34,7 +45,7 @@ const AirdropModalForm = ({ closeModal, modalForm, initialValue }) => {
                     </svg>
                   </button>
                 </div>
-                <WizardForm initialValue={initialValue} />
+                <WizardForm initialValues={initialValues} />
               </div>
             </div>
           </div>
@@ -47,10 +58,11 @@ const AirdropModalForm = ({ closeModal, modalForm, initialValue }) => {
 
 const mapStateToProps = (state) => ({
   modalForm: state.airdrop.showFormModal,
-  initialValue: state.airdrop.formModal,
+  initialValues: state.airdrop.initialValuesForm,
 });
 const mapDispatchtoProps = (dispatch) => ({
   closeModal: () => dispatch({ type: airdropConstants.CLOSE_MODAL }),
+  destroyAirdropForm: () => dispatch(destroyAirdropForm()),
 });
 
 export default connect(mapStateToProps, mapDispatchtoProps)(AirdropModalForm);

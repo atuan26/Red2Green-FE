@@ -32,12 +32,12 @@ const WizardFormThirdPage = (props) => {
         <FieldArray name="task_list" component={renderTasks} />
       </div>
       <div className="flex gap-4">
-        <button
-          className="w-full border border-blue-500 text-blue-700 bg-white hover:bg-blue-200 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        <div
+          className="cursor-pointer w-full border border-blue-500 text-blue-700 bg-white hover:bg-blue-200 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           onClick={previousPage}
         >
           Previous
-        </button>
+        </div>
         <SubmitButton
           onClick={handleSubmit}
           label="Submit"
@@ -50,14 +50,13 @@ const WizardFormThirdPage = (props) => {
 const renderTasks = ({ fields, meta: { touched, error } }) => (
   <ul>
     <li className="flex justify-center mt-2">
-      <button
-        type="button"
-        className="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
+      <div
+        className="cursor-pointer text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
         onClick={() => fields.push({})}
       >
         <CgPlayListAdd className="inline w-4 h-4 mr-2" />
         Add task
-      </button>
+      </div>
       {touched && error && <span>{error}</span>}
     </li>
     {fields.map((task, index) => (
@@ -86,5 +85,6 @@ export default reduxForm({
   form: "airdropForm",
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
+  // enableReinitialize: true,
   validate,
 })(WizardFormThirdPage);

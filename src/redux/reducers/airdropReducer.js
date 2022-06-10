@@ -2,13 +2,12 @@ import { airdropConstants } from "../actions/airdropAction";
 
 const initialState = {
   showFormModal: false,
-  formModal: null,
+  initialValuesForm: null,
 
   showDetailModal: false,
   detailModal: null,
   loading: false,
-  // loadingAirdrop: false,
-  // loadingForm: false,
+
   airdropList: { count: 0, results: [] },
   personalAirdropList: { count: 0, results: [] },
 };
@@ -62,6 +61,16 @@ const airdropReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: action.payload,
+      };
+    case airdropConstants.LOAD_INITIALVALUES:
+      return {
+        ...state,
+        initialValuesForm: {
+          ...action.payload,
+          start: action.payload?.start ? new Date(action.payload.start) : null,
+          end: action.payload?.end ? new Date(action.payload.end) : null,
+          // end: new Date(action.payload?.end),
+        },
       };
     default:
       return state;

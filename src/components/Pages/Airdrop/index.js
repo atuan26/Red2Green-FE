@@ -24,6 +24,7 @@ import {
   airdropConstants,
   approveAirdrop,
   declineAirdrop,
+  deleteAirdrop,
   loadAirdrop,
   loadInitialValuesForm,
   loadPersonalAirdrop,
@@ -32,6 +33,7 @@ import AirdropModalForm from "../../Other/Modal/AirdropModalForm";
 import AirdropDetailModal from "./AirdropDetailModal";
 import GlobalTable from "./GlobalTable";
 import PersonalTable from "./PersonalTable";
+import { showComfirmModal } from "../../../redux/actions/notiAction";
 
 const AirdropPage = ({
   isAuthenticated,
@@ -45,6 +47,7 @@ const AirdropPage = ({
   approveAirdrop,
   declineAirdrop,
   loadInitialValuesForm,
+  deleteAirdrop,
 }) => {
   const [loading, setLoading] = useState(false);
   const [table, setTable] = useState(true);
@@ -309,7 +312,6 @@ const AirdropPage = ({
             width: 100,
             className: "text-center  flex justify-center items-center ",
           },
-      ,
       {
         Header: "Create at",
         accessor: "create_date",
@@ -340,18 +342,29 @@ const AirdropPage = ({
                   }}
                   className="btn btn-sm bg-yellow-400 border-0 hover:bg-yellow-300"
                   disabled={
-                    row.row.original.approval_status !== null && !isAdminUser
+                    !(row.row.original.approval_status === null || isAdminUser)
                   }
                 >
+                  {console.log(
+                    "### row.row.original.approval_statu,  isAdminUser:",
+                    row.row.original.approval_status !== null,
+                    isAdminUser
+                  )}
                   <AiTwotoneEdit className="w-4 h-4 " />
                 </div>
               </div>
               <div className="tooltip" data-tip="Delete">
                 <div
-                  onClick={() => {}}
+                  onClick={() => {
+                    showComfirmModal({
+                      active: true,
+                      message: { label: "Do you want to delete this airdrop?" },
+                      onConfirm: () => deleteAirdrop(row.row.original),
+                    });
+                  }}
                   className="btn btn-sm bg-red-500 border-0 hover:bg-red-400"
                   disabled={
-                    row.row.original.approval_status !== null && !isAdminUser
+                    !(row.row.original.approval_status === null || isAdminUser)
                   }
                 >
                   <MdDelete className="w-4 h-4" />
@@ -404,7 +417,6 @@ const AirdropPage = ({
     ],
     []
   );
-  console.log("### personalAirdropColumns :", personalAirdropColumns);
   return (
     <div className="grid grid-cols-4 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6 ">
       <AirdropDetailModal />
@@ -515,13 +527,7 @@ const AirdropPage = ({
               columns={personalAirdropColumns}
               data={airdropPersonalList}
               airdropLoading={[loading, setLoading]}
-              getRowProps={(row) => ({
-                // className:
-                //   "border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700 ",
-                // style: {
-                //   backgroundColor: row.original.is_joined ? "#31c48d44" : " ",
-                // },
-              })}
+              getRowProps={(row) => ({})}
             />
           )}
         </div>
@@ -543,16 +549,17 @@ const mapDispatchtoProps = (dispatch) => ({
   showAirdropFormModal: (payload) =>
     dispatch({
       type: airdropConstants.SHOW_AIRDROP_FORM_MODAL,
-      payload: payload,
+      payload,
     }),
   showAirdropDetailModal: (payload) =>
     dispatch({
       type: airdropConstants.SHOW_AIRDROP_DETAIL_MODAL,
-      payload: payload,
+      payload,
     }),
   approveAirdrop: (payload) => dispatch(approveAirdrop(payload)),
   declineAirdrop: (payload) => dispatch(declineAirdrop(payload)),
   loadInitialValuesForm: (payload) => dispatch(loadInitialValuesForm(payload)),
+  deleteAirdrop: (payload) => dispatch(deleteAirdrop(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchtoProps)(AirdropPage);

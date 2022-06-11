@@ -174,6 +174,7 @@ export const unJoinAirdrop = (id) => {
       });
   };
 };
+
 export const approveAirdrop = (id) => {
   return (dispatch) => {
     api
@@ -190,6 +191,7 @@ export const approveAirdrop = (id) => {
       });
   };
 };
+
 export const declineAirdrop = (id) => {
   return (dispatch) => {
     api

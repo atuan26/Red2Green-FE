@@ -26,6 +26,9 @@ const PersonalTable = ({
   getCellProps = defaultPropGetter,
   airdropLoading: [airdropLoading, setAirdropLoading],
 }) => {
+  const pendingAirdropNumber = data.results?.filter(
+    (airdrop) => airdrop.approval_status === null
+  ).length;
   const defaultColumn = useMemo(
     () => ({
       minWidth: 10,
@@ -43,7 +46,6 @@ const PersonalTable = ({
     await sleep(300);
     setAirdropLoading(false);
     setAllFilters(query);
-    // setFilter(query[0]?.id, query[0]?.value);
   }, []);
   const tableData = useMemo(
     () => (airdropLoading ? Array(50).fill({}) : data.results),
@@ -90,6 +92,7 @@ const PersonalTable = ({
       defaultColumn,
       // filterTypes,
       autoResetSortBy: false,
+      autoResetFilters: false,
     },
     useGlobalFilter,
     useFilters,
@@ -122,15 +125,14 @@ const PersonalTable = ({
               index={0}
               onFilter={() => {
                 setActiveFilterButton(0);
-                // aysncFilter([]);
               }}
               isActive={activeFilterButton === 0}
             />
             <FilterButton
               index={1}
+              pendingAirdropNumber={pendingAirdropNumber}
               onFilter={() => {
                 setActiveFilterButton(1);
-                // aysncFilter([{ id: "approval_status", value: "pending" }]);
               }}
               isActive={activeFilterButton === 1}
             />
@@ -138,7 +140,6 @@ const PersonalTable = ({
               index={2}
               onFilter={() => {
                 setActiveFilterButton(2);
-                // aysncFilter([{ id: "approval_status", value: "approved" }]);
               }}
               isActive={activeFilterButton === 2}
             />
@@ -146,7 +147,6 @@ const PersonalTable = ({
               index={3}
               onFilter={() => {
                 setActiveFilterButton(3);
-                // aysncFilter([{ id: "approval_status", value: "declined" }]);
               }}
               isActive={activeFilterButton === 3}
             />
@@ -280,31 +280,23 @@ const PersonalTable = ({
   );
 };
 
-const FilterButton = ({ index, onFilter, isActive }) => {
+const FilterButton = ({ index, onFilter, isActive, pendingAirdropNumber }) => {
   const buttonIndex = useMemo(
     () => [
       {
         label: "All",
-        icon: (
-          <GrStackOverflow className="w-5 h-5 text-orange-400 inline mr-2" />
-        ),
+        icon: <GrStackOverflow className="w-5 h-5 text-orange-400" />,
       },
       {
-        icon: (
-          <MdOutlinePending className="w-5 h-5 text-blue-400 inline mr-2" />
-        ),
+        icon: <MdOutlinePending className="w-5 h-5 text-blue-400" />,
         label: "Pending",
       },
       {
-        icon: (
-          <AiOutlineCheckCircle className="w-5 h-5 text-green-400 inline mr-2" />
-        ),
+        icon: <AiOutlineCheckCircle className="w-5 h-5 text-green-400" />,
         label: "Approved",
       },
       {
-        icon: (
-          <IoIosCloseCircleOutline className="w-5 h-5 text-red-400 inline mr-2" />
-        ),
+        icon: <IoIosCloseCircleOutline className="w-5 h-5 text-red-400" />,
         label: "Declined",
       },
     ],
@@ -316,12 +308,17 @@ const FilterButton = ({ index, onFilter, isActive }) => {
         onClick={onFilter}
         className={
           isActive
-            ? "flex items-center  px-4 py-2 text-white rounded-full bg-gray-700 hover:bg-gray-600"
-            : "flex items-center px-4 py-2 text-gray-600 rounded-full bg-gray-100 hover:bg-gray-200"
+            ? "flex items-center  gap-2 px-4 py-2 text-white rounded-full bg-gray-700 hover:bg-gray-600"
+            : "flex items-center gap-2 px-4 py-2 text-gray-600 rounded-full bg-gray-100 hover:bg-gray-200"
         }
       >
         {buttonIndex[index].icon}
         {buttonIndex[index].label}
+        {pendingAirdropNumber > 0 && (
+          <div class="w-6 h-6 text-sm rounded-full text-white bg-red-500 flex items-center justify-center ">
+            {pendingAirdropNumber}
+          </div>
+        )}
       </button>
     </>
   );

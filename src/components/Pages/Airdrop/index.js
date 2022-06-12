@@ -34,6 +34,7 @@ import AirdropDetailModal from "./AirdropDetailModal";
 import GlobalTable from "./GlobalTable";
 import PersonalTable from "./PersonalTable";
 import { showComfirmModal } from "../../../redux/actions/notiAction";
+import ToolTip from "../../Other/Tooltip";
 
 const AirdropPage = ({
   isAuthenticated,
@@ -325,7 +326,7 @@ const AirdropPage = ({
           const isAdminUser = user?.is_staff || user?.is_superuser;
           return (
             <div className="flex gap-2">
-              <div className="tooltip" data-tip="Update news">
+              <ToolTip content="Update news">
                 <div
                   onClick={() => {}}
                   className="btn btn-sm bg-green-500 border-0 hover:bg-green-400"
@@ -333,8 +334,8 @@ const AirdropPage = ({
                 >
                   <AiFillNotification className="w-4 h-4" />
                 </div>
-              </div>
-              <div className="tooltip" data-tip="Edit">
+              </ToolTip>
+              <ToolTip content="Edit">
                 <div
                   onClick={() => {
                     loadInitialValuesForm(row.row.original);
@@ -345,15 +346,10 @@ const AirdropPage = ({
                     !(row.row.original.approval_status === null || isAdminUser)
                   }
                 >
-                  {console.log(
-                    "### row.row.original.approval_statu,  isAdminUser:",
-                    row.row.original.approval_status !== null,
-                    isAdminUser
-                  )}
                   <AiTwotoneEdit className="w-4 h-4 " />
                 </div>
-              </div>
-              <div className="tooltip" data-tip="Delete">
+              </ToolTip>
+              <ToolTip content="Delete">
                 <div
                   onClick={() => {
                     showComfirmModal({
@@ -369,7 +365,7 @@ const AirdropPage = ({
                 >
                   <MdDelete className="w-4 h-4" />
                 </div>
-              </div>
+              </ToolTip>
               {isAdminUser && (
                 <div class="dropdown dropdown-end  dropdown-hover">
                   <label
@@ -415,7 +411,7 @@ const AirdropPage = ({
         className: "flex justify-center",
       },
     ],
-    []
+    [user]
   );
   return (
     <div className="grid grid-cols-4 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6 ">
@@ -425,9 +421,7 @@ const AirdropPage = ({
         <div className="w-full shadow-lg rounded-lg bg-white mb-4 p-6">
           <div className="flex items-center justify-between">
             <Switch
-              onChange={() => {
-                setTable((t) => !t);
-              }}
+              onChange={() => setTable((t) => !t)}
               checked={table}
               handleDiameter={28}
               offColor="#7e22ce"

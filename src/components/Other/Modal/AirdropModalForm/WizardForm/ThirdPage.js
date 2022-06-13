@@ -17,6 +17,12 @@ const WizardFormThirdPage = (props) => {
     >
       <div className="mt-4 px-4">
         <Field
+          name="social.official_site"
+          type="text"
+          component={EventInput}
+          label="Official Site"
+        />
+        <Field
           name="social.telegram_channel"
           type="text"
           component={EventInput}
@@ -27,6 +33,12 @@ const WizardFormThirdPage = (props) => {
           type="text"
           component={EventInput}
           label="Twitter"
+        />
+        <Field
+          name="social.discord"
+          type="text"
+          component={EventInput}
+          label="Discord"
         />
         <Field
           name="social.facebook"

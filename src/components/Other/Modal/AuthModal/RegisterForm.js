@@ -1,5 +1,6 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
+import ReCaptcha from "../../ReCAPTCHA";
 import { AuthInput, SubmitButton } from "./AuthInput";
 import { validate } from "./validateRegister";
 
@@ -32,6 +33,11 @@ const RegisterForm = (props) => {
         component={AuthInput}
         label="Confirm Password"
       />
+      <Field
+        name="recaptcha"
+        // type="password"
+        component={ReCaptcha}
+      />
       <SubmitButton label="Register" disabled={submitting} />
       <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
         Already have account?
@@ -50,5 +56,6 @@ const RegisterForm = (props) => {
 
 export default reduxForm({
   form: "RegisterForm",
+  fields: ["email", "username", "password", "password2", "recaptcha"],
   validate,
 })(RegisterForm);

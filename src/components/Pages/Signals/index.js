@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import Table from "./Table";
 import Filter from "./Filter";
 import { connect } from "react-redux";
-import { timeFormat } from "d3-time-format";
 import { Modal } from "../../Other/Modal";
 import SignalDetailModal from "./SignalDetailModal";
 import { loadSignal } from "../../../redux/actions/signalAction";

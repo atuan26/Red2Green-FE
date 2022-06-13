@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 export const AuthInput = ({
   input,
   name,
@@ -9,7 +9,7 @@ export const AuthInput = ({
   let classInput =
     "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer";
   classInput = error
-    ? classInput + " focus:border-b-[3px] focus:border-red-600"
+    ? classInput + " focus:border-b-[2px] focus:border-red-600"
     : classInput;
   return (
     <div className="relative z-0 w-full group ">
@@ -27,11 +27,15 @@ export const AuthInput = ({
       >
         {label}
       </label>
-      <p>
+      <p className="text-sm text-red-600 dark:text-red-500">
         {touched && error && (
-          <span className="text-xs text-red-600 dark:text-red-500">
-            {error}
-          </span>
+          <>
+            {Array.isArray(error) ? (
+              error?.map((e, i) => <li key={i}>{e}</li>)
+            ) : (
+              <li>{error}</li>
+            )}
+          </>
         )}
       </p>
     </div>

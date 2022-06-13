@@ -4,19 +4,25 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const validate = (values) => {
   const errors = {};
-  const requiredFields = ["username", "email", "password", "password2"];
+  const requiredFields = [
+    "username",
+    "email",
+    "password",
+    "password2",
+    "recaptcha",
+  ];
   requiredFields.forEach((field) => {
     if (!values[field]) {
-      errors[field] = "*Required";
+      errors[field] = "Required";
     } else if (values[field] && values[field].length < 6) {
-      errors[field] = "*Must be at least 6 characters.";
+      errors[field] = "Must be at least 6 characters.";
     }
   });
   if (
     values.email &&
     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
   ) {
-    errors.email = "*Invalid email address";
+    errors.email = "Invalid email address";
   }
   if (
     values.password &&
@@ -25,7 +31,7 @@ export const validate = (values) => {
     values.password2.length >= 8 &&
     values.password !== values.password2
   ) {
-    errors.password2 = "*Password and Confirm Password does not match.";
+    errors.password2 = "Password and Confirm Password does not match.";
   }
   return errors;
 };
